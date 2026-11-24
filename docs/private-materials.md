@@ -27,3 +27,5 @@ Suite HTTP nos dois runtimes cobre escopo, finalidade, evidência inválida, ori
 ## Piloto fictício de produto matricial
 
 Run 45465137735: 90 casos da API passaram nos dois runtimes. A ficha em subjects/hs-mathematics/units/hs-matrices/pilot/ descreve objetivo e evidência fictícios, seis problemas autorais e resolução manual. Gerador usa handout_lib, matriz(colchete) e macete_produto originais; folha do estudante (duas páginas propostas) e gabarito docente (uma página proposta), separados. Testes numéricos e de impressão Chromium/PyMuPDF adicionados; nova CI ainda pendente. O código é fixture fixa, não recebe dados reais; artefatos CI são públicos/sintéticos. Revisão cega, revisão visual, aprovação do professor e destino Drive autorizado ainda pendentes. Não vincula documento nem marca pedido concluído.
+
+Run 45467703757: folha do aluno passou com 3 páginas; gabarito produziu 1 página em vez das 2 previstas. Verificação passa a aceitar 1–2 páginas com igualdade entre DOM e PDF e 6 itens, sem remover o gate de overflow. Nova CI e revisão visual pendentes.

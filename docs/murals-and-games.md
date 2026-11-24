@@ -17,3 +17,9 @@ Launch Day, origem worker/launch_logica.js f6516aa: core em memória, cinco roda
 
 ## Main
 Checkpoint c70bf00 integrado em 346a12a, exatamente a árvore aprovada no run 45465137735. Piloto posterior falhou em paginação apertada no run 45465539106: redistribuído em 3 páginas de aluno, 2 de gabarito, preservando seis questões. CI pendente; sem deploy.
+
+## Composição A3 recuperada
+
+mural_lib.py (bc0c195) agora usa imports relativos e identidade/topdf existentes, preserva Andaime Aberto, anchor_chart, painel_unidade, cartões, fluxo, linha_do_tempo e moldura/faixa de trabalho. Busca de imagens externas desabilitada até revisão de direitos; SEM_PDF permite impressão somente após gate. Dois espécimes fictícios: Cavalieri com SVG determinístico e área de co-construção, painel de objetivos Customer discovery. Teste de limites DOM, rodapé, A3 e PDF, com raster. Fontes fallback (binários originais não importados), revisão visual e execução CI pendentes. Não inclui ainda mural_grande, mural_consulta, mural_plano ou cinco goldens LaTeX históricos. DEPENDENCIAS.md (32ec9ae) registra decisão de HTML para peças novas e preservação dos cinco geradores históricos LaTeX; não reescrever goldens.
+
+Run 45467703757: Launch Day, SVG e folha do aluno (3 páginas) aprovados nas etapas correspondentes; gabarito foi compactado pelo paginador para 1 página sem alerta e o teste exigia 2. Gate ajustado para aceitar 1–2 páginas no gabarito, sempre com contagem real DOM/PDF, 6 itens e ausência de overflow. Ainda requer inspeção visual. CI global não aprovada nesse run.

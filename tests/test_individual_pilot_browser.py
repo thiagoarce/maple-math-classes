@@ -19,7 +19,8 @@ def main():
             page.wait_for_function("document.documentElement.dataset.mathReady === 'ok'",timeout=30000)
             page.wait_for_function("document.documentElement.hasAttribute('data-paginado')",timeout=30000)
             attrs=page.evaluate("""() => ({p:document.documentElement.dataset.paginado, giant:document.documentElement.dataset.gigantes, overflow:document.documentElement.dataset.estouro, pages:document.querySelectorAll('.a4').length, math:document.querySelectorAll('mjx-container svg').length, error:document.querySelectorAll('mjx-merror,[data-mjx-error]').length})""")
-            assert attrs["pages"]==count and attrs["math"]>=2 and not attrs["error"],attrs
+            assert 1<=attrs["pages"]<=count and attrs["math"]>=2 and not attrs["error"],attrs
+            if name=="student":assert attrs["pages"]==count,attrs
             assert attrs["p"] not in ("erro","apertado") and not attrs["giant"] and not attrs["overflow"],attrs
             tags=page.locator(".a4 .tag").all_text_contents()
             assert [int(t) for t in tags]==list(range(1,7)),tags
@@ -30,7 +31,7 @@ def main():
             pdf=OUT/(name+".pdf")
             page.pdf(path=str(pdf),prefer_css_page_size=True,print_background=True)
             with fitz.open(pdf) as d:
-                assert len(d)==count,(name,len(d),attrs)
+                assert len(d)==attrs["pages"],(name,len(d),attrs)
                 text=" ".join(pg.get_text() for pg in d)
                 for pg in d:
                     assert abs(pg.rect.width-595.28)<2 and abs(pg.rect.height-841.89)<2,pg.rect

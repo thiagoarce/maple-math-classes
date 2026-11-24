@@ -43,3 +43,5 @@ Contrato privado candidato em infra/private-data/; nenhum banco real, API ou mig
 Piloto de recuperação de produto matricial: subjects/hs-mathematics/units/hs-matrices/pilot/ — ficha, fixture, resolução manual e gerador de duas peças sintéticas; homologação de impressão pendente.
 
 Murais e jogos: [inventário e primeiros núcleos recuperados](murals-and-games.md). Homologação de impressão e interfaces pendentes.
+
+Motor mural A3 recuperado em tools/rendering/mural_lib.py; espécimes Cavalieri e Customer discovery em gate de impressão pendente. Ver docs/murals-and-games.md.
