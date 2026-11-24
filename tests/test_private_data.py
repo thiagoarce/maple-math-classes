@@ -35,6 +35,7 @@ class Contract(unittest.TestCase):
         self.reject("INSERT INTO attendance VALUES ('demo-l1','demo-o1','demo-s1','unknown')")
         self.reject("UPDATE results SET score=1001,status='graded'")
         self.reject("UPDATE results SET score=-1,status='graded'")
+        self.reject("UPDATE results SET score=8.5,status='graded'")
         self.reject("UPDATE results SET score=500,status='pending'")
         self.reject("UPDATE results SET score=NULL,status='graded'")
         self.reject("UPDATE results SET max_score=2000")

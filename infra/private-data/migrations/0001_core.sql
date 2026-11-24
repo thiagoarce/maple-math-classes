@@ -3,7 +3,7 @@
 -- timestamps: UTC epoch seconds. Scores use integer hundredths of a point.
 CREATE TABLE academic_years (
  id TEXT PRIMARY KEY NOT NULL,
- year INTEGER NOT NULL UNIQUE CHECK(year BETWEEN 2000 AND 2200)
+ year INTEGER NOT NULL UNIQUE CHECK(typeof(year)='integer' AND year BETWEEN 2000 AND 2200)
 );
 CREATE TABLE classes (
  id TEXT PRIMARY KEY NOT NULL,
@@ -57,8 +57,8 @@ CREATE TABLE lessons (
  unit_id TEXT NOT NULL,
  title TEXT NOT NULL,
  lesson_date TEXT NOT NULL CHECK(length(lesson_date)=10 AND lesson_date GLOB '[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]'),
- starts_at_minute INTEGER NOT NULL CHECK(starts_at_minute BETWEEN 0 AND 1439),
- duration_minutes INTEGER NOT NULL CHECK(duration_minutes BETWEEN 1 AND 1440),
+ starts_at_minute INTEGER NOT NULL CHECK(typeof(starts_at_minute)='integer' AND starts_at_minute BETWEEN 0 AND 1439),
+ duration_minutes INTEGER NOT NULL CHECK(typeof(duration_minutes)='integer' AND duration_minutes BETWEEN 1 AND 1440),
  goal TEXT NOT NULL,
  status TEXT NOT NULL DEFAULT 'draft' CHECK(status IN ('draft','ready','taught','cancelled')),
  revision INTEGER NOT NULL DEFAULT 1 CHECK(revision>=1),
@@ -68,7 +68,7 @@ CREATE TABLE lessons (
 CREATE TABLE lesson_steps (
  lesson_id TEXT NOT NULL REFERENCES lessons(id),
  position INTEGER NOT NULL CHECK(position>=1),
- minutes INTEGER NOT NULL CHECK(minutes>=1),
+ minutes INTEGER NOT NULL CHECK(typeof(minutes)='integer' AND minutes>=1),
  action TEXT NOT NULL,
  PRIMARY KEY(lesson_id,position)
 );
@@ -96,7 +96,7 @@ CREATE TABLE assessments (
  id TEXT PRIMARY KEY NOT NULL,
  offer_id TEXT NOT NULL REFERENCES offers(id),
  title TEXT NOT NULL,
- max_score INTEGER NOT NULL CHECK(max_score>0),
+ max_score INTEGER NOT NULL CHECK(typeof(max_score)='integer' AND max_score>0),
  status TEXT NOT NULL DEFAULT 'draft' CHECK(status IN ('draft','open','closed')),
  UNIQUE(id,offer_id,max_score)
 );
@@ -107,7 +107,7 @@ CREATE TABLE results (
  max_score INTEGER NOT NULL,
  score INTEGER,
  status TEXT NOT NULL CHECK(status IN ('pending','graded','absent','exempt')),
- CHECK((status='graded' AND score IS NOT NULL AND score>=0 AND score<=max_score)
+ CHECK((status='graded' AND typeof(score)='integer' AND score>=0 AND score<=max_score)
     OR (status<>'graded' AND score IS NULL)),
  PRIMARY KEY(assessment_id,student_id),
  FOREIGN KEY(assessment_id,offer_id,max_score) REFERENCES assessments(id,offer_id,max_score),

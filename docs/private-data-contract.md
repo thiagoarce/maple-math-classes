@@ -15,7 +15,7 @@ O ADR 001 passa à etapa de schema. A Escalada já usa migrações SQL versionad
 | Evidência individual | D1 privado, minimizada | observação pedagógica factual, não diagnóstico |
 | Documentos | Drive privado | D1 guarda só referência, não ACL, token ou URL pública |
 
-As 16 tabelas são candidatas. O modelo permite ofertas com várias turmas e turmas com várias ofertas. Frequência, resultados e evidências têm FKs compostas que impedem misturar aluno, oferta e aula/avaliação. Pontuação em centésimos de ponto evita erro binário; não define pesos, média ou regra de recuperação. Nota ausente não é zero.
+As 17 tabelas são candidatas. O modelo permite ofertas com várias turmas e turmas com várias ofertas. Frequência, resultados e evidências têm FKs compostas que impedem misturar aluno, oferta e aula/avaliação. Pontuação em centésimos de ponto evita erro binário; não define pesos, média ou regra de recuperação. Nota ausente não é zero.
 
 ## Autorização
 
