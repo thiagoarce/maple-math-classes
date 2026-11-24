@@ -6,8 +6,8 @@
 
 | Componente | Destino | Estratégia | Estado |
 |---|---|---|---|
-| Motor de handouts, listas e impressão | tools/generators, templates | Preservar implementações maduras, dependências e contratos; comparar versões antes de alterar | A revisar |
-| Tipografia matemática offline | tools/rendering, assets | Um único motor para papel e projeção; conservar versões e avisos de terceiros | A revisar |
+| Motor de handouts, listas e impressão | tools/generators, templates | Preservar implementações maduras, dependências e contratos; comparar versões antes de alterar | Primeiros módulos em revisão |
+| Tipografia matemática offline | tools/rendering, assets | Um único motor para papel e projeção; conservar versões e avisos de terceiros | Helper idêntico nas duas origens; pacote ainda não importado |
 | Figuras matemáticas | tools/geometry | Reaproveitar as APIs existentes; evitar duas bibliotecas concorrentes | A revisar |
 | Modo Aula e projeção | apps/classroom | Preservar lousa, tinta, PDF, relógio e ferramentas; retirar conexões privadas | A revisar |
 | Motor de aula em etapas | apps/lessons | Reaproveitar separação entre dados de aula, renderização e validação; ajustar à aula presencial sem impor a sequência de um curso autônomo | A revisar |
@@ -37,3 +37,7 @@
 ## Primeiro exemplo
 
 O [protótipo de volumetria](../apps/simulators/volume/index.html) reutiliza uma atividade independente existente, com ajuste apenas dos rótulos de identidade. Não é uma aplicação integrada nem um modelo visual aprovado. Ver o [README do exemplo](../apps/simulators/volume/README.md) para limitações e verificação.
+
+## Incremento de produção de materiais
+
+Veja [inventário e contratos do motor de materiais](materials-engine.md) para o estado de adoção, dependências e limitações dos primeiros módulos.
