@@ -68,7 +68,7 @@
       palco.replaceChildren();
       resultado.replaceChildren();
       lousa.classList.remove("of-acertou", "of-errou");
-      inp.value = ""; inp.disabled = false; conferir.disabled = false; pular.disabled = false;
+      inp.value = ""; inp.setCustomValidity(""); inp.disabled = false; conferir.disabled = false; pular.disabled = false;
       if (modo === "revisar") {
         if (!treino.revisar.length) {
           titulo.textContent = "Revisão";
@@ -104,6 +104,9 @@
       if (!certo && na >= 0) treino.revisar.push(...treino.revisar.splice(na, 1)); // errou de novo: vai para o fim da fila
       treino.revisar = treino.revisar.slice(-60);
       salvarTreino();
+      rev.textContent = `Revisar (${treino.revisar.length})`;
+      rev.disabled = !treino.revisar.length && modo !== "revisar";
+      rev.classList.toggle("of-rev", treino.revisar.length > 0);
       pintarPlacar();
       resultado.replaceChildren(el("span", { class: "igual" }, "="), conta(atual.mostrar, "grande"), el("span", { class: "of-marca" }, certo ? "✓" : ""));
       lousa.classList.add(certo ? "of-acertou" : "of-errou");
