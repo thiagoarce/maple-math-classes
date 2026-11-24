@@ -36,3 +36,7 @@ python tests/test_private_data.py. O teste é uma verificação relacional local
 ## API experimental
 
 Veja [private-api.md](private-api.md). A segunda migração adiciona revisão e auditoria de alterações de resultados. São 18 tabelas após a migração 0002. Teste com adaptador SQLite e JWT assinado sintético; D1/Access reais ainda não homologados. As consultas de referência em scoped-queries.sql são da migração 0001, não o caminho de escrita da API; não as use após 0002.
+
+## Produção individualizada
+
+Run 45463156478: 70 casos da API passaram em ambos os runtimes. Veja [contrato de produção individualizada e Drive](private-materials.md). Solicitação vinculada à evidência, consulta de contexto mínimo e cancelamento foram implementados; conector e escrita real não integrados. A conta, pasta e ACL exigem validação autorizada.

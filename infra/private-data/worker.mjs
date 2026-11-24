@@ -13,6 +13,10 @@ const EVIDENCE_LIST="SELECT ev.id,ev.kind,ev.observation,ev.recorded_at,l.lesson
 const JOURNAL="UPDATE lessons SET status='taught',collective_record=?,material_feedback=?,replanning=?,homework_checked=?,revision=revision+1,\ndiary_updated_by=(SELECT id FROM staff WHERE identity_issuer=? AND identity_subject=? AND active=1)\nWHERE offer_id=? AND id=? AND revision=? AND status IN ('ready','taught')\nAND EXISTS (SELECT 1 FROM offer_staff os JOIN staff s ON s.id=os.staff_id AND s.active=1\nWHERE os.offer_id=lessons.offer_id AND os.role='teacher' AND s.identity_issuer=? AND s.identity_subject=?)\nAND (homework_checked=? OR NOT EXISTS(SELECT 1 FROM homework_checks h WHERE h.lesson_id=lessons.id))\nRETURNING revision,status";
 const HOMEWORK="INSERT INTO homework_checks(lesson_id,offer_id,student_id,status,revision,updated_by)\nSELECT l.id,l.offer_id,e.student_id,?,1,s.id\nFROM lessons l JOIN enrollments e ON e.offer_id=l.offer_id AND e.status='active'\nJOIN attendance a ON a.lesson_id=l.id AND a.offer_id=l.offer_id AND a.student_id=e.student_id AND a.status IN ('present','late')\nJOIN offer_staff os ON os.offer_id=l.offer_id AND os.role='teacher'\nJOIN staff s ON s.id=os.staff_id AND s.active=1\nWHERE l.offer_id=? AND l.id=? AND e.student_id=? AND l.status='taught' AND length(trim(l.homework_checked))>0\nAND s.identity_issuer=? AND s.identity_subject=?\nAND (?=0 OR EXISTS(SELECT 1 FROM homework_checks h WHERE h.lesson_id=l.id AND h.student_id=e.student_id AND h.revision=?))\nON CONFLICT(lesson_id,student_id) DO UPDATE SET status=excluded.status,revision=homework_checks.revision+1,updated_by=excluded.updated_by\nWHERE homework_checks.revision=?\nRETURNING revision,status";
 const HOMEWORK_PROFILE="SELECT count(*) AS checked,\nCOALESCE(SUM(CASE h.status WHEN 'complete' THEN 2 WHEN 'half' THEN 1 ELSE 0 END),0) AS earned_half_units,\nCOALESCE(SUM(CASE h.status WHEN 'complete' THEN 1 ELSE 0 END),0) AS complete,\nCOALESCE(SUM(CASE h.status WHEN 'half' THEN 1 ELSE 0 END),0) AS half,\nCOALESCE(SUM(CASE h.status WHEN 'not_done' THEN 1 ELSE 0 END),0) AS not_done\nFROM homework_checks h\nJOIN lessons l ON l.id=h.lesson_id AND l.offer_id=h.offer_id AND l.status='taught'\nJOIN attendance a ON a.lesson_id=h.lesson_id AND a.offer_id=h.offer_id AND a.student_id=h.student_id AND a.status IN ('present','late')\nJOIN offer_staff os ON os.offer_id=h.offer_id AND os.role='teacher' JOIN staff s ON s.id=os.staff_id AND s.active=1\nWHERE h.offer_id=? AND h.student_id=? AND s.identity_issuer=? AND s.identity_subject=?";
+const REQUEST_CREATE="INSERT INTO material_requests(id,offer_id,student_id,evidence_id,purpose,objective,requested_by)\nSELECT ?,e.offer_id,e.student_id,e.id,?,?,s.id\nFROM evidence e JOIN lessons l ON l.id=e.lesson_id AND l.offer_id=e.offer_id AND l.status='taught'\nJOIN enrollments en ON en.offer_id=e.offer_id AND en.student_id=e.student_id AND en.status='active'\nJOIN offer_staff os ON os.offer_id=e.offer_id AND os.role='teacher'\nJOIN staff s ON s.id=os.staff_id AND s.active=1\nWHERE e.offer_id=? AND e.student_id=? AND e.id=? AND s.identity_issuer=? AND s.identity_subject=?\nON CONFLICT(id) DO NOTHING RETURNING id,status,revision";
+const REQUEST_LIST="SELECT r.id,r.evidence_id,r.purpose,r.objective,r.status,r.revision,r.created_at,l.unit_id\nFROM material_requests r JOIN evidence ev ON ev.id=r.evidence_id AND ev.offer_id=r.offer_id AND ev.student_id=r.student_id\nJOIN lessons l ON l.id=ev.lesson_id AND l.offer_id=r.offer_id\nJOIN offer_staff os ON os.offer_id=r.offer_id AND os.role='teacher'\nJOIN staff s ON s.id=os.staff_id AND s.active=1\nWHERE r.offer_id=? AND r.student_id=? AND s.identity_issuer=? AND s.identity_subject=?\nORDER BY r.created_at DESC,r.id LIMIT 50";
+const REQUEST_CONTEXT="SELECT r.id,r.purpose,r.objective,o.subject_id,o.level_id,l.unit_id,ev.kind AS evidence_kind,ev.observation\nFROM material_requests r JOIN offers o ON o.id=r.offer_id\nJOIN evidence ev ON ev.id=r.evidence_id AND ev.offer_id=r.offer_id AND ev.student_id=r.student_id\nJOIN lessons l ON l.id=ev.lesson_id AND l.offer_id=r.offer_id AND l.status='taught'\nJOIN enrollments en ON en.offer_id=r.offer_id AND en.student_id=r.student_id AND en.status='active'\nJOIN offer_staff os ON os.offer_id=r.offer_id AND os.role='teacher'\nJOIN staff s ON s.id=os.staff_id AND s.active=1\nWHERE r.offer_id=? AND r.student_id=? AND r.id=? AND r.status='requested' AND s.identity_issuer=? AND s.identity_subject=?";
+const REQUEST_CANCEL="UPDATE material_requests SET status='cancelled',revision=revision+1,cancelled_at=unixepoch(),\ncancelled_by=(SELECT id FROM staff WHERE identity_issuer=? AND identity_subject=? AND active=1)\nWHERE offer_id=? AND student_id=? AND id=? AND revision=? AND status='requested'\nAND EXISTS(SELECT 1 FROM offer_staff os JOIN staff s ON s.id=os.staff_id AND s.active=1 WHERE os.offer_id=material_requests.offer_id AND os.role='teacher' AND s.identity_issuer=? AND s.identity_subject=?)\nRETURNING id,status,revision";
 const headers={"content-type":"application/json; charset=utf-8","cache-control":"private, no-store, max-age=0","x-content-type-options":"nosniff","referrer-policy":"no-referrer","content-security-policy":"default-src 'none'; frame-ancestors 'none'"};
 const reply=(status,body)=>new Response(JSON.stringify(body),{status,headers});
 const id=s=>typeof s==="string"&&/^[a-zA-Z0-9_-]{1,80}$/.test(s);
@@ -73,6 +77,41 @@ export default {async fetch(request,env){
    if(!q.results.length)return reply(404,{error:"not_found_or_not_editable"});
    if(q.results.length!==1)return reply(503,{error:"unavailable"});
    return reply(200,q.results[0]);
+  }
+  // Material handoff is only a teacher-scoped private request, not a Drive grant or dispatch.
+  if(parts[5]==="students"&&id(parts[6])&&parts[7]==="material-requests"&&[8,9,10].includes(parts.length)&&!url.search){
+   const student=parts[6],args=[offer,student,who.issuer,who.subject];
+   if(request.method==="GET"&&parts.length===8){
+    const p=await env.PRIVATE_DB.prepare(PROFILE).bind(...args).all();
+    if(!p.success||!Array.isArray(p.results))return reply(503,{error:"unavailable"});
+    if(!p.results.length)return reply(404,{error:"not_found"});
+    const q=await env.PRIVATE_DB.prepare(REQUEST_LIST).bind(...args).all();
+    if(!q.success||!Array.isArray(q.results))return reply(503,{error:"unavailable"});
+    return reply(200,{requests:q.results,limit:50});
+   }
+   if(request.method==="GET"&&parts.length===10&&id(parts[8])&&parts[9]==="context"){
+    const q=await env.PRIVATE_DB.prepare(REQUEST_CONTEXT).bind(offer,student,parts[8],who.issuer,who.subject).all();
+    if(!q.success||!Array.isArray(q.results))return reply(503,{error:"unavailable"});
+    if(q.results.length!==1)return reply(404,{error:"not_found"});
+    return reply(200,{request:q.results[0],notice:"Private context. Review and minimize before sending to an approved agent. Not anonymized. No Drive permission verified."});
+   }
+   if((request.method==="POST"&&parts.length===8)||(request.method==="PUT"&&parts.length===9&&id(parts[8]))){
+    if(request.headers.get("origin")!==origin||request.headers.get("x-maple-action")!=="material-request")return reply(403,{error:"forbidden"});
+    const b=await body(request);
+    if(!b||Array.isArray(b)||typeof b!=="object")return reply(400,{error:"invalid_request"});
+    let q;
+    if(request.method==="POST"){
+     if(Object.keys(b).sort().join(",")!=="evidence_id,id,objective,purpose"||!id(b.id)||!id(b.evidence_id)||!["recovery","extension","adaptation","feedback"].includes(b.purpose)||typeof b.objective!=="string"||!b.objective.trim()||b.objective.length>300)return reply(400,{error:"invalid_request"});
+     q=await env.PRIVATE_DB.prepare(REQUEST_CREATE).bind(b.id,b.purpose,b.objective.trim(),offer,student,b.evidence_id,who.issuer,who.subject).all();
+    }else{
+     if(Object.keys(b).sort().join(",")!=="revision"||!Number.isSafeInteger(b.revision)||b.revision<1||b.revision>=Number.MAX_SAFE_INTEGER)return reply(400,{error:"invalid_request"});
+     q=await env.PRIVATE_DB.prepare(REQUEST_CANCEL).bind(who.issuer,who.subject,offer,student,parts[8],b.revision,who.issuer,who.subject).all();
+    }
+    if(!q.success||!Array.isArray(q.results))return reply(503,{error:"unavailable"});
+    if(q.results.length!==1)return reply(404,{error:"not_found_or_not_editable"});
+    return reply(request.method==="POST"?201:200,q.results[0]);
+   }
+   return reply(404,{error:"not_found"});
   }
   if(request.method==="GET"&&parts.length===8&&parts[5]==="students"&&id(parts[6])&&parts[7]==="profile"&&!url.search){
    const args=[offer,parts[6],who.issuer,who.subject];
