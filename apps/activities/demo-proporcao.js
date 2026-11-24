@@ -77,13 +77,7 @@ window.AULA = {
               "classe": "inversa"
             }
           ]
-        }
-      ]
-    },
-    {
-      "parada": "Quadro",
-      "detalhe": "retomada e resolução",
-      "telas": [
+        },
         {
           "nome": "Retomando a pergunta",
           "itens": [
@@ -95,7 +89,13 @@ window.AULA = {
               "classe": "inversa"
             }
           ]
-        },
+        }
+      ]
+    },
+    {
+      "parada": "Quadro",
+      "detalhe": "retomada e resolução",
+      "telas": [
         {
           "nome": "Exemplo resolvido",
           "itens": [

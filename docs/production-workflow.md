@@ -43,3 +43,7 @@ Estados: rascunho (produzido), conferida (checagem automática + revisão indepe
 Disciplina / nível / unidade / objetivo / pré-requisitos / pergunta inicial / erro provável / gesto e decisão / recurso / contraexemplo quando pertinente / prática de transferência / evidência / fonte e direitos / logística / revisão.
 
 Registros privados do plano, estudante ou equipe pertencem ao ambiente privado autorizado; o repositório público contém somente os modelos genéricos e materiais explicitamente publicáveis.
+
+## Primeira conferência do perfil local
+
+A própria fixture anterior precisou ser corrigida: a volta ao palpite pertence ao Mexer, não ao Quadro. Mantida a ordem de interação e o contrato original. A execução isolada da função conferir retornou zero erros/avisos para a fixture e rejeitou cinco alterações inválidas (gabarito, palpite sem volta, seta, tipo e fórmula). A CI Node/Chromium deste commit ainda precisa concluir. Não equivale a revisão cega.
