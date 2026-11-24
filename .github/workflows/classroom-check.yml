@@ -1,0 +1,35 @@
+name: Homologação Modo Aula
+on:
+  pull_request:
+    branches: [docs/arquitetura-dados-privados, main]
+    paths: ['apps/classroom/**', 'apps/simulators/**', 'tests/**', '.github/workflows/classroom-check.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  classroom:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Unit checks
+        run: |
+          node tests/test_classroom_calculator.cjs
+          node tests/test_classroom_core.cjs
+      - name: Install local runtime
+        run: |
+          npm --prefix apps/classroom/pdf-runtime install --ignore-scripts --no-audit --no-fund
+          python -m pip install playwright reportlab
+          python -m playwright install --with-deps chromium
+          python apps/classroom/fixtures/generate_volume_demo.py
+      - name: Browser gate
+        run: |
+          python -m http.server 8000 --bind 127.0.0.1 > /tmp/maple-http.log 2>&1 &
+          trap 'kill $! 2>/dev/null || true' EXIT
+          for i in $(seq 1 20); do curl -fsS http://127.0.0.1:8000/apps/classroom/ >/dev/null && break; sleep 1; done
+          python tests/test_classroom_browser.py

@@ -286,7 +286,7 @@
     saveTimer = setTimeout(saveLocal, 220);
   }
   function saveLocal() {
-    if (PROJECAO || !state) return Promise.resolve();
+    if (PROJECAO || !state || !pdfDoc || !ui.loading.hidden) return Promise.resolve();
     state.updatedAt = new Date().toISOString();
     state.localRevision = Number(state.localRevision || 0) + 1;
     return dbPut(clone(state)).then(function () {
@@ -313,11 +313,12 @@
         pdfBytes = buffer;
         return sha256(buffer);
       })
-      .then(function (fingerprint) {
+      .then(async function (fingerprint) {
         if (state.resource.fingerprint && state.resource.fingerprint !== fingerprint) {
           var backup = clone(state);
           backup.slot = state.slot + "|material-antigo|" + Date.now();
-          dbPut(backup).catch(function () {});
+          // Do not discard any ink until the previous version is safely archived.
+          await dbPut(backup);
           state.pages = {};
           history = {};
           status("material mudou · tinta antiga arquivada", "dirty");
@@ -330,7 +331,9 @@
         pdfDoc = doc;
         state.resource.numPages = doc.numPages;
         if (state.activePage > doc.numPages) state.activePage = 1;
-        return renderPage();
+        return renderPage().then(function (ok) {
+          if (!ok) throw new Error("Falha na renderização inicial");
+        });
       });
   }
   function renderPage() {
@@ -365,8 +368,10 @@
       updatePageUI();
       ui.loading.hidden = true;
       window.dispatchEvent(new CustomEvent("modo-aula-pdf-rendered"));
+      return true;
     }).catch(function (error) {
       fail("não foi possível renderizar o PDF", error);
+      return false;
     });
   }
 
@@ -404,9 +409,12 @@
     if (!pdfDoc || !ui.loading.hidden) return;
     var next = Math.max(1, Math.min(pdfDoc.numPages, state.activePage + delta));
     if (next === state.activePage) return;
+    var anterior = state.activePage;
     state.activePage = next;
-    scheduleSave();
-    renderPage();
+    renderPage().then(function (ok) {
+      if (ok) scheduleSave();
+      else state.activePage = anterior;
+    });
   }
   function updatePageUI() {
     ui.title.textContent = ALVO.title;

@@ -324,6 +324,7 @@
     updateTools();
   }
   function undo() {
+    if (!state || !engine) return;
     var h = historyFor();
     if (!h.undo.length) return;
     h.redo.push(clone(surface().strokes));
@@ -333,6 +334,7 @@
     updateTools();
   }
   function redo() {
+    if (!state || !engine) return;
     var h = historyFor();
     if (!h.redo.length) return;
     h.undo.push(clone(surface().strokes));
@@ -342,6 +344,7 @@
     updateTools();
   }
   function clearBoard() {
+    if (!state || !engine) return;
     if (!surface().strokes.length) return;
     pushHistory();
     surface().strokes = [];
