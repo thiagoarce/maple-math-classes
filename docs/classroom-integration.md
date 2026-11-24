@@ -31,3 +31,7 @@ Primeiro reutilizar manipulativos como recursos HTML independentes no Modo Aula.
 ## Aceite
 
 Abrir uma aula sintética, trocar lousa/PDF/HTML, testar escrita e espelho, alternar interação/anotação, verificar offline e confirmar que nenhum dado administrativo chega à projeção. A calculadora precisa de testes de precedência, entradas malformadas, domínio e interface. O teste do motor original foi transportado, mas a suíte Node e testes de navegador permanecem pendentes.
+
+## Verificação inicial do avaliador
+
+Sete casos executados diretamente em JavaScript passaram: precedência, potência associativa à direita, expoente negativo, unário antes de potência, seno em graus, raiz e porcentagem. Foi encontrado um defeito preexistente: `1.2.3` retorna `1.2` em vez de rejeitar a entrada. O parser permanece preservado neste incremento; corrigir e testar a validação antes de integrá-lo à interface. A suíte Node completa e os testes de navegador não foram executados.
