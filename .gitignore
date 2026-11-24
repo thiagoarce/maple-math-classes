@@ -22,3 +22,6 @@ __pycache__/
 node_modules/
 dist/
 .DS_Store
+
+# Synthetic generated artifacts
+/test-artifacts/

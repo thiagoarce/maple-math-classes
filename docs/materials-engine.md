@@ -56,3 +56,9 @@ O conversor topdf preserva o fluxo HTML/PDF, mas usa arquivo temporário para n�
 - Chrome ou Chromium instalado localmente e autorizado para execução. A geração PDF pode retornar None; a execução e os gates de impressão ainda não foram homologados. O helper matemático mantém a desativação de attachSpeech do original; acessibilidade precisa de validação própria.
 
 Neste incremento: comparação de código, inspeção estática, adaptações pontuais e conferência de arquivos publicados. Sem teste executado de Python, JavaScript, PDF ou navegador. Não usar como pipeline de produção até completar dependências e testes offline.
+
+## Homologação inicial do papel
+
+Recuperados os módulos de composição e paginação de listas (perfil local sem CLI legado). Os dois paginadores agora aguardam MAMath e fontes, sem medir TeX cru após falha. Instalador local dos três pacotes npm 4.1.3 verifica os 70 blobs originais antes de montar a árvore e recolhe avisos de licença diretamente dos pacotes; runtime e fontes não são commitados. Licenças recolhidas ainda exigem revisão antes de redistribuir. A fixture autoral usa handout com duas construções e lista de 12 itens, gabarito separado e identidade sintética. A CI gera PDF A4 somente depois de prontidão matemática e paginação, confere tamanho, contagem, itens e erros, e guarda rasters. O teste usa fontes fallback, não prova fidelidade tipográfica nem Safari. Ainda não executado no novo commit. O gerador completo de listas e conversor topdf CLI ainda não homologados.
+
+Comandos: npm --prefix tools/rendering/math-runtime install --ignore-scripts; python tools/rendering/install_math_runtime.py; PYTHONPATH=. python tests/generate_materials_demo.py; iniciar servidor local na raiz e executar python tests/test_materials_browser.py com Playwright/Chromium e PyMuPDF instalados.

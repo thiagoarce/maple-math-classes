@@ -345,10 +345,14 @@
   }
 
   function quandoPronto() {
-    if (window.MathJax && MathJax.startup && MathJax.startup.promise) {
-      MathJax.startup.promise.then(paginar).catch(paginar);
+    function medirPronto() {
+      return (document.fonts ? document.fonts.ready : Promise.resolve()).then(paginar);
+    }
+    function falha() { document.documentElement.setAttribute("data-paginado", "erro"); }
+    if (window.MAMath && typeof MAMath.pronto === "function") {
+      MAMath.pronto().then(medirPronto).catch(falha);
     } else {
-      setTimeout(paginar, 400);
+      falha();
     }
   }
 
