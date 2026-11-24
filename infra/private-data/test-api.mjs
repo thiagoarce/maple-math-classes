@@ -10,7 +10,7 @@ import {fileURLToPath} from "node:url";
 const useD1=process.argv.includes("--d1");
 const db=new DatabaseSync(":memory:");
 db.exec("PRAGMA foreign_keys=ON");
-for(const name of ["0001_core.sql","0002_result_audit.sql"])db.exec(readFileSync(new URL("./migrations/"+name,import.meta.url),"utf8"));
+for(const name of ["0001_core.sql","0002_result_audit.sql","0003_diary.sql"])db.exec(readFileSync(new URL("./migrations/"+name,import.meta.url),"utf8"));
 db.exec(`
 INSERT INTO academic_years VALUES ('y',2027);
 INSERT INTO staff VALUES ('t','https://demo.cloudflareaccess.com','teacher',1),('v','https://demo.cloudflareaccess.com','viewer',1),('x','https://demo.cloudflareaccess.com','disabled',0);
@@ -40,7 +40,7 @@ if(useD1){
  d1=await mf.getD1Database("PRIVATE_DB");
  // SQLite parser in Python preserves the trigger body as one statement.
  const {execFileSync}=await import("node:child_process");
- const statements=JSON.parse(execFileSync("python",["-c","import sqlite3,sys,json\ns=sys.stdin.read(); out=[]; buf=''\nfor ch in s:\n buf+=ch\n if ch==';' and sqlite3.complete_statement(buf):\n  out.append(buf.strip());buf=''\nif buf.strip(): raise ValueError('Incomplete SQL')\nprint(json.dumps(out))"],{input:["0001_core.sql","0002_result_audit.sql"].map(n=>readFileSync(new URL("./migrations/"+n,import.meta.url),"utf8")).join("\n")+"\n"+"\nINSERT INTO academic_years VALUES ('y',2027);\nINSERT INTO staff VALUES ('t','https://demo.cloudflareaccess.com','teacher',1),('v','https://demo.cloudflareaccess.com','viewer',1),('x','https://demo.cloudflareaccess.com','disabled',0);\nINSERT INTO students VALUES ('s','Synthetic student');\nINSERT INTO offers VALUES ('o','y','hs-mathematics','Y11','Demo'),('other','y','olympiads','N1','Other'),('empty','y','hs-mathematics','Y11','Empty');\nINSERT INTO offer_staff VALUES ('o','t','teacher'),('o','v','viewer'),('o','x','teacher'),('empty','t','teacher');\nINSERT INTO enrollments VALUES ('o','s','active');\nINSERT INTO lessons VALUES ('l','o','hs-matrices','Synthetic lesson','2027-01-04',480,50,'Goal','draft',1);\nINSERT INTO assessments VALUES ('a','o','Demo',1000,'open');\nINSERT INTO results(assessment_id,offer_id,student_id,max_score,score,status) VALUES ('a','o','s',1000,NULL,'pending');\n",encoding:"utf8"}));
+ const statements=JSON.parse(execFileSync("python",["-c","import sqlite3,sys,json\ns=sys.stdin.read(); out=[]; buf=''\nfor ch in s:\n buf+=ch\n if ch==';' and sqlite3.complete_statement(buf):\n  out.append(buf.strip());buf=''\nif buf.strip(): raise ValueError('Incomplete SQL')\nprint(json.dumps(out))"],{input:["0001_core.sql","0002_result_audit.sql","0003_diary.sql"].map(n=>readFileSync(new URL("./migrations/"+n,import.meta.url),"utf8")).join("\n")+"\n"+"\nINSERT INTO academic_years VALUES ('y',2027);\nINSERT INTO staff VALUES ('t','https://demo.cloudflareaccess.com','teacher',1),('v','https://demo.cloudflareaccess.com','viewer',1),('x','https://demo.cloudflareaccess.com','disabled',0);\nINSERT INTO students VALUES ('s','Synthetic student');\nINSERT INTO offers VALUES ('o','y','hs-mathematics','Y11','Demo'),('other','y','olympiads','N1','Other'),('empty','y','hs-mathematics','Y11','Empty');\nINSERT INTO offer_staff VALUES ('o','t','teacher'),('o','v','viewer'),('o','x','teacher'),('empty','t','teacher');\nINSERT INTO enrollments VALUES ('o','s','active');\nINSERT INTO lessons VALUES ('l','o','hs-matrices','Synthetic lesson','2027-01-04',480,50,'Goal','draft',1);\nINSERT INTO assessments VALUES ('a','o','Demo',1000,'open');\nINSERT INTO results(assessment_id,offer_id,student_id,max_score,score,status) VALUES ('a','o','s',1000,NULL,'pending');\n",encoding:"utf8"}));
  for(const sql of statements)await d1.prepare(sql).run();
  }catch(e){await mf.dispose();throw e}
 }
@@ -51,8 +51,8 @@ const read="/api/v1/offers/o/lessons?from=2027-01-01&to=2027-01-07",write="/api/
 let n=0;
 async function req(path,expected,opts={}){
  const headers={};if(opts.token!==null)headers["cf-access-jwt-assertion"]=opts.token??teacher;
- if(opts.method==="PUT"){headers["content-type"]="application/json";headers.origin=opts.origin??origin;headers["x-maple-action"]="grade"}
- const url=(opts.host||origin)+path,init={method:opts.method||"GET",headers,body:opts.method==="PUT"?JSON.stringify(opts.body??{score:850,revision:1}):undefined};
+ if(["PUT","POST"].includes(opts.method)){headers["content-type"]="application/json";headers.origin=opts.origin??origin;headers["x-maple-action"]=opts.action??"grade"}
+ const url=(opts.host||origin)+path,init={method:opts.method||"GET",headers,body:["PUT","POST"].includes(opts.method)?JSON.stringify(opts.body??{score:850,revision:1}):undefined};
  const response=useD1?await mf.dispatchFetch(url,init):await worker.fetch(new Request(url,init),env);
  assert.equal(response.status,expected,path);
  assert.match(response.headers.get("cache-control"),/no-store/);
@@ -98,6 +98,36 @@ await req("/api/v1/offers/o/assessments/a/results",404,{token:viewer});
 const grades=await req("/api/v1/offers/o/assessments/a/results",200);
 assert.equal(grades.results[0].score,850);
 assert.equal(grades.results[0].revision,2);
+// Diary: no implicit absence; only taught encounters and active membership can be written.
+await exec("UPDATE enrollments SET status='active'");
+const diary="/api/v1/offers/o/lessons/l/diary",att="/api/v1/offers/o/lessons/l/attendance/s",ev="/api/v1/offers/o/lessons/l/evidence/s",prof="/api/v1/offers/o/students/s/profile";
+const attOpts={method:"PUT",action:"attendance",body:{status:"present",revision:0}};
+const evOpts={method:"POST",action:"evidence",body:{kind:"explanation",observation:"Synthetic explanation"}};
+assert.equal((await req(diary,200)).students[0].status,null);
+await req(diary,404,{token:viewer});
+await req(att,404,attOpts);
+await req(ev,404,evOpts);
+await exec("UPDATE lessons SET status='taught'");
+await req(att,404,{...attOpts,token:viewer});
+await req(att,403,{...attOpts,origin:"https://other.example.invalid"});
+await req(att.replace("/o/","/other/"),404,attOpts);
+await req(att,400,{...attOpts,body:{status:"unknown",revision:0}});
+assert.equal((await req(att,200,attOpts)).revision,1);
+await req(att,404,attOpts);
+assert.equal((await req(att,200,{...attOpts,body:{status:"late",revision:1}})).revision,2);
+assert.equal((await first("SELECT count(*) AS n FROM attendance_audit")).n,2);
+await req(ev,404,{...evOpts,token:viewer});
+await req(ev,400,{...evOpts,body:{kind:"diagnosis",observation:"Synthetic"}});
+await req(ev,201,evOpts);
+await req(prof,404,{token:viewer});
+const profile=await req(prof,200);
+assert.equal(profile.student.recorded,1);
+assert.equal(profile.student.late,1);
+assert.equal(profile.student.absent,0);
+assert.equal(profile.evidence.length,1);
+await exec("UPDATE enrollments SET status='withdrawn'");
+await req(att,404,{...attOpts,body:{status:"absent",revision:2}});
+await req(ev,404,evOpts);
 for(const path of ["/admin","/admin/app.js","/admin/style.css"]){
  const dispatch=async token=>{const headers=token?{"cf-access-jwt-assertion":token}:{};return useD1?await mf.dispatchFetch(origin+path,{headers}):await worker.fetch(new Request(origin+path,{headers}),env)};
  assert.equal((await dispatch(null)).status,401);

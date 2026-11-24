@@ -11,3 +11,7 @@ Referências: https://developers.cloudflare.com/cloudflare-one/access-controls/a
 ## Runtime local e primeira interface
 
 Run 45449201676 (a4ebe55): 26 testes HTTP aprovados com SQLite. Acrescentada execução dos mesmos casos em Miniflare 4.20260730.0/workerd, bundle esbuild 0.25.12, D1 descartável sem persistência, sem credenciais cloud. Migrações aplicadas em statements completos (inclui trigger). Nova CI ainda pendente. Acrescentadas listagem de ofertas, avaliações e resultados com escopo, resultados somente teacher; ativos HTML/JS/CSS de /admin passam pela mesma autenticação e por verificação de vínculo. Interface usa texto DOM, sem storage, sem token em JS, sem CORS, confirma lançamento, usa revisão e recarrega após escrita. Falha bloqueia nova tentativa até recarregar. Não é painel operacional nem foi testada visualmente; não há deploy, Access real, lockfile, rotação ou política de retenção. O teste de assets é HTTP, não teste de interação de navegador. Referência: https://developers.cloudflare.com/d1/best-practices/local-development/.
+
+## Diário
+
+Veja [private-diary.md](private-diary.md). Run 45451588226: 31 casos SQLite e assets passaram; D1 falhou no primeiro update válido (404). Corrigida confirmação da alteração usando RETURNING; causa exata ainda não comprovada. Migração 0003 acrescenta auditoria de frequência e autor da evidência. Nova CI pendente.
