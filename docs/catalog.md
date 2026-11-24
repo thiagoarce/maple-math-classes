@@ -5,7 +5,7 @@ Este catálogo descreve componentes planejados, não instalações existentes. U
 | Componente | Destino previsto | Estado | Critério de entrega |
 |---|---|---|---|
 | Fundação documental | `docs/` | Em revisão | Políticas, arquitetura, metodologia e roadmap coerentes |
-| Figuras matemáticas | `tools/geometry/` | Planejado | Núcleo independente, exemplos e testes matemáticos |
+| Figuras matemáticas | `tools/geometry/` | Plano cartesiano inicial em revisão | Núcleo independente, exemplos e testes matemáticos |
 | Handouts | `templates/handouts/` e `tools/generators/` | Planejado | Exemplo autoral, impressão e validação |
 | Listas e paginação | `templates/worksheets/` e `tools/generators/` | Planejado | Gabaritos, progressão, impressão correta |
 | Slides | `templates/slides/` | Planejado | Condução e notas do professor separadas |
