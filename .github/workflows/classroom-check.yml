@@ -2,7 +2,7 @@ name: Homologação Modo Aula
 on:
   pull_request:
     branches: [docs/arquitetura-dados-privados, main]
-    paths: ['apps/classroom/**', 'apps/simulators/**', 'apps/oficina/**', 'tests/**', '.github/workflows/classroom-check.yml']
+    paths: ['apps/classroom/**', 'apps/simulators/**', 'apps/oficina/**', 'apps/activities/**', 'tests/**', '.github/workflows/classroom-check.yml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -35,6 +35,7 @@ jobs:
           for i in $(seq 1 20); do curl -fsS http://127.0.0.1:8000/apps/classroom/ >/dev/null && break; sleep 1; done
           python tests/test_classroom_browser.py
           python tests/test_oficina_browser.py
+          python tests/test_activities_browser.py
       - name: Upload synthetic screenshots
         if: always()
         uses: actions/upload-artifact@v4

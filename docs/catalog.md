@@ -31,3 +31,5 @@ A prioridade é reaproveitar e integrar ferramentas existentes, não reimplement
 O trabalho técnico e a curadoria podem avançar separadamente, desde que respeitem os limites de publicação. Mudanças de prioridade devem atualizar este documento.
 
 A Oficina da Conta tem um primeiro host local anônimo em `apps/oficina/`, com geradores recuperados; homologação própria pendente.
+
+Motor de atividades por etapas: `apps/activities/`, reaproveitamento experimental sem dados reais; gate desktop/móvel pendente.

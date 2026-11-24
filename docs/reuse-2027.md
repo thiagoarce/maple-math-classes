@@ -49,3 +49,7 @@ Veja [inventário e contratos do motor de materiais](materials-engine.md) para o
 ## Oficina da Conta — primeiro núcleo
 
 Gerador e fluxo de treino existentes recuperados em apps/oficina, sem vínculo comercial ou dados persistentes. O motor de aulas por etapas é a próxima frente; seu contrato via/ponto/tela/item deve permanecer compartilhado, sem importar a plataforma comercial ou materiais indiscriminadamente.
+
+## Motor de atividades em etapas
+
+Primeiro host local em `apps/activities/`, com motor, CSS e GEO existentes e recorte de proporcionalidade. Sem ganchos de plataforma; validação no navegador pendente. A Oficina passou no run 45427456088 (7d21004). A próxima frente é validar a execução e recuperar o contrato de produção/conferência sem catálogo comercial.
