@@ -12,3 +12,8 @@ Frente de preparação para olimpíadas de matemática. Organizar por nível de 
 Separar a origem da questão, o nível de dificuldade pedagógica e a categoria oficial da competição. Reaproveitar figuras, manipulativos e geradores da biblioteca comum; não importar o banco comercial completo.
 
 Estado: índice inicial; competições, níveis e calendário de 2027 ainda não definidos. Participantes, inscrições e resultados individuais ficam no ambiente privado.
+
+
+## Inventário curricular inicial
+
+Veja [curriculum.json](curriculum.json). As unidades são candidatas de curadoria, não calendário, e não implicam atribuição docente nem currículo aprovado. Os recursos existentes são referenciados sem duplicação; cada conteúdo precisa de revisão matemática/pedagógica, direitos e confirmação do plano autorizado antes da produção.

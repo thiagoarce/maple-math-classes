@@ -12,3 +12,8 @@ Frente de empreendedorismo. Organizar por nível curricular, unidades e projetos
 Reaproveitar os motores de apresentação e atividades sem impor o formato de handout de matemática. Produções e avaliações reais de estudantes permanecem privadas.
 
 Estado: índice inicial; níveis, currículo e materiais ainda serão confirmados e revisados.
+
+
+## Inventário curricular inicial
+
+Veja [curriculum.json](curriculum.json). As unidades são candidatas de curadoria, não calendário, e não implicam atribuição docente nem currículo aprovado. Os recursos existentes são referenciados sem duplicação; cada conteúdo precisa de revisão matemática/pedagógica, direitos e confirmação do plano autorizado antes da produção.

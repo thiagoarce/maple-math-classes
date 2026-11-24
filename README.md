@@ -41,3 +41,7 @@ As três frentes já têm índices documentais; subpastas de conteúdo são cria
 Este repositório é público. Dados escolares reais e arquivos personalizados não devem entrar em nenhum commit, branch, issue, PR ou artefato. Consulte a política de publicação antes de contribuir.
 
 A visibilidade pública não equivale a licença geral de redistribuição. A licença dos componentes autorais e a autorização para uso de identidade institucional ainda devem ser definidas. Dependências de terceiros conservam suas respectivas licenças.
+
+## Inventário candidato
+
+[Recursos compartilhados](subjects/shared-resources.json) e inventários curriculares nas três frentes. São pontos de partida para curadoria, não currículo confirmado de 2027.

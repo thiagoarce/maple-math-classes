@@ -1,5 +1,6 @@
 """Desktop presentation gate for original slide motor and synthetic deck."""
 from pathlib import Path
+import re
 from playwright.sync_api import sync_playwright, expect
 OUT=Path("test-artifacts/slides")
 def main():
@@ -22,27 +23,28 @@ def main():
         expect(page.locator(".slide.active")).to_have_attribute("id","l3")
         responses=page.locator(".slide.active [data-reveal]")
         assert responses.count()==2
-        expect(responses.nth(0)).not_to_have_class("is-revealed")
-        expect(responses.nth(1)).not_to_have_class("is-revealed")
+        expect(responses.nth(0)).not_to_have_class(re.compile(r"(?:^|\s)is-revealed(?:\s|$)"))
+        expect(responses.nth(1)).not_to_have_class(re.compile(r"(?:^|\s)is-revealed(?:\s|$)"))
         before=responses.nth(0).bounding_box()
         page.keyboard.press("ArrowRight")
-        expect(responses.nth(0)).to_have_class("is-revealed")
-        expect(responses.nth(1)).not_to_have_class("is-revealed")
+        expect(responses.nth(0)).to_have_class(re.compile(r"(?:^|\s)is-revealed(?:\s|$)"))
+        expect(responses.nth(1)).not_to_have_class(re.compile(r"(?:^|\s)is-revealed(?:\s|$)"))
         after=responses.nth(0).bounding_box()
-        if before and after:
-            assert abs(before["x"]-after["x"])<1 and abs(before["y"]-after["y"])<1
+        assert before and after, "Reveal must preserve its allocated box"
+        assert abs(before["x"]-after["x"])<1 and abs(before["y"]-after["y"])<1
+        assert abs(before["width"]-after["width"])<1 and abs(before["height"]-after["height"])<1
         page.keyboard.press("ArrowRight")
-        expect(responses.nth(1)).to_have_class("is-revealed")
+        expect(responses.nth(1)).to_have_class(re.compile(r"(?:^|\s)is-revealed(?:\s|$)"))
         page.screenshot(path=str(OUT/"comparison.png"))
         page.keyboard.press("ArrowLeft")
-        expect(responses.nth(1)).not_to_have_class("is-revealed")
+        expect(responses.nth(1)).not_to_have_class(re.compile(r"(?:^|\s)is-revealed(?:\s|$)"))
         page.keyboard.press("ArrowRight")
         page.keyboard.press("ArrowRight")
         expect(page.locator(".slide.active")).to_have_attribute("id","l4")
         timer=page.locator(".slide.active [data-relogio]")
         expect(timer).to_have_text("1:00")
         timer.click()
-        expect(timer).to_have_class("visor correndo")
+        expect(timer).to_have_class(re.compile(r"(?:^|\s)correndo(?:\s|$)"))
         page.wait_for_function("document.querySelector('.slide.active [data-relogio]').textContent !== '1:00'")
         timer.click()
         assert "correndo" not in timer.get_attribute("class")

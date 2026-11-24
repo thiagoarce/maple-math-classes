@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "subject": "olympiads",
+  "status": "candidate-inventory",
+  "levels": [
+    "N1",
+    "N2",
+    "N3"
+  ],
+  "units": [
+    {
+      "id": "oly-generalize",
+      "title": "Construção de exemplos e generalização",
+      "topics": [
+        "Exemplos",
+        "Padrões",
+        "Generalização"
+      ],
+      "historical_levels": [],
+      "status": "candidate",
+      "resources": []
+    },
+    {
+      "id": "oly-parity",
+      "title": "Paridade e justificativa",
+      "topics": [
+        "Paridade",
+        "Argumentação"
+      ],
+      "historical_levels": [],
+      "status": "candidate",
+      "resources": []
+    },
+    {
+      "id": "oly-organized-counting",
+      "title": "Contagem organizada",
+      "topics": [
+        "Enumeração",
+        "Organização de casos"
+      ],
+      "historical_levels": [
+        "N1",
+        "N2"
+      ],
+      "status": "candidate",
+      "resources": []
+    },
+    {
+      "id": "oly-written-solutions",
+      "title": "Escrita matemática para a banca",
+      "topics": [
+        "Justificar etapas",
+        "Solução completa",
+        "Comunicação matemática"
+      ],
+      "historical_levels": [
+        "N1",
+        "N2"
+      ],
+      "status": "candidate",
+      "resources": []
+    },
+    {
+      "id": "oly-mock",
+      "title": "Simulados e revisão de erros",
+      "topics": [
+        "Resolução de problemas",
+        "Revisão de estratégias"
+      ],
+      "historical_levels": [
+        "N1",
+        "N2"
+      ],
+      "status": "candidate",
+      "resources": []
+    }
+  ]
+}

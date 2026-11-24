@@ -2,7 +2,7 @@ name: Homologação Modo Aula
 on:
   pull_request:
     branches: [docs/arquitetura-dados-privados, main]
-    paths: ['apps/classroom/**', 'apps/simulators/**', 'apps/oficina/**', 'apps/activities/**', 'tools/rendering/**', 'tests/**', '.github/workflows/classroom-check.yml']
+    paths: ['apps/classroom/**', 'apps/simulators/**', 'apps/oficina/**', 'apps/activities/**', 'tools/rendering/**', 'subjects/**', 'tests/**', '.github/workflows/classroom-check.yml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -22,6 +22,7 @@ jobs:
           node tests/test_classroom_calculator.cjs
           node tests/test_classroom_core.cjs
           node tests/test_oficina.mjs
+          node tests/test_curriculum_catalog.mjs
           node tests/test_activities_validation.mjs
           node apps/activities/conferir.mjs apps/activities/lessons/demo-proporcao.json
           node apps/activities/build-demo.mjs --check
