@@ -22,7 +22,6 @@ def main():
     seed=hl.build(meta,[hl.page_first(meta,"".join(blocks),(1,1))],str(OUT),"list-seed")
     css,mathjax,m,questions,extra=lf.extrair(Path(seed).read_text(encoding="utf-8"))
     assert len(questions)==12
-    import os.path
     rel=os.path.relpath(ROOT/"tools/rendering/paginador.js",OUT).replace(os.sep,"/")
     (OUT/"list.html").write_text(ll.montar(css,mathjax,m,questions,extra,rel),encoding="utf-8")
     (OUT/"answers.txt").write_text("Handout: 24; 8\n"+"\n".join(f"ITEM-{i:02}: {(i+2)*(i+3)}" for i in range(1,13)),encoding="utf-8")
