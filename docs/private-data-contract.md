@@ -32,3 +32,7 @@ O agente autorizado consulta somente o necessário para a tarefa individualizada
 ## Teste e próximo passo
 
 python tests/test_private_data.py. O teste é uma verificação relacional local e de escopo SQL, não homologação Cloudflare, LGPD ou operação real. Próxima etapa: especificar contrato API, autorização, validação transacional, trilha de auditoria sem payload, e testar D1 local com dados sintéticos. Só então revisar setup de ambiente privado.
+
+## API experimental
+
+Veja [private-api.md](private-api.md). A segunda migração adiciona revisão e auditoria de alterações de resultados. São 18 tabelas após a migração 0002. Teste com adaptador SQLite e JWT assinado sintético; D1/Access reais ainda não homologados. As consultas de referência em scoped-queries.sql são da migração 0001, não o caminho de escrita da API; não as use após 0002.

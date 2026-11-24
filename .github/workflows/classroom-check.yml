@@ -25,6 +25,8 @@ jobs:
           node tests/test_curriculum_catalog.mjs
           node tests/test_planning.mjs
           python tests/test_private_data.py
+          npm --prefix infra/private-data install --ignore-scripts --no-audit --no-fund
+          node infra/private-data/test-api.mjs
           node tests/test_activities_validation.mjs
           node apps/activities/conferir.mjs apps/activities/lessons/demo-proporcao.json
           node apps/activities/build-demo.mjs --check
