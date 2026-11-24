@@ -1,6 +1,10 @@
+import {ADMIN_HTML,ADMIN_JS,ADMIN_CSS} from "./admin-assets.mjs";
 import {authenticator} from "./auth.mjs";
 const READ="SELECT o.id AS scope_id,l.id,l.unit_id,l.title,l.lesson_date,l.starts_at_minute,l.duration_minutes,l.goal,l.status,l.revision\nFROM offers o JOIN offer_staff os ON os.offer_id=o.id\nJOIN staff s ON s.id=os.staff_id AND s.active=1\nLEFT JOIN lessons l ON l.offer_id=o.id AND l.lesson_date BETWEEN ? AND ?\nWHERE o.id=? AND s.identity_issuer=? AND s.identity_subject=?\nORDER BY l.lesson_date,l.starts_at_minute";
 const WRITE="UPDATE results SET score=?,status='graded',revision=revision+1,updated_by=(\n SELECT s.id FROM staff s WHERE s.identity_issuer=? AND s.identity_subject=? AND s.active=1\n)\nWHERE offer_id=? AND assessment_id=? AND student_id=? AND revision=? AND ?<=max_score\nAND EXISTS (SELECT 1 FROM offer_staff os JOIN staff s ON s.id=os.staff_id\n WHERE os.offer_id=results.offer_id AND os.role='teacher' AND s.active=1 AND s.identity_issuer=? AND s.identity_subject=?)\nAND EXISTS (SELECT 1 FROM enrollments e WHERE e.offer_id=results.offer_id AND e.student_id=results.student_id AND e.status='active')\nAND EXISTS (SELECT 1 FROM assessments a WHERE a.id=results.assessment_id AND a.offer_id=results.offer_id AND a.status='open')";
+const OFFERS="SELECT o.id,o.label,o.subject_id,o.level_id,os.role FROM offers o JOIN offer_staff os ON os.offer_id=o.id JOIN staff s ON s.id=os.staff_id AND s.active=1 WHERE s.identity_issuer=? AND s.identity_subject=? ORDER BY o.label,o.id";
+const RESULTS="SELECT a.id AS assessment_id,a.title,a.status AS assessment_status,r.student_id,st.display_name,r.score,r.max_score,r.status,r.revision,e.status AS enrollment_status FROM assessments a JOIN offer_staff os ON os.offer_id=a.offer_id AND os.role='teacher' JOIN staff s ON s.id=os.staff_id AND s.active=1 LEFT JOIN results r ON r.assessment_id=a.id AND r.offer_id=a.offer_id LEFT JOIN students st ON st.id=r.student_id LEFT JOIN enrollments e ON e.offer_id=r.offer_id AND e.student_id=r.student_id WHERE a.offer_id=? AND a.id=? AND s.identity_issuer=? AND s.identity_subject=? ORDER BY st.display_name,r.student_id";
+const ASSESSMENTS="SELECT o.id AS scope_id,a.id,a.title,a.status,a.max_score FROM offers o JOIN offer_staff os ON os.offer_id=o.id AND os.role='teacher' JOIN staff s ON s.id=os.staff_id AND s.active=1 LEFT JOIN assessments a ON a.offer_id=o.id WHERE o.id=? AND s.identity_issuer=? AND s.identity_subject=? ORDER BY a.title,a.id";
 const headers={"content-type":"application/json; charset=utf-8","cache-control":"private, no-store, max-age=0","x-content-type-options":"nosniff","referrer-policy":"no-referrer","content-security-policy":"default-src 'none'; frame-ancestors 'none'"};
 const reply=(status,body)=>new Response(JSON.stringify(body),{status,headers});
 const id=s=>typeof s==="string"&&/^[a-zA-Z0-9_-]{1,80}$/.test(s);
@@ -21,6 +25,18 @@ export default {async fetch(request,env){
   if(url.origin!==origin)return reply(404,{error:"not_found"});
   const who=await authenticator(env)(request);
   if(!who)return reply(401,{error:"unauthenticated"});
+  if(request.method==="GET"&&!url.search&&["/admin","/admin/app.js","/admin/style.css"].includes(url.pathname)){
+   const allowed=await env.PRIVATE_DB.prepare(OFFERS).bind(who.issuer,who.subject).all();
+   if(!allowed.success||!Array.isArray(allowed.results))return reply(503,{error:"unavailable"});
+   if(!allowed.results.length)return reply(404,{error:"not_found"});
+   const asset=url.pathname==="/admin"?[ADMIN_HTML,"text/html"]:url.pathname.endsWith(".js")?[ADMIN_JS,"text/javascript"]:[ADMIN_CSS,"text/css"];
+   return new Response(asset[0],{headers:{...headers,"content-type":asset[1]+"; charset=utf-8","content-security-policy":"default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"}});
+  }
+  if(request.method==="GET"&&url.pathname==="/api/v1/offers"&&!url.search){
+   const q=await env.PRIVATE_DB.prepare(OFFERS).bind(who.issuer,who.subject).all();
+   if(!q.success||!Array.isArray(q.results))return reply(503,{error:"unavailable"});
+   return reply(200,{offers:q.results});
+  }
   const parts=url.pathname.split("/");
   if(parts[1]!=="api"||parts[2]!=="v1"||parts[3]!=="offers"||!id(parts[4]))return reply(404,{error:"not_found"});
   const offer=parts[4];
@@ -31,6 +47,18 @@ export default {async fetch(request,env){
    if(!q.success||!Array.isArray(q.results))return reply(503,{error:"unavailable"});
    if(!q.results.length)return reply(404,{error:"not_found"});
    return reply(200,{lessons:q.results.filter(x=>x.id!==null).map(({scope_id,...x})=>x)});
+  }
+  if(request.method==="GET"&&parts.length===6&&parts[5]==="assessments"&&!url.search){
+   const q=await env.PRIVATE_DB.prepare(ASSESSMENTS).bind(offer,who.issuer,who.subject).all();
+   if(!q.success||!Array.isArray(q.results))return reply(503,{error:"unavailable"});
+   if(!q.results.length)return reply(404,{error:"not_found"});
+   return reply(200,{assessments:q.results.filter(x=>x.id!==null).map(({scope_id,...x})=>x)});
+  }
+  if(request.method==="GET"&&parts.length===8&&parts[5]==="assessments"&&id(parts[6])&&parts[7]==="results"&&!url.search){
+   const q=await env.PRIVATE_DB.prepare(RESULTS).bind(offer,parts[6],who.issuer,who.subject).all();
+   if(!q.success||!Array.isArray(q.results))return reply(503,{error:"unavailable"});
+   if(!q.results.length)return reply(404,{error:"not_found"});
+   return reply(200,{assessment:{id:q.results[0].assessment_id,title:q.results[0].title,status:q.results[0].assessment_status},results:q.results.filter(x=>x.student_id!==null).map(({assessment_id,title,assessment_status,...x})=>x)});
   }
   if(request.method==="PUT"&&parts.length===9&&parts[5]==="assessments"&&id(parts[6])&&parts[7]==="results"&&id(parts[8])){
    if(request.headers.get("origin")!==origin||request.headers.get("x-maple-action")!=="grade")return reply(403,{error:"forbidden"});
