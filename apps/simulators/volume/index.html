@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="pt-BR">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reserva de água · Laboratório de Matemática</title>
+<style>
+  :root { color-scheme: light; font-family: system-ui, sans-serif; background: #f5f3ed; color: #162b2b; }
+  * { box-sizing: border-box; }
+  body { margin: 0; }
+  main { width: min(100% - 2rem, 68rem); margin: 2.5rem auto; }
+  h1, h2 { font-family: Georgia, serif; font-weight: 500; line-height: 1.13; margin-block: 0 .6rem; }
+  h1 { font-size: clamp(2.4rem, 7vw, 4.7rem); }
+  h2 { font-size: 1.7rem; }
+  p { margin-block: .5rem 1rem; line-height: 1.5; }
+  .origem { font-size: .88rem; font-weight: 700; color: #445b58; }
+  .grade { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 1rem; margin-block: 1.5rem 1rem; }
+  section { background: #fffdf7; border: 1px solid #b5c2ba; border-radius: .8rem; padding: 1rem; }
+  .cena { background: #132f32; color: #f5fcfa; border-color: #132f32; }
+  canvas { background: #193a3d; border-radius: .5rem; display: block; width: 100%; height: auto; }
+  .botoes { display: flex; flex-wrap: wrap; gap: .5rem; margin-block: .8rem; }
+  .botoes button { flex: 1 1 8rem; }
+  button, input { font: inherit; }
+  button { min-height: 2.75rem; padding: .4rem .7rem; border-radius: .45rem; border: 1px solid currentColor; background: #e7f2e7; color: #153e37; cursor: pointer; }
+  button[aria-pressed="true"], button[type="submit"] { background: #176152; color: #fff; }
+  :focus-visible { outline: 3px solid #a74b1b; outline-offset: 3px; }
+  .cena :focus-visible { outline-color: #ffe2a1; }
+  .ajuste { display: grid; gap: .2rem; margin-block: .5rem; }
+  input[type="range"] { margin: 0; width: 100%; min-height: 2.25rem; accent-color: #176152; }
+  input[type="text"] { padding: .55rem; width: min(100%, 10rem); min-height: 2.75rem; border: 1px solid #58746a; border-radius: .35rem; margin: .2rem .3rem .2rem 0; background: #fff; }
+  #leitura { border-top: 1px solid #b5c2ba; padding-top: .7rem; margin-block: .9rem 0; }
+  .tarefas { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+  .tarefas label { display: block; }
+  .retorno { color: #174f43; margin-bottom: 0; }
+  .retorno:empty { display: none; }
+  @media (max-width: 50rem) { .tarefas { grid-template-columns: 1fr; } }
+  @media (max-width: 40rem) { main { margin-block: 1rem; } .grade { grid-template-columns: 1fr; } }
+</style>
+<main>
+  <p class="origem">Laboratório de Matemática · Protótipo de volumetria</p>
+  <h1>Reserva de água</h1>
+  <p>Você precisa dimensionar um reservatório para uma horta. Preveja o que acontece com a capacidade se a base dobrar e a altura cair pela metade. Depois, teste sua hipótese.</p>
+
+  <div class="grade">
+    <section class="cena" aria-labelledby="titulo-cena">
+      <h2 id="titulo-cena">Vista do reservatório</h2>
+      <canvas id="cena" width="600" height="410" role="img" aria-label="Prisma retangular com água e plano de seção" aria-describedby="leitura">
+        As dimensões e as medidas da cena aparecem na leitura em texto.
+      </canvas>
+      <div class="botoes">
+        <button id="esquerda" type="button">Girar à esquerda</button>
+        <button id="direita" type="button">Girar à direita</button>
+        <button id="corte" type="button" aria-pressed="false">Mostrar seção</button>
+      </div>
+    </section>
+
+    <section aria-labelledby="titulo-medidas">
+      <h2 id="titulo-medidas">Medidas da caixa</h2>
+      <div class="ajuste"><label for="comprimento">Comprimento (dm) <strong id="valor-comprimento" aria-hidden="true">3</strong></label><input type="range" id="comprimento" min="1" max="8" value="3"></div>
+      <div class="ajuste"><label for="largura">Largura (dm) <strong id="valor-largura" aria-hidden="true">4</strong></label><input type="range" id="largura" min="1" max="8" value="4"></div>
+      <div class="ajuste"><label for="altura">Altura (dm) <strong id="valor-altura" aria-hidden="true">8</strong></label><input type="range" id="altura" min="1" max="10" value="8"></div>
+      <div class="ajuste"><label for="nivel">Altura preenchida (%) <strong id="valor-nivel" aria-hidden="true">50</strong></label><input type="range" id="nivel" min="0" max="100" value="50" step="5"></div>
+      <p id="leitura" aria-live="polite">Base 12 dm² · capacidade 96 L · água 48 L · profundidade da água 4 dm.</p>
+    </section>
+  </div>
+
+  <div class="tarefas">
+    <section aria-labelledby="titulo-conta">
+      <h2 id="titulo-conta">Calcule por etapas</h2>
+      <p>Calcule a área da base em dm². Depois, o volume da caixa em litros.</p>
+      <form id="conta">
+        <label for="resposta-base">Área da base (dm²)</label><input type="text" inputmode="decimal" id="resposta-base" required>
+        <label for="resposta-volume">Volume (L)</label><input type="text" inputmode="decimal" id="resposta-volume" required>
+        <button type="submit">Conferir cálculo</button>
+      </form>
+      <p class="retorno" id="retorno-conta" role="status"></p>
+    </section>
+
+    <section aria-labelledby="titulo-jogo">
+      <h2 id="titulo-jogo">Desafio de projeto</h2>
+      <p>A caixa deve comportar exatamente 96 L. O terreno aceita até 16 dm² de base. Ajuste as dimensões para usar a menor altura possível.</p>
+      <button id="jogar" type="button">Testar projeto</button>
+      <p class="retorno" id="retorno-jogo" role="status"></p>
+    </section>
+
+    <section aria-labelledby="titulo-transferencia">
+      <h2 id="titulo-transferencia">Teste em outro contexto</h2>
+      <p>Um viveiro de paredes verticais contém 2,4 m³ de água. A profundidade é 0,6 m. Qual é a área do fundo?</p>
+      <form id="transferencia">
+        <label for="resposta-transferencia">Área do fundo (m²)</label>
+        <input type="text" inputmode="decimal" id="resposta-transferencia" required>
+        <button type="submit">Conferir resposta</button>
+      </form>
+      <p class="retorno" id="retorno-transferencia" role="status"></p>
+    </section>
+  </div>
+</main>
+<script>
+  'use strict';
+
+  const porId = (id) => document.getElementById(id);
+  const numero = new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 2 });
+  const decimal = (texto) => {
+    const limpo = texto.trim();
+    return /^[+-]?\d+(?:[.,]\d+)?$/.test(limpo) ? Number(limpo.replace(',', '.')) : NaN;
+  };
+
+  function calcular(comprimento, largura, altura, nivel) {
+    const base = comprimento * largura;
+    const profundidade = altura * nivel / 100;
+    return { base, capacidade: base * altura, profundidade, litros: base * profundidade };
+  }
+
+  function verificarProjeto({ base, capacidade }, altura) {
+    if (base > 16) return 'A base excede 16 dm². Ajuste o comprimento ou a largura.';
+    if (capacidade !== 96) return `Sua caixa comporta ${capacidade} L. Ajuste as dimensões para chegar a 96 L.`;
+    if (altura > 6) return 'A capacidade está certa. Aumente a área da base, dentro do limite, para diminuir a altura.';
+    return 'Projeto aprovado. Com base de 16 dm², a altura de 6 dm é a menor possível, pois 96 ÷ 16 = 6.';
+  }
+
+  const medidas = ['comprimento', 'largura', 'altura', 'nivel'];
+  const canvas = porId('cena');
+  const contexto = canvas.getContext('2d');
+  let angulo = Math.PI / 5;
+
+  function caixa(x, y, h) {
+    return [0, h].flatMap((z) => [[-x, -y, z], [x, -y, z], [x, y, z], [-x, y, z]]);
+  }
+
+  function desenhar(comprimento, largura, altura, profundidade) {
+    if (!contexto) return;
+    const c = Math.cos(angulo);
+    const s = Math.sin(angulo);
+    const escala = Math.min(280 / Math.hypot(comprimento, largura), 218 / altura);
+    const projetar = ([x, y, z]) => [300 + escala * (c * x - s * y), 306 + escala * (.34 * (s * x + c * y) - z)];
+    const forma = (pontos, preencher, contorno, tracejado = []) => {
+      contexto.beginPath();
+      pontos.map(projetar).forEach(([x, y], i) => i ? contexto.lineTo(x, y) : contexto.moveTo(x, y));
+      contexto.closePath();
+      if (preencher) { contexto.fillStyle = preencher; contexto.fill(); }
+      contexto.strokeStyle = contorno;
+      contexto.setLineDash(tracejado);
+      contexto.stroke();
+    };
+
+    const faces = [[0, 1, 2, 3], [0, 1, 5, 4], [1, 2, 6, 5], [2, 3, 7, 6], [3, 0, 4, 7], [4, 5, 6, 7]];
+    const x = comprimento / 2;
+    const y = largura / 2;
+    const paredes = caixa(x, y, altura);
+    contexto.clearRect(0, 0, 600, 410);
+    contexto.lineWidth = 2;
+    if (profundidade > 0) {
+      const agua = caixa(x, y, profundidade);
+      faces.forEach((face) => forma(face.map((i) => agua[i]), '#43cfcf2b', '#7ee6d77a'));
+    }
+    faces.forEach((face) => forma(face.map((i) => paredes[i]), null, '#e9fcf1'));
+    if (porId('corte').getAttribute('aria-pressed') === 'true') {
+      forma(caixa(x, y, profundidade).slice(4), '#ffda7938', '#ffe2a1', [7, 4]);
+    }
+  }
+
+  function estado() {
+    const valores = medidas.map((id) => Number(porId(id).value));
+    return { valores, calculo: calcular(...valores) };
+  }
+
+  function atualizar() {
+    const { valores, calculo } = estado();
+    const { base, profundidade, capacidade, litros } = calculo;
+    medidas.forEach((id, i) => { porId(`valor-${id}`).textContent = valores[i]; });
+    const secao = porId('corte').getAttribute('aria-pressed') === 'true' ? ` Seção horizontal de ${base} dm².` : '';
+    porId('leitura').textContent = `Base ${base} dm² · capacidade ${capacidade} L · água ${numero.format(litros)} L · profundidade da água ${numero.format(profundidade)} dm.${secao}`;
+    desenhar(...valores.slice(0, 3), profundidade);
+  }
+
+  medidas.forEach((id) => porId(id).addEventListener('input', () => {
+    porId('retorno-conta').textContent = '';
+    porId('retorno-jogo').textContent = '';
+    atualizar();
+  }));
+  porId('esquerda').addEventListener('click', () => { angulo -= Math.PI / 12; atualizar(); });
+  porId('direita').addEventListener('click', () => { angulo += Math.PI / 12; atualizar(); });
+  porId('corte').addEventListener('click', (evento) => {
+    const botao = evento.currentTarget;
+    const visivel = botao.getAttribute('aria-pressed') === 'true';
+    botao.setAttribute('aria-pressed', String(!visivel));
+    atualizar();
+  });
+
+  porId('conta').addEventListener('submit', (evento) => {
+    evento.preventDefault();
+    const { calculo, valores: [comprimento, largura, altura] } = estado();
+    const area = decimal(porId('resposta-base').value);
+    const volume = decimal(porId('resposta-volume').value);
+    let retorno = `Certo. ${comprimento} × ${largura} = ${area} dm² e ${area} × ${altura} = ${volume} dm³. Cada dm³ equivale a 1 L.`;
+    if (area !== calculo.base) retorno = `Revise a base: multiplique ${comprimento} dm por ${largura} dm.`;
+    else if (volume !== calculo.capacidade) retorno = `A base está certa. Multiplique a área da base pela altura total, ${altura} dm.`;
+    porId('retorno-conta').textContent = retorno;
+  });
+
+  porId('jogar').addEventListener('click', () => {
+    const { calculo, valores } = estado();
+    porId('retorno-jogo').textContent = verificarProjeto(calculo, valores[2]);
+  });
+
+  porId('transferencia').addEventListener('submit', (evento) => {
+    evento.preventDefault();
+    porId('retorno-transferencia').textContent = decimal(porId('resposta-transferencia').value) === 4
+      ? 'Certo. Como as paredes são verticais, área × profundidade dá o volume. Assim, 2,4 ÷ 0,6 = 4 m².'
+      : 'Isole a área na relação volume = área da base × profundidade. Use metros e metros cúbicos.';
+  });
+
+  atualizar();
+</script>
+</html>
