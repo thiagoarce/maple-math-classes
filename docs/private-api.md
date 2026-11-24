@@ -15,3 +15,5 @@ Run 45449201676 (a4ebe55): 26 testes HTTP aprovados com SQLite. Acrescentada exe
 ## Diário
 
 Veja [private-diary.md](private-diary.md). Run 45451588226: 31 casos SQLite e assets passaram; D1 falhou no primeiro update válido (404). Corrigida confirmação da alteração usando RETURNING; causa exata ainda não comprovada. Migração 0003 acrescenta auditoria de frequência e autor da evidência. Nova CI pendente.
+
+Run 45451973980: 49 casos em ambos os runtimes passaram. Diário ampliado conforme docs/private-diary.md; migração 0004 e novos testes ainda pendentes.

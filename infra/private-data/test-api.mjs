@@ -10,7 +10,7 @@ import {fileURLToPath} from "node:url";
 const useD1=process.argv.includes("--d1");
 const db=new DatabaseSync(":memory:");
 db.exec("PRAGMA foreign_keys=ON");
-for(const name of ["0001_core.sql","0002_result_audit.sql","0003_diary.sql"])db.exec(readFileSync(new URL("./migrations/"+name,import.meta.url),"utf8"));
+for(const name of ["0001_core.sql","0002_result_audit.sql","0003_diary.sql","0004_collective_homework.sql"])db.exec(readFileSync(new URL("./migrations/"+name,import.meta.url),"utf8"));
 db.exec(`
 INSERT INTO academic_years VALUES ('y',2027);
 INSERT INTO staff VALUES ('t','https://demo.cloudflareaccess.com','teacher',1),('v','https://demo.cloudflareaccess.com','viewer',1),('x','https://demo.cloudflareaccess.com','disabled',0);
@@ -18,7 +18,7 @@ INSERT INTO students VALUES ('s','Synthetic student');
 INSERT INTO offers VALUES ('o','y','hs-mathematics','Y11','Demo'),('other','y','olympiads','N1','Other'),('empty','y','hs-mathematics','Y11','Empty');
 INSERT INTO offer_staff VALUES ('o','t','teacher'),('o','v','viewer'),('o','x','teacher'),('empty','t','teacher');
 INSERT INTO enrollments VALUES ('o','s','active');
-INSERT INTO lessons VALUES ('l','o','hs-matrices','Synthetic lesson','2027-01-04',480,50,'Goal','draft',1);
+INSERT INTO lessons(id,offer_id,unit_id,title,lesson_date,starts_at_minute,duration_minutes,goal,status,revision) VALUES ('l','o','hs-matrices','Synthetic lesson','2027-01-04',480,50,'Goal','draft',1);
 INSERT INTO assessments VALUES ('a','o','Demo',1000,'open');
 INSERT INTO results(assessment_id,offer_id,student_id,max_score,score,status) VALUES ('a','o','s',1000,NULL,'pending');
 `);
@@ -40,7 +40,7 @@ if(useD1){
  d1=await mf.getD1Database("PRIVATE_DB");
  // SQLite parser in Python preserves the trigger body as one statement.
  const {execFileSync}=await import("node:child_process");
- const statements=JSON.parse(execFileSync("python",["-c","import sqlite3,sys,json\ns=sys.stdin.read(); out=[]; buf=''\nfor ch in s:\n buf+=ch\n if ch==';' and sqlite3.complete_statement(buf):\n  out.append(buf.strip());buf=''\nif buf.strip(): raise ValueError('Incomplete SQL')\nprint(json.dumps(out))"],{input:["0001_core.sql","0002_result_audit.sql","0003_diary.sql"].map(n=>readFileSync(new URL("./migrations/"+n,import.meta.url),"utf8")).join("\n")+"\n"+"\nINSERT INTO academic_years VALUES ('y',2027);\nINSERT INTO staff VALUES ('t','https://demo.cloudflareaccess.com','teacher',1),('v','https://demo.cloudflareaccess.com','viewer',1),('x','https://demo.cloudflareaccess.com','disabled',0);\nINSERT INTO students VALUES ('s','Synthetic student');\nINSERT INTO offers VALUES ('o','y','hs-mathematics','Y11','Demo'),('other','y','olympiads','N1','Other'),('empty','y','hs-mathematics','Y11','Empty');\nINSERT INTO offer_staff VALUES ('o','t','teacher'),('o','v','viewer'),('o','x','teacher'),('empty','t','teacher');\nINSERT INTO enrollments VALUES ('o','s','active');\nINSERT INTO lessons VALUES ('l','o','hs-matrices','Synthetic lesson','2027-01-04',480,50,'Goal','draft',1);\nINSERT INTO assessments VALUES ('a','o','Demo',1000,'open');\nINSERT INTO results(assessment_id,offer_id,student_id,max_score,score,status) VALUES ('a','o','s',1000,NULL,'pending');\n",encoding:"utf8"}));
+ const statements=JSON.parse(execFileSync("python",["-c","import sqlite3,sys,json\ns=sys.stdin.read(); out=[]; buf=''\nfor ch in s:\n buf+=ch\n if ch==';' and sqlite3.complete_statement(buf):\n  out.append(buf.strip());buf=''\nif buf.strip(): raise ValueError('Incomplete SQL')\nprint(json.dumps(out))"],{input:["0001_core.sql","0002_result_audit.sql","0003_diary.sql","0004_collective_homework.sql"].map(n=>readFileSync(new URL("./migrations/"+n,import.meta.url),"utf8")).join("\n")+"\n"+"\nINSERT INTO academic_years VALUES ('y',2027);\nINSERT INTO staff VALUES ('t','https://demo.cloudflareaccess.com','teacher',1),('v','https://demo.cloudflareaccess.com','viewer',1),('x','https://demo.cloudflareaccess.com','disabled',0);\nINSERT INTO students VALUES ('s','Synthetic student');\nINSERT INTO offers VALUES ('o','y','hs-mathematics','Y11','Demo'),('other','y','olympiads','N1','Other'),('empty','y','hs-mathematics','Y11','Empty');\nINSERT INTO offer_staff VALUES ('o','t','teacher'),('o','v','viewer'),('o','x','teacher'),('empty','t','teacher');\nINSERT INTO enrollments VALUES ('o','s','active');\nINSERT INTO lessons(id,offer_id,unit_id,title,lesson_date,starts_at_minute,duration_minutes,goal,status,revision) VALUES ('l','o','hs-matrices','Synthetic lesson','2027-01-04',480,50,'Goal','draft',1);\nINSERT INTO assessments VALUES ('a','o','Demo',1000,'open');\nINSERT INTO results(assessment_id,offer_id,student_id,max_score,score,status) VALUES ('a','o','s',1000,NULL,'pending');\n",encoding:"utf8"}));
  for(const sql of statements)await d1.prepare(sql).run();
  }catch(e){await mf.dispose();throw e}
 }
@@ -107,7 +107,20 @@ assert.equal((await req(diary,200)).students[0].status,null);
 await req(diary,404,{token:viewer});
 await req(att,404,attOpts);
 await req(ev,404,evOpts);
-await exec("UPDATE lessons SET status='taught'");
+const journal="/api/v1/offers/o/lessons/l/journal",hw="/api/v1/offers/o/lessons/l/homework/s";
+const jOpts={method:"PUT",action:"journal",body:{revision:1,collective_record:"Synthetic collective record",material_feedback:"Synthetic feedback",replanning:"Synthetic next lesson",homework_checked:"Synthetic exercise"}};
+await req(journal,404,jOpts); // draft not ready
+await exec("UPDATE lessons SET status='ready'");
+await req(journal,404,{...jOpts,token:viewer});
+await req(journal,403,{...jOpts,origin:"https://other.example.invalid"});
+await req(journal,400,{...jOpts,body:{...jOpts.body,collective_record:"x".repeat(701)}});
+assert.equal((await req(journal,200,jOpts)).revision,2);
+await req(journal,404,jOpts);
+assert.equal((await req(diary,200)).lesson.homework_checked,"Synthetic exercise");
+assert.equal((await first("SELECT count(*) AS n FROM lesson_diary_audit")).n,1);
+const hwOpts={method:"PUT",action:"homework",body:{status:"half",revision:0}};
+await req(hw,404,hwOpts); // frequency not yet recorded
+
 await req(att,404,{...attOpts,token:viewer});
 await req(att,403,{...attOpts,origin:"https://other.example.invalid"});
 await req(att.replace("/o/","/other/"),404,attOpts);
@@ -116,6 +129,15 @@ assert.equal((await req(att,200,attOpts)).revision,1);
 await req(att,404,attOpts);
 assert.equal((await req(att,200,{...attOpts,body:{status:"late",revision:1}})).revision,2);
 assert.equal((await first("SELECT count(*) AS n FROM attendance_audit")).n,2);
+await req(hw,404,{...hwOpts,token:viewer});
+await req(hw,400,{...hwOpts,body:{status:"absent",revision:0}});
+assert.equal((await req(hw,200,hwOpts)).revision,1);
+await req(hw,404,hwOpts);
+assert.equal((await req(prof,200)).homework.earned_half_units,1);
+assert.equal((await req(hw,200,{...hwOpts,body:{status:"complete",revision:1}})).revision,2);
+await req(journal,404,{...jOpts,body:{...jOpts.body,revision:2,homework_checked:"Different task"}});
+assert.equal((await req(journal,200,{...jOpts,body:{...jOpts.body,revision:2,replanning:"Revised next step"}})).revision,3);
+assert.equal((await first("SELECT count(*) AS n FROM homework_audit")).n,2);
 await req(ev,404,{...evOpts,token:viewer});
 await req(ev,400,{...evOpts,body:{kind:"diagnosis",observation:"Synthetic"}});
 await req(ev,201,evOpts);
@@ -125,6 +147,13 @@ assert.equal(profile.student.recorded,1);
 assert.equal(profile.student.late,1);
 assert.equal(profile.student.absent,0);
 assert.equal(profile.evidence.length,1);
+assert.equal(profile.homework.checked,1);
+assert.equal(profile.homework.earned_half_units,2);
+await req(att,200,{...attOpts,body:{status:"absent",revision:2}});
+assert.equal((await req(prof,200)).homework.checked,0);
+await req(hw,404,{...hwOpts,body:{status:"not_done",revision:2}});
+await req(att,200,{...attOpts,body:{status:"late",revision:3}});
+assert.equal((await req(prof,200)).homework.checked,1);
 await exec("UPDATE enrollments SET status='withdrawn'");
 await req(att,404,{...attOpts,body:{status:"absent",revision:2}});
 await req(ev,404,evOpts);
