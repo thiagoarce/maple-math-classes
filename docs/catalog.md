@@ -37,3 +37,5 @@ Motor de atividades por etapas: `apps/activities/`, reaproveitamento experimenta
 Homologação inicial: papel aprovado no run 45433181593; slides de condução recuperados em tools/rendering/ e em teste. Veja docs/slides-engine.md.
 
 Painel docente: apps/planning/ — demonstração de três disciplinas, sem dados reais ou persistência. Veja docs/planning-panel.md. Homologação pendente.
+
+Contrato privado candidato em infra/private-data/; nenhum banco real, API ou migração de alunos. Veja docs/private-data-contract.md.

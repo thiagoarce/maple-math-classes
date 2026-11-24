@@ -38,3 +38,7 @@ Primeiro extraia componentes independentes e revise suas dependências; depois i
 ## Decisões abertas
 
 Schema definitivo, provedor de identidade e papéis, retenção, ambientes, licenciamento, autorização institucional e configuração de deploy. Nenhum endereço, identificador de banco ou credencial de produção deve constar desta documentação.
+
+## Schema privado candidato
+
+Veja [contrato de dados privados](private-data-contract.md). Migração estrutural e testes SQLite em memória, sem binding ou serviço real. O modelo permanece candidato até aprovação do escopo, segurança e fontes oficiais.
