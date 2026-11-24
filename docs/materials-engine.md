@@ -9,10 +9,10 @@ A prioridade é conservar o código funcional e os contratos já usados em aulas
 | [aquecimento.py](../tools/generators/aquecimento.py) | Copiado, revisão pendente | Biblioteca padrão Python; para_slug, html e linhas_gabarito |
 | [dedup.py](../tools/validation/dedup.py) | Copiado, revisão pendente | Biblioteca padrão Python; assinaturas por texto, fórmulas e imagens |
 | [paginador_handout.js](../tools/rendering/paginador_handout.js) | Copiado, integração pendente | DOM e CSS do handout; aguarda MathJax quando presente |
-| handout_lib.py | Não copiado | identidade.py, CSS, timbrado, assets, helper de matemática e outros componentes; separar identidade institucional sem alterar os contratos de produção |
+| [handout_lib.py](../tools/rendering/handout_lib.py) | Código em revisão; runtime pendente | Identidade, paginação e composição compartilhadas; timbrado opcional explícito |
 | gerar_lista_exercicios.py | Não copiado | handout_lib, aquecimento, dedup, padrões de questões e acervo; separar fontes de questões autorizadas |
 | lista_layout.py e paginador.js | Não copiados | lista_fluxo, CSS de impressão e contrato de duas colunas; transportar em conjunto |
-| ma_math.js | Não copiado | Mesmo blob Git nas duas origens; requer pacote local de MathJax 4.1.3 e revisão de fontes, licenças, avisos e layout de caminhos |
+| [ma_math.js](../tools/rendering/ma_math.js) | Helper copiado; runtime pendente | Mesmo blob original nas duas origens; pacote local 4.1.3 necessário |
 | checar_pdf_sobreposicao.py | Não copiado | Requer PyMuPDF e revisão do contrato de exceções; não detecta toda sobreposição |
 
 ## Uso dos módulos Python
@@ -42,3 +42,17 @@ O paginador de handout trabalha com páginas .a4, cabeçalhos hd-title/hd-sub/hd
 ## Verificação e pendências
 
 Os três componentes foram inspecionados e transportados com os corpos funcionais preservados; foram resumidos comentários históricos de contexto. Ainda não foram executados testes de Python, navegador ou impressão nesta etapa. O pacote de tipografia será tratado como unidade, sem duplicar versões. O catálogo não marca nenhum componente como homologado.
+
+## Integração do núcleo de handouts
+
+Os quatro módulos de renderização agora ficam junto de paginador_handout.js. As funções originais de blocos, tabelas, matrizes, exemplos, páginas e CSS foram mantidas. O argumento opcional letterhead_path de build() permite fornecer imagem local autorizada; sem ele, o fundo é branco. As margens originais continuam por compatibilidade, não como novo padrão visual aprovado. Use apenas HTML e imagens locais confiáveis; o motor não sanitiza entradas e o timbrado fornecido é incorporado ao resultado. Nunca publique resultados privados.
+
+O conversor topdf preserva o fluxo HTML/PDF, mas usa arquivo temporário para não reportar PDF antigo como novo e não desabilita o sandbox do navegador. A contagem de páginas original é heurística; não substitui um parser PDF.
+
+### Dependências ainda não instaladas
+
+- MathJax 4.1.3: mathjax@4.1.3, @mathjax/mathjax-fira-font@4.1.3 e @mathjax/mathjax-euler-font-extension@4.1.3. O manifesto tools/rendering/mathjax-runtime.json registra os 70 arquivos JS esperados e seus hashes Git. Não é um instalador nem comprovação de licenciamento. Obter pacotes oficiais, conferir avisos Apache/OFL e a correspondência dos arquivos antes da publicação. Os paths esperados são mathjax/v4.1.3/{fira,euler,tex-extensions}. O build falha antes de gerar se faltar algum arquivo requerido. A checagem atual é de presença, não de integridade; validar hashes na instalação.
+- Instrument Sans Regular/Bold e demais faces declaradas em identidade.py: obter de fontes oficiais e incluir avisos individuais. Nenhum arquivo de fonte foi copiado. A ausência das faces editoriais implica fallback e exige nova validação de paginação.
+- Chrome ou Chromium instalado localmente e autorizado para execução. A geração PDF pode retornar None; a execução e os gates de impressão ainda não foram homologados. O helper matemático mantém a desativação de attachSpeech do original; acessibilidade precisa de validação própria.
+
+Neste incremento: comparação de código, inspeção estática, adaptações pontuais e conferência de arquivos publicados. Sem teste executado de Python, JavaScript, PDF ou navegador. Não usar como pipeline de produção até completar dependências e testes offline.

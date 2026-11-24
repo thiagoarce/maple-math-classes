@@ -6,7 +6,7 @@ Este catálogo descreve componentes planejados, não instalações existentes. U
 |---|---|---|---|
 | Fundação documental | `docs/` | Em revisão | Políticas, arquitetura, metodologia e roadmap coerentes |
 | Figuras matemáticas | `tools/geometry/` | Planejado | Núcleo independente, exemplos e testes matemáticos |
-| Handouts | `templates/handouts/` e `tools/generators/` | Planejado | Exemplo autoral, impressão e validação |
+| Handouts | `templates/handouts/` e `tools/generators/` | Núcleo copiado; runtime e validação pendentes | Exemplo autoral, impressão e validação |
 | Listas e paginação | `templates/worksheets/` e `tools/generators/` | Aquecimento, deduplicação e paginador de handouts em revisão | Gabaritos, progressão, impressão correta |
 | Slides | `templates/slides/` | Planejado | Condução e notas do professor separadas |
 | Modo Aula | `apps/classroom/` | Planejado | Lousa e recursos genéricos, sem acesso a dados privados |

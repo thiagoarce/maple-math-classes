@@ -6,8 +6,8 @@
 
 | Componente | Destino | Estratégia | Estado |
 |---|---|---|---|
-| Motor de handouts, listas e impressão | tools/generators, templates | Preservar implementações maduras, dependências e contratos; comparar versões antes de alterar | Primeiros módulos em revisão |
-| Tipografia matemática offline | tools/rendering, assets | Um único motor para papel e projeção; conservar versões e avisos de terceiros | Helper idêntico nas duas origens; pacote ainda não importado |
+| Motor de handouts, listas e impressão | tools/generators, templates | Preservar implementações maduras, dependências e contratos; comparar versões antes de alterar | Núcleo de handouts copiado; integração pendente |
+| Tipografia matemática offline | tools/rendering, assets | Um único motor para papel e projeção; conservar versões e avisos de terceiros | Helper copiado; runtime e fontes pendentes |
 | Figuras matemáticas | tools/geometry | Reaproveitar as APIs existentes; evitar duas bibliotecas concorrentes | A revisar |
 | Modo Aula e projeção | apps/classroom | Preservar lousa, tinta, PDF, relógio e ferramentas; retirar conexões privadas | A revisar |
 | Motor de aula em etapas | apps/lessons | Reaproveitar separação entre dados de aula, renderização e validação; ajustar à aula presencial sem impor a sequência de um curso autônomo | A revisar |
