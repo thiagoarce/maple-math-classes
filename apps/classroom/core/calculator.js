@@ -23,9 +23,12 @@
       var c = texto[i];
       if (c === " ") { i++; continue; }
       if (/[0-9.]/.test(c)) {
-        var n = "";
-        while (i < texto.length && /[0-9.]/.test(texto[i])) n += texto[i++];
-        tokens.push({ t: "num", v: parseFloat(n) });
+        var match = /^(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?/.exec(texto.slice(i));
+        if (!match || texto[i + match[0].length] === ".") throw new Error("número inválido");
+        var n = Number(match[0]);
+        if (!Number.isFinite(n)) throw new Error("número inválido");
+        i += match[0].length;
+        tokens.push({ t: "num", v: n });
         continue;
       }
       if (/[a-zA-Zπ√]/.test(c)) {
@@ -34,7 +37,7 @@
         if (nome === "π") tokens.push({ t: "num", v: Math.PI });
         else if (nome === "e") tokens.push({ t: "num", v: Math.E });
         else if (nome === "√") tokens.push({ t: "fun", v: "sqrt" });
-        else if (FUNCOES[nome]) tokens.push({ t: "fun", v: nome });
+        else if (Object.prototype.hasOwnProperty.call(FUNCOES, nome)) tokens.push({ t: "fun", v: nome });
         else throw new Error("não conheço " + nome);
         continue;
       }

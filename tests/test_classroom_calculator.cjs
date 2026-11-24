@@ -111,5 +111,12 @@ T("2+3)", "ERRO: parêntese sobrando");
 T("2$3", "ERRO: símbolo solto: $");
 T("banana(2)", "ERRO: não conheço banana");
 
+console.log("\n-- regressão de entradas numéricas");
+T("1.2.3", "ERRO: número inválido");
+T(".", "ERRO: número inválido");
+T("2.5e-7*2", 5e-7);
+T("1e+12/2", 5e11);
+T("constructor(2)", "ERRO: não conheço constructor");
+
 console.log(`\n${falhas ? falhas + " falha(s)" : "tudo certo"}`);
 process.exit(falhas ? 1 : 0);

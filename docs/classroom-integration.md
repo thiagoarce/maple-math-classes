@@ -35,3 +35,11 @@ Abrir uma aula sintética, trocar lousa/PDF/HTML, testar escrita e espelho, alte
 ## Verificação inicial do avaliador
 
 Sete casos executados diretamente em JavaScript passaram: precedência, potência associativa à direita, expoente negativo, unário antes de potência, seno em graus, raiz e porcentagem. Foi encontrado um defeito preexistente: `1.2.3` retorna `1.2` em vez de rejeitar a entrada. O parser permanece preservado neste incremento; corrigir e testar a validação antes de integrá-lo à interface. A suíte Node completa e os testes de navegador não foram executados.
+
+## Demonstração local integrada
+
+Abra apps/classroom/index.html por um servidor HTTP estático local na raiz do repositório (python -m http.server 8000; abra /apps/classroom/). Não é deploy nem painel autenticado. O manifesto fixo é inteiramente sintético e oferece questão de investigação e o protótipo de volumetria existente. Não lê manifestos reais ou recursos arbitrários. O iframe tem sandbox sem acesso à origem do hospedeiro; não use dados privados nesta demonstração.
+
+Reaproveitados: casca original, menu Aula, lousas branca e preta, tinta vetorial, laser, borrachas, desfazer/refazer, relógio, cronômetro, temporizador, calculadora flutuante e prateleira. Mantidas as APIs existentes; retirados vínculos com o painel, canais de espelhamento e módulos administrativos. A interface da calculadora usa o núcleo único já extraído. A lousa utiliza IndexedDB local em namespace próprio; demais preferências ficam no armazenamento do navegador. Não há sincronização de dados nem deploy.
+
+Validação: 44 casos de cálculo da suíte adaptada executados diretamente em JavaScript (todos passaram), incluindo regressões para números malformados, notação científica e nomes de funções inválidos. A suíte Node como arquivo não foi executada. Análise sintática dos módulos JS. Ainda não houve teste real de DOM/canvas, navegação, impressão, persistência, toque ou duas janelas; não tratar a demonstração como homologada. O parser ainda merece validação de domínio, gramática e casos extremos. PDF anotável, espelho e dock completo não estão integrados; não oferecer links avulsos ou conteúdo privado até existir fronteira adequada.
