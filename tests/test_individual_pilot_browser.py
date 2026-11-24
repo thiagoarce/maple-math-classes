@@ -6,7 +6,7 @@ OUT=Path("test-artifacts/individual-pilot")
 def main():
     with sync_playwright() as p:
         browser=p.chromium.launch()
-        for name,count in [("student",2),("teacher-key",1)]:
+        for name,count in [("student",3),("teacher-key",2)]:
             ctx=browser.new_context(viewport={"width":1200,"height":1400})
             page=ctx.new_page()
             errors,foreign=[],[]

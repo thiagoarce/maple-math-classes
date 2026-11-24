@@ -41,3 +41,5 @@ Painel docente: apps/planning/ — demonstração de três disciplinas, sem dado
 Contrato privado candidato em infra/private-data/; nenhum banco real, API ou migração de alunos. Veja docs/private-data-contract.md.
 
 Piloto de recuperação de produto matricial: subjects/hs-mathematics/units/hs-matrices/pilot/ — ficha, fixture, resolução manual e gerador de duas peças sintéticas; homologação de impressão pendente.
+
+Murais e jogos: [inventário e primeiros núcleos recuperados](murals-and-games.md). Homologação de impressão e interfaces pendentes.

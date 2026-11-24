@@ -2,7 +2,7 @@ name: Homologação Modo Aula
 on:
   pull_request:
     branches: [docs/arquitetura-dados-privados, main]
-    paths: ['apps/classroom/**', 'apps/simulators/**', 'apps/oficina/**', 'apps/activities/**', 'apps/planning/**', 'infra/private-data/**', 'tools/rendering/**', 'subjects/**', 'tests/**', '.github/workflows/classroom-check.yml']
+    paths: ['apps/classroom/**', 'apps/simulators/**', 'apps/oficina/**', 'apps/activities/**', 'apps/planning/**', 'apps/games/**', 'infra/private-data/**', 'tools/rendering/**', 'subjects/**', 'tests/**', '.github/workflows/classroom-check.yml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -24,6 +24,8 @@ jobs:
           node tests/test_oficina.mjs
           node tests/test_curriculum_catalog.mjs
           node tests/test_planning.mjs
+          node tests/test_launch_day.mjs
+          PYTHONPATH=. python tests/test_mural_svg.py
           python tests/test_private_data.py
           python tests/test_individual_pilot_math.py
           npm --prefix infra/private-data install --ignore-scripts --no-audit --no-fund
