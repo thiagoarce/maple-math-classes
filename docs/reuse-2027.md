@@ -53,3 +53,7 @@ Gerador e fluxo de treino existentes recuperados em apps/oficina, sem vínculo c
 ## Motor de atividades em etapas
 
 Primeiro host local em `apps/activities/`, com motor, CSS e GEO existentes e recorte de proporcionalidade. Sem ganchos de plataforma; validação no navegador pendente. A Oficina passou no run 45427456088 (7d21004). A próxima frente é validar a execução e recuperar o contrato de produção/conferência sem catálogo comercial.
+
+## Produção e revisão
+
+O gate anterior passou no run 45427857084 (8791c3d). Fluxo comum em docs/production-workflow.md; conferidor e extrator de revisão recuperados no perfil local restrito de atividades. JSON é fonte única da fixture; geração e novo gate ainda precisam validação. Sem publicação de catálogos comerciais.

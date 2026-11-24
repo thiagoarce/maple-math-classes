@@ -22,6 +22,9 @@ jobs:
           node tests/test_classroom_calculator.cjs
           node tests/test_classroom_core.cjs
           node tests/test_oficina.mjs
+          node apps/activities/conferir.mjs apps/activities/lessons/demo-proporcao.json
+          node apps/activities/build-demo.mjs --check
+          node apps/activities/revisao.mjs prova apps/activities/lessons/demo-proporcao.json
       - name: Install local runtime
         run: |
           npm --prefix apps/classroom/pdf-runtime install --ignore-scripts --no-audit --no-fund

@@ -1,4 +1,4 @@
-/* Recorte de exemplos de proporcionalidade; fixture técnica, não aula homologada. */
+/* Generated from lessons/demo-proporcao.json; do not edit. */
 window.AULA = {
   "id": "DEMO-PROP",
   "produto": "maple",

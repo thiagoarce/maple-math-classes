@@ -37,3 +37,7 @@ A aula é o produto; materiais são meios. Preserve a construção matemática, 
 ## Revisão e rastreabilidade
 
 Use branches e PRs pequenos, com descrição de escopo, proveniência publicável, validação, pendências e riscos. Registros de auditoria que contenham detalhes restritos devem ficar fora do repositório. Nunca publique uma amostra privada para depois apagá-la.
+
+## Produção assistida por IA
+
+Leia [processo de produção e revisão](docs/production-workflow.md) antes de criar aulas, handouts, avaliações ou atividades. Mantenha ficha, conteúdo, motor e evidências distintos. Não confunda CI verde com aprovação pedagógica; a mudança de estado exige os critérios do fluxo. Não recrie recurso existente por conveniência. As normas de disciplina prevalecem sobre preferências genéricas de formato.
