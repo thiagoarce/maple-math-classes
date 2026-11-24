@@ -320,7 +320,8 @@
   function openResource(id, kind) {
     var resource = findResource(id);
     // Initial demo supports only the explicitly bundled HTML and plain text.
-    if (!resource || (kind !== "html" && kind !== "text")) return;
+    if (!resource || (kind !== "html" && kind !== "text" && kind !== "pdf")) return;
+    if (kind === "pdf" && (resource.id !== "pdf-demo" || resource.pdfUrl !== "fixtures/volume-demo.pdf")) return;
     if (kind === "html" && resource.htmlUrl !== "../simulators/volume/index.html") return;
     if (active && active.id === id && active.kind === kind) {
       closeResource();
@@ -329,9 +330,7 @@
 
     hideViewers();
     if (kind === "pdf" && resource.pdfUrl) {
-      ui.frame.src = pdfViewerUrl(resource);
-      ui.frame.title = resource.title + " — PDF anotável";
-      ui.frame.hidden = false;
+      renderDetail({ title: resource.title, text: "PDF anotável local: abra em uma aba separada para preservar o isolamento do iframe de manipulativos.", linkUrl: "pdf.html" }, "link");
     } else if (kind === "html" && resource.htmlUrl) {
       ui.frame.src = resource.htmlUrl;
       ui.frame.title = resource.title + (isY9BookResource(resource) ? " — livro anotável" : "");
