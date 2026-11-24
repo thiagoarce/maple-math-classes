@@ -35,3 +35,5 @@ A Oficina da Conta tem um primeiro host local anônimo em `apps/oficina/`, com g
 Motor de atividades por etapas: `apps/activities/`, reaproveitamento experimental sem dados reais; gate desktop/móvel pendente.
 
 Homologação inicial: papel aprovado no run 45433181593; slides de condução recuperados em tools/rendering/ e em teste. Veja docs/slides-engine.md.
+
+Painel docente: apps/planning/ — demonstração de três disciplinas, sem dados reais ou persistência. Veja docs/planning-panel.md. Homologação pendente.

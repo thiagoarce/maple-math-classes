@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "synthetic": true,
+  "week_label": "Semana demonstrativa · sem calendário real",
+  "lessons": [
+    {
+      "id": "demo-hs",
+      "subject": "hs-mathematics",
+      "unit": "hs-polyhedra",
+      "day": 1,
+      "level": "Y11",
+      "title": "Volume e conservação",
+      "duration": 50,
+      "goal": "Relacionar área da base, altura e volume.",
+      "criteria": [
+        "Justifico como a altura muda quando a base dobra.",
+        "Confiro a unidade de volume."
+      ],
+      "steps": [
+        {
+          "minutes": 5,
+          "action": "Retomada: comparar dois recipientes."
+        },
+        {
+          "minutes": 15,
+          "action": "Construção: explorar o simulador e registrar uma conjectura."
+        },
+        {
+          "minutes": 25,
+          "action": "Prática: resolver e justificar dois casos no caderno."
+        },
+        {
+          "minutes": 5,
+          "action": "Fechamento: explicar a conservação do volume."
+        }
+      ],
+      "routine": [
+        "Comparar recipientes",
+        "Explorar e conjecturar",
+        "Resolver e justificar",
+        "Explicar a conclusão"
+      ],
+      "resources": [
+        "volume-lab",
+        "classroom"
+      ],
+      "evidence": "Explicação escrita da relação entre as grandezas.",
+      "homework": null
+    },
+    {
+      "id": "demo-ent",
+      "subject": "entrepreneurship",
+      "unit": "ent-start",
+      "day": 2,
+      "level": null,
+      "title": "Customer discovery",
+      "duration": 50,
+      "goal": "Distinguish customer evidence from assumptions.",
+      "criteria": [
+        "I can justify a customer problem using evidence.",
+        "I can formulate a testable interview question."
+      ],
+      "steps": [
+        {
+          "minutes": 5,
+          "action": "Opening: predict which problem matters."
+        },
+        {
+          "minutes": 15,
+          "action": "Compare two fictional cases and discuss evidence."
+        },
+        {
+          "minutes": 25,
+          "action": "Workshop: write and critique an interview question."
+        },
+        {
+          "minutes": 5,
+          "action": "Exit: state one piece of evidence still needed."
+        }
+      ],
+      "routine": [
+        "Predict",
+        "Compare",
+        "Workshop",
+        "Reflect"
+      ],
+      "resources": [
+        "classroom"
+      ],
+      "evidence": "One question and an explanation of what its answer would change.",
+      "homework": null
+    },
+    {
+      "id": "demo-oly",
+      "subject": "olympiads",
+      "unit": "oly-parity",
+      "day": 3,
+      "level": "N1",
+      "title": "Paridade e prova",
+      "duration": 50,
+      "goal": "Construir e justificar um argumento de paridade.",
+      "criteria": [
+        "Distingo exemplo de prova.",
+        "Justifico por que a paridade é preservada."
+      ],
+      "steps": [
+        {
+          "minutes": 5,
+          "action": "Abertura: testar pequenos exemplos."
+        },
+        {
+          "minutes": 15,
+          "action": "Construção: identificar a relação de paridade."
+        },
+        {
+          "minutes": 25,
+          "action": "Prática: comparar argumentos e escrever uma prova."
+        },
+        {
+          "minutes": 5,
+          "action": "Fechamento: indicar onde a generalização ocorre."
+        }
+      ],
+      "routine": [
+        "Testar exemplos",
+        "Encontrar relação",
+        "Escrever prova",
+        "Generalizar"
+      ],
+      "resources": [
+        "classroom"
+      ],
+      "evidence": "Solução justificada no caderno.",
+      "homework": null
+    }
+  ]
+}

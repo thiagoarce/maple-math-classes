@@ -199,7 +199,7 @@ MOTOR = r"""<script>
     el.setAttribute("aria-hidden", "true");
     el.style.visibility = "hidden";
     el.style.opacity = "0";
-    el.style.transform = "translateY(8px)";
+    el.style.transform = semMovimento ? "none" : "translateY(8px)";
     el.style.pointerEvents = "none";
   }
 
