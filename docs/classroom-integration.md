@@ -71,3 +71,7 @@ O gate inclui `node tests/test_classroom_calculator.cjs`, `node tests/test_class
 ## Linha de base verificada
 
 O commit 430dfcf passou no Chromium e nos testes unitários em 24/11/2026. Evidência, limites e próximos critérios: [classroom-baseline.md](classroom-baseline.md). As declarações anteriores de ausência de teste refletem o estado histórico anterior a esse run. O gate ampliado deste incremento aguarda execução própria.
+
+## Revisão visual e instrumentos
+
+O run 45425903872 passou; as quatro capturas foram inspecionadas. Corrigida a divergência entre números e marcas da régua, com 10 unidades relativas e 100 subdivisões; transferidor SVG com marcação angular e esquadro com proporção preservada. Os tamanhos mantêm proporção na tela; não são centímetros físicos. O gate expandido verifica alinhamento e proporções após resize. A homologação deste novo commit é independente.

@@ -17,23 +17,45 @@
       ".ma-instrument{position:absolute;z-index:5;display:none;transform-origin:center center;pointer-events:none;filter:drop-shadow(0 4px 8px rgba(23,32,51,.18))}.ma-instrument.visible{display:block}",
       ".ma-instrument .body{position:absolute;inset:0;pointer-events:none;overflow:hidden}.ma-instrument .drag,.ma-instrument .rotate,.ma-instrument .resize,.ma-instrument .close{position:absolute;z-index:2;pointer-events:auto;display:grid;place-items:center;border:1px solid rgba(30,73,153,.6);background:rgba(255,255,255,.92);color:#1e4999;font:700 12px/1 system-ui;cursor:pointer}",
       ".ma-instrument .drag{left:50%;top:-15px;width:44px;height:22px;border-radius:8px;transform:translateX(-50%);cursor:move}.ma-instrument .rotate{right:-13px;top:-13px;width:25px;height:25px;border-radius:50%;cursor:grab}.ma-instrument .resize{right:-13px;bottom:-13px;width:25px;height:25px;border-radius:7px;cursor:nwse-resize}.ma-instrument .close{left:-11px;top:-11px;width:23px;height:23px;border-radius:50%}",
-      ".ma-ruler .body{border:2px solid rgba(180,125,0,.8);border-radius:5px;background-color:rgba(255,214,64,.33);background-image:repeating-linear-gradient(90deg,rgba(110,75,0,.72) 0 1px,transparent 1px 10px),repeating-linear-gradient(90deg,rgba(110,75,0,.82) 0 2px,transparent 2px 50px);background-size:100% 9px,100% 16px;background-repeat:no-repeat;background-position:left top,left top}",
-      ".ma-ruler .body:after{content:'0     1     2     3     4     5     6     7     8     9';position:absolute;left:5px;top:18px;color:rgba(90,60,0,.78);font:700 10px/1 monospace;word-spacing:26px;white-space:pre}",
-      ".ma-square .body{clip-path:polygon(0 100%,100% 100%,0 0);background:rgba(64,190,255,.24);border:2px solid rgba(0,108,168,.75)}.ma-square .body:after{content:'45°';position:absolute;left:18%;bottom:12%;color:rgba(0,76,120,.8);font:800 15px system-ui}",
-      ".ma-protractor .body{border:2px solid rgba(132,67,170,.78);border-bottom:0;border-radius:200px 200px 0 0;background:repeating-conic-gradient(from 270deg at 50% 100%,rgba(92,34,130,.55) 0 .7deg,transparent .7deg 10deg),rgba(203,145,234,.22);clip-path:inset(0 0 0 0)}",
-      ".ma-protractor .body:before{content:'';position:absolute;left:50%;bottom:-2px;width:42%;height:42%;transform:translateX(-50%);border:2px solid rgba(132,67,170,.58);border-bottom:0;border-radius:100% 100% 0 0;background:rgba(255,255,255,.55)}",
-      ".ma-protractor .labels{position:absolute;inset:0;color:rgba(83,28,118,.88);font:800 10px system-ui;pointer-events:none}.ma-protractor .labels span{position:absolute}.ma-protractor .d0{left:3px;bottom:3px}.ma-protractor .d45{left:20%;top:30%}.ma-protractor .d90{left:48%;top:5px}.ma-protractor .d135{right:18%;top:30%}.ma-protractor .d180{right:3px;bottom:3px}",
+      ".ma-instrument .body svg{width:100%;height:100%;display:block;overflow:hidden}.ma-instrument .drag,.ma-instrument .rotate,.ma-instrument .resize{touch-action:none}",
       ".ma-instrument-menu{position:fixed;z-index:1110;display:none;grid-template-columns:repeat(3,44px);gap:5px;padding:7px;border:1px solid #d8deea;border-radius:11px;background:#fff;box-shadow:0 10px 28px rgba(23,32,51,.2)}.ma-instrument-menu.open{display:grid}.ma-instrument-menu button{width:44px;height:38px;border:1px solid #d8deea;border-radius:8px;background:#fff;color:#172033;font:700 17px/1 system-ui;cursor:pointer}.ma-instrument-menu .hide{grid-column:1/-1;width:auto;font-size:11px}"
     ].join("");
     document.head.appendChild(style);
   }
 
+  // Relative diagram units, not a physical centimetre calibration.
+  var TAMANHO = { ruler: [720, 64], square: [240, 240], protractor: [380, 190] };
+  function instrumentSvg(type) {
+    var svg = '<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="none" ';
+    if (type === "ruler") {
+      svg += 'viewBox="0 0 720 64"><rect x="1" y="1" width="718" height="62" rx="4" fill="#ffd640" fill-opacity=".33" stroke="#ad831c" stroke-width="2"/>';
+      for (var i = 0; i <= 100; i++) {
+        var x = 12 + i * 6.96, major = i % 10 === 0;
+        svg += '<line data-tick="' + i + '" x1="' + x + '" x2="' + x + '" y1="2" y2="' + (major ? 23 : i % 5 === 0 ? 16 : 10) + '" stroke="#805d12" stroke-width="' + (major ? 1.8 : 1) + '"/>';
+        if (major) svg += '<text data-unit="' + i/10 + '" x="' + x + '" y="39" text-anchor="middle" font-size="13" fill="#805d12">' + i/10 + '</text>';
+      }
+    } else if (type === "square") {
+      svg += 'viewBox="0 0 240 240"><path d="M1 239V1L239 239Z" fill="#40beff" fill-opacity=".24" stroke="#006ca8" stroke-width="2"/><path d="M1 220H20V239" fill="none" stroke="#006ca8" stroke-width="2"/><text x="27" y="75" font-size="14" fill="#004c78">45°</text><text x="165" y="223" font-size="14" fill="#004c78">45°</text>';
+    } else {
+      svg += 'viewBox="0 0 380 190"><path d="M1 189 A189 189 0 0 1 379 189 Z" fill="#cb91ea" fill-opacity=".30" stroke="#8443aa" stroke-width="2"/>';
+      for (var a = 0; a <= 180; a += 1) {
+        var rad = a * Math.PI / 180, major = a % 10 === 0, mid = a % 5 === 0;
+        var outer = 187, inner = major ? 171 : mid ? 177 : 182;
+        function px(r) { return 190 + r * Math.cos(rad); }
+        function py(r) { return 189 - r * Math.sin(rad); }
+        svg += '<line data-angle="' + a + '" x1="' + px(outer) + '" y1="' + py(outer) + '" x2="' + px(inner) + '" y2="' + py(inner) + '" stroke="#532076" stroke-width="' + (major ? 1.6 : .8) + '"/>';
+        if (a % 30 === 0) svg += '<text x="' + px(153) + '" y="' + (py(153) - 5) + '" font-size="12" fill="#532076" text-anchor="middle">' + a + '°</text>';
+      }
+      svg += '<circle cx="190" cy="189" r="3" fill="#532076"/>';
+    }
+    return svg + '</svg>';
+  }
   function instrument(type) {
     var node = document.createElement("div");
     node.className = "ma-instrument ma-" + type;
     node.setAttribute("data-instrument", type);
     node.innerHTML = '<div class="body"></div><div class="labels"></div><button class="close" title="Ocultar">×</button><button class="drag" title="Mover">•••</button><button class="rotate" title="Girar">↻</button><button class="resize" title="Redimensionar">↘</button>';
-    if (type === "protractor") node.querySelector(".labels").innerHTML = '<span class="d0">0°</span><span class="d45">45°</span><span class="d90">90°</span><span class="d135">135°</span><span class="d180">180°</span>';
+    node.querySelector(".body").innerHTML = instrumentSvg(type);
     return node;
   }
 
@@ -99,15 +121,17 @@
         node.classList.toggle("visible", !!item.visible);
         node.style.left = item.x * r.width + "px";
         node.style.top = item.y * r.height + "px";
-        node.style.width = item.width * r.width + "px";
-        node.style.height = item.height * r.height + "px";
+        var width = item.width * r.width;
+        var height = width * TAMANHO[type][1] / TAMANHO[type][0];
+        if (r.height) item.height = height / r.height;
+        node.style.width = width + "px";
+        node.style.height = height + "px";
         node.style.transform = "rotate(" + (item.rotation || 0) + "deg)";
       });
     }
     /* Aparece no pedaço da folha que está NA TELA, com tamanho de régua de verdade.
        Antes as coordenadas eram frações da folha inteira: numa apostila de 12 páginas
        a régua nascia fora da vista e com 170 px de altura. */
-    var TAMANHO = { ruler: [720, 64], square: [240, 240], protractor: [380, 190] };
     function show(type) {
       load();
       var item = state[type];
@@ -117,7 +141,7 @@
           var left = Math.max(r.left, 0), right = Math.min(r.right, innerWidth);
           var top = Math.max(r.top, 0), bottom = Math.min(r.bottom, innerHeight);
           var w = Math.min(TAMANHO[type][0], (right - left) * .62);
-          var h = type === "ruler" ? TAMANHO[type][1] : w * TAMANHO[type][1] / TAMANHO[type][0];
+          var h = w * TAMANHO[type][1] / TAMANHO[type][0];
           item.width = w / r.width;
           item.height = h / r.height;
           item.x = ((left + right) / 2 - w / 2 - r.left) / r.width;
@@ -217,8 +241,15 @@
           item.x = clamp(gesture.original.x + dx / r.width, -.5, 1.5);
           item.y = clamp(gesture.original.y + dy / r.height, -.5, 1.5);
         } else if (gesture.action === "resize") {
-          item.width = Math.max(.12, gesture.original.width + dx / r.width);
-          item.height = Math.max(.06, gesture.original.height + dy / r.height);
+          if (!r.width || !r.height) return;
+          // Resize along the diagonal of the rotated instrument without changing its aspect.
+          var a = (gesture.original.rotation || 0) * Math.PI / 180;
+          var ratio = TAMANHO[type][1] / TAMANHO[type][0];
+          var localX = dx * Math.cos(a) + dy * Math.sin(a);
+          var localY = -dx * Math.sin(a) + dy * Math.cos(a);
+          var delta = (localX + ratio * localY) / (1 + ratio * ratio);
+          item.width = clamp(gesture.original.width + delta / r.width, .12, 1.25);
+          item.height = item.width * r.width * ratio / r.height;
         } else {
           var cx = (gesture.original.x + gesture.original.width / 2) * r.width + r.left;
           var cy = (gesture.original.y + gesture.original.height / 2) * r.height + r.top;
@@ -230,6 +261,7 @@
       function end() { gesture = null; }
       node.addEventListener("pointerup", end);
       node.addEventListener("pointercancel", end);
+      node.addEventListener("lostpointercapture", end);
     });
 
     load();

@@ -93,10 +93,35 @@ def main():
         page.locator('#boardTools button[title="Régua, esquadro e transferidor"]').click()
         page.locator('.ma-instrument-menu.open [data-add="ruler"]').click()
         expect(page.locator(".ma-ruler")).to_be_visible()
+        assert page.locator(".ma-ruler svg [data-tick]").count() == 101
+        for unit in range(11):
+            label = page.locator(f".ma-ruler svg [data-unit=\"{unit}\"]")
+            tick = page.locator(f".ma-ruler svg [data-tick=\"{unit*10}\"]")
+            assert abs(float(label.get_attribute("x")) - float(tick.get_attribute("x1"))) < 1e-8
         page.screenshot(path=str(artifacts / "geometry.png"))
         page.locator(".ma-ruler .close").click()
         expect(page.locator(".ma-ruler")).to_be_hidden()
-        print("PASS: shape and ruler UI", flush=True)
+        for kind, ratio in [("square", 1.0), ("protractor", 2.0)]:
+            page.locator('#boardTools button[title="Régua, esquadro e transferidor"]').click()
+            page.locator(f'.ma-instrument-menu.open [data-add="{kind}"]').click()
+            node = page.locator(f".ma-{kind}")
+            expect(node).to_be_visible()
+            def aspect():
+                return node.evaluate("(n) => n.offsetWidth / n.offsetHeight")
+            assert abs(aspect() - ratio) < .025
+            handle = node.locator(".resize").bounding_box()
+            page.mouse.move(handle["x"]+handle["width"]/2, handle["y"]+handle["height"]/2)
+            page.mouse.down()
+            page.mouse.move(handle["x"]+handle["width"]/2+65, handle["y"]+handle["height"]/2+25, steps=8)
+            page.mouse.up()
+            assert abs(aspect() - ratio) < .025
+            if kind == "protractor":
+                assert node.locator("[data-angle]").count() == 181
+                assert node.locator('[data-angle="90"]').evaluate("(n) => Math.abs(+n.getAttribute('x1')-190)<1e-8")
+                page.screenshot(path=str(artifacts / "protractor.png"))
+            node.locator(".close").click()
+            expect(node).to_be_hidden()
+        print("PASS: shape, ruler ticks and instrument aspect ratios", flush=True)
         page.goto(URL+"pdf.html")
         expect(page.locator("#loading")).to_be_hidden(timeout=30000)
         expect(page.locator("#pageLabel")).to_have_text("1 / 2")
