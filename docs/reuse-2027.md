@@ -45,3 +45,7 @@ O [protótipo de volumetria](../apps/simulators/volume/index.html) reutiliza uma
 ## Incremento de produção de materiais
 
 Veja [inventário e contratos do motor de materiais](materials-engine.md) para o estado de adoção, dependências e limitações dos primeiros módulos.
+
+## Oficina da Conta — primeiro núcleo
+
+Gerador e fluxo de treino existentes recuperados em apps/oficina, sem vínculo comercial ou dados persistentes. O motor de aulas por etapas é a próxima frente; seu contrato via/ponto/tela/item deve permanecer compartilhado, sem importar a plataforma comercial ou materiais indiscriminadamente.

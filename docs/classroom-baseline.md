@@ -20,3 +20,7 @@ Não iniciar migração de funcionalidades adicionais nesta frente até verifica
 ## Segunda linha de base verificada
 
 Commit 8b85dd89fcb52172a934902baf45dc78ffea9e46, [run 45425903872](https://github.com/thiagoarce/maple-math-classes/actions/runs/45425903872): success. 44 testes de cálculo e 47 verificações do núcleo novamente aprovados. Chromium aprovou também a precedência pela interface da calculadora, forma quadrada, abertura/fechamento da régua e persistência/isolamento de páginas PDF após reload. Artefato sintético 14934784318: board.png, projector.png, geometry.png, pdf.png. Inspeção visual das quatro capturas: lousa e espelho coincidem na resolução testada, controles ausentes na projeção, anotação presente no PDF; a régua tinha números desalinhados das marcas. Não era detectado pelo gate. A correção subsequente troca as escalas de CSS por SVG, conserva proporções durante resize e inclui testes das marcas e dos instrumentos. Ainda não aprovada pelo run anterior. Não é calibração física.
+
+## Terceira execução
+
+O run 45426733961, commit d32c6d1, terminou com sucesso, incluindo alinhamento da régua e proporções dos instrumentos após redimensionamento. A linha de base de demonstração está aprovada nesse escopo. Não equivale a homologação em hardware de sala nem ao espelhamento integral.

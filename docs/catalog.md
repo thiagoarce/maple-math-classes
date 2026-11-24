@@ -29,3 +29,5 @@ A prioridade é reaproveitar e integrar ferramentas existentes, não reimplement
 6. Validar a arquitetura de dados privada antes de qualquer transição real.
 
 O trabalho técnico e a curadoria podem avançar separadamente, desde que respeitem os limites de publicação. Mudanças de prioridade devem atualizar este documento.
+
+A Oficina da Conta tem um primeiro host local anônimo em `apps/oficina/`, com geradores recuperados; homologação própria pendente.
