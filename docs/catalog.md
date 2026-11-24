@@ -9,7 +9,7 @@ Este catálogo descreve componentes planejados, não instalações existentes. U
 | Handouts | `templates/handouts/` e `tools/generators/` | Núcleo copiado; runtime e validação pendentes | Exemplo autoral, impressão e validação |
 | Listas e paginação | `templates/worksheets/` e `tools/generators/` | Aquecimento, deduplicação e paginador de handouts em revisão | Gabaritos, progressão, impressão correta |
 | Slides | `templates/slides/` | Planejado | Condução e notas do professor separadas |
-| Modo Aula | `apps/classroom/` | Demonstração com formas, instrumentos e seleção; testes de navegador pendentes | Lousa e recursos genéricos, sem acesso a dados privados |
+| Modo Aula | `apps/classroom/` | Demonstração com objetos, host PDF e espelho experimental; runtime e testes pendentes | Lousa e recursos genéricos, sem acesso a dados privados |
 | Jogos e simuladores | `apps/games/` e `apps/simulators/` | Protótipo de volumetria em revisão | Experiências independentes e testadas |
 | Matemática HS | `subjects/hs-mathematics/` | Índice criado | Currículo, sequências e materiais autorais por nível |
 | Entrepreneurship | `subjects/entrepreneurship/` | Índice criado | Unidades, projetos, atividades e rubricas |

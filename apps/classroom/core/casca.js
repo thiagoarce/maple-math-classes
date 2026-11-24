@@ -146,7 +146,7 @@
       /* O clique vai para o botão original DEPOIS que este gesto termina: as ferramentas
          da aula fecham seus menus quando percebem um clique "fora" deles, e o próprio
          clique no painel contava como fora. */
-      b.addEventListener("click", function () { fechar(); setTimeout(function () { el.click(); }, 0); });
+      b.addEventListener("click", function () { fechar(); if (el.id === "projectionBtn") el.click(); else setTimeout(function () { el.click(); }, 0); });
       return b;
     }
 
