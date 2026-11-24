@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Modo Aula — demonstração local</title>
+  <style>
+    :root{--blue:#1e4999;--ink:#172033;--muted:#667085;--hair:#d8deea;--bg:#eef1f6;--green:#2e7d32;--orange:#c56a00}
+    *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);background:var(--bg)}button{font:inherit}[hidden]{display:none!important}
+    .defs{position:absolute;width:0;height:0;overflow:hidden}.icon{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+    .app{height:100%;display:grid;grid-template-rows:auto 1fr;min-height:0}.topbar{z-index:30;display:flex;align-items:center;gap:9px;padding:7px 10px;background:#fff;border-bottom:1px solid var(--hair);box-shadow:0 2px 12px rgba(23,32,51,.08)}
+    .headline{min-width:0;margin-right:auto}.headline strong{display:block;max-width:540px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:14px}.headline small{display:block;color:var(--muted);font-size:11px}.active-label{max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--muted);font-size:12px;font-weight:750}
+    .toolbar{display:flex;align-items:center;gap:5px;overflow-x:auto;scrollbar-width:none}.toolbar::-webkit-scrollbar{display:none}.icon-btn{width:38px;height:38px;flex:0 0 auto;display:grid;place-items:center;border:1px solid var(--hair);border-radius:10px;background:#fff;color:var(--ink);cursor:pointer}.icon-btn.active{background:var(--blue);border-color:var(--blue);color:#fff}.icon-btn:hover{border-color:#9aabc8}.sep{width:1px;height:27px;background:var(--hair);flex:0 0 auto}
+    .workspace{position:relative;min-height:0;overflow:hidden}.stage{position:absolute;inset:0;background:#fff;overflow:hidden}.board{position:absolute;inset:0;background:#fff}.board.black{background:#111}.empty{position:absolute;inset:0;display:grid;place-items:center;text-align:center;color:#98a2b3;pointer-events:none}.empty b{display:block;font-size:42px;line-height:1}.empty span{display:block;margin-top:8px;font-size:13px}
+    .viewer{position:absolute;inset:0;z-index:2;background:#eef1f6}.viewer iframe,.viewer img{display:block;width:100%;height:100%;border:0;background:#fff}.viewer img{object-fit:contain}.stage:not(.has-resource) .viewer{display:none}
+    /* Começa abaixo da faixa de escrita. A barra da lousa é uma pílula flutuante que
+       termina em y=64 e a do visualizador tem 41px; com `top:12px` a gaveta cobria a
+       ponta direita das duas, e junto com ela os botões de nuvem e tela cheia. */
+    .drawer{position:absolute;z-index:12;top:72px;bottom:12px;width:min(380px,42vw);display:grid;grid-template-rows:auto 1fr;background:rgba(255,255,255,.98);border:1px solid var(--hair);border-radius:14px;box-shadow:0 12px 34px rgba(23,32,51,.18);transition:transform .18s ease}.drawer.right{right:12px}.drawer.left{left:12px}.drawer.right.closed{transform:translateX(calc(100% + 18px))}.drawer.left.closed{transform:translateX(calc(-100% - 18px))}
+/* ## Uma arrumação só, com recurso aberto ou na lousa
+     *
+     * Antes havia duas: na lousa, a barra da casca somada à barra flutuante da lousa; no
+     * PDF, a barra do visualizador somada a uma coluna de widgets que eu tinha inventado.
+     * Thiago, 13/08: *"não tá consistente. Na lousa eu tenho duas barras, aí no PDF vai
+     * pro lado. É para ser uma coisa só pra tudo."*
+     *
+     * A regra passou a ser: **a barra deitada no alto é sempre a de escrever** — a da
+     * lousa quando é a lousa, a do visualizador quando é um recurso. A casca não tem
+     * barra deitada nenhuma. Os botões dela viram um trilho em pé grudado na gaveta.
+     *
+     * O trilho mora DENTRO da gaveta, ancorado na borda de fora, do mesmo jeito que a
+     * aba sempre esteve. Assim ele acompanha a gaveta quando ela fecha e, principalmente,
+     * troca de lado junto com ela — que era o outro pedido: *"isso permite até trocar de
+     * lado se eu precisar"*. */
+    .app{grid-template-rows:1fr}
+    .topbar{display:none}
+    .drawer{display:flex;flex-direction:column;grid-template-rows:none}
+    .drawer>.goals-body,.drawer>#planningBody{flex:1 1 auto;min-height:0}
+/* A roleta de nomes não cabe em 380px. Só ela alarga a gaveta, e só enquanto a
+       aba dela estiver aberta. */
+    .drawer[data-aba="roster"]{width:min(620px,62vw)}
+    .drawer-rail{position:absolute;top:0;display:flex;flex-direction:column;align-items:center;gap:6px;max-height:100%;overflow-y:auto;overflow-x:hidden;scrollbar-width:none}
+    .drawer-rail::-webkit-scrollbar{display:none}
+    .drawer.right .drawer-rail{right:100%;padding-right:8px}
+    .drawer.left .drawer-rail{left:100%;padding-left:8px}
+    .drawer-rail .toolbar{display:flex;flex-direction:column;align-items:center;gap:6px;width:auto;overflow:visible}
+    .drawer-rail .icon-btn{box-shadow:0 6px 18px rgba(23,32,51,.13)}
+    .drawer-rail .sep{width:26px;height:1px;flex:0 0 auto}
+    /* A aba virou o primeiro botão do trilho, então não se posiciona mais sozinha: era
+       ela e o `goalsBtn` da barra fazendo a mesma coisa em dois lugares. */
+    .drawer-tab{width:40px;height:44px;flex:0 0 auto;border:1px solid var(--hair);border-radius:10px;background:#fff;color:var(--blue);display:grid;place-items:center;box-shadow:0 6px 18px rgba(23,32,51,.13);cursor:pointer}
+    .drawer-head{display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid var(--hair);font-size:13px;font-weight:850}.drawer-head .spacer{flex:1}.mini-btn{width:31px;height:31px;border:1px solid var(--hair);border-radius:8px;background:#fff;display:grid;place-items:center;color:var(--ink);cursor:pointer}.goals-body{overflow:auto;padding:12px;display:grid;gap:10px}.goal{border-left:5px solid var(--blue);background:#eef4ff;border-radius:9px;padding:10px 12px}.goal.criteria{border-color:var(--green);background:#eff9f1}.goal.routine{border-color:var(--orange);background:#fff5e8}.goal h2{margin:0 0 7px;font-size:14px}.goal ul{margin:0;padding-left:21px}.goal li{margin:5px 0;font-size:13px;line-height:1.4}
+    .shelf{position:absolute;z-index:16;left:10px;right:10px;bottom:10px;height:116px;border:1px solid var(--hair);border-radius:14px;background:#fff;box-shadow:0 10px 28px rgba(23,32,51,.16);transition:transform .18s ease}.shelf.closed{transform:translateY(calc(100% - 38px))}.shelf-handle{height:37px;width:100%;border:0;border-bottom:1px solid var(--hair);background:#fff;border-radius:14px 14px 0 0;display:flex;align-items:center;justify-content:center;gap:7px;color:var(--blue);font-size:12px;font-weight:800;cursor:pointer}.shelf.closed .shelf-handle{border-bottom:0}.resource-list{height:78px;display:flex;gap:8px;align-items:stretch;overflow-x:auto;padding:8px}.resource-card{min-width:190px;display:flex;border:1px solid var(--hair);border-radius:10px;background:#fff;overflow:hidden}.resource-card.active{border-color:var(--blue);box-shadow:0 0 0 2px rgba(30,73,153,.12)}.resource-main{flex:1;display:flex;align-items:center;gap:8px;border:0;background:#fff;padding:8px;text-align:left;color:var(--ink);cursor:pointer}.resource-main strong{display:block;max-width:155px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:12px}.resource-main small{display:block;margin-top:3px;color:var(--muted);font-size:10px}.symbol{width:30px;height:30px;display:grid;place-items:center;border-radius:8px;background:#eef4ff;color:var(--blue);flex:0 0 auto}.formats{display:flex;flex-direction:column;border-left:1px solid var(--hair)}.formats button{flex:1;border:0;border-bottom:1px solid var(--hair);background:#fff;color:var(--blue);padding:3px 7px;font-size:10px;font-weight:850;cursor:pointer}.formats button:last-child{border-bottom:0}
+    .blackout{position:fixed;inset:0;z-index:999;background:#000;cursor:pointer}.error{height:100%;display:grid;place-items:center;padding:25px}.error-card{max-width:520px;padding:24px;border:1px solid var(--hair);border-radius:16px;background:#fff;text-align:center}.error-card h1{margin:0 0 8px}.error-card p,.muted{color:var(--muted);font-size:12px;line-height:1.5}
+    @media(max-width:850px){.topbar{display:grid;gap:5px}.headline{width:100%}.toolbar{width:100%}.active-label{display:none}.drawer{width:min(360px,68vw)}}
+    @media(max-width:620px){.topbar{padding:6px 8px}.headline strong{max-width:92vw;font-size:13px}.drawer{top:8px;bottom:56px;width:calc(100% - 58px)}.drawer.right{right:8px}.drawer.left{left:8px}.shelf{left:6px;right:6px;bottom:6px}.sep{display:none}}
+  </style>
+</head>
+<body>
+<svg class="defs" aria-hidden="true">
+  <symbol id="i-white" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/></symbol>
+  <symbol id="i-black" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2" fill="currentColor"/></symbol>
+  <symbol id="i-blackout" viewBox="0 0 24 24"><path d="M4 4h16v16H4z" fill="currentColor"/></symbol>
+  <symbol id="i-goals" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-resources" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9h10M7 13h7"/></symbol>
+  <symbol id="i-sair" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h9"/><path d="M10 12h10"/><path d="M17 9l3 3-3 3"/></symbol><symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+  <symbol id="i-calc" viewBox="0 0 24 24"><rect x="4" y="2.5" width="16" height="19" rx="2.5"/><path d="M7.5 6.5h9M7.5 12h1.5M11.25 12h1.5M15 12h1.5M7.5 16.5h1.5M11.25 16.5h1.5M15 16.5h1.5"/></symbol><symbol id="i-full" viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/></symbol>
+  <symbol id="i-side" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M12 4v16"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6z"/><path d="M14 3v4h4M9 12h6M9 16h6"/></symbol>
+  <symbol id="i-html" viewBox="0 0 24 24"><path d="m8 8-4 4 4 4M16 8l4 4-4 4M14 5l-4 14"/></symbol>
+  <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m4 17 5-5 4 4 2-2 5 4"/></symbol>
+</svg>
+<div id="app" class="app">
+  <header class="topbar">
+    <div class="headline"><strong id="lessonTitle">Modo Aula</strong><small id="lessonMeta"></small></div>
+    <span id="activeLabel" class="active-label">Lousa</span>
+    <div class="toolbar" role="toolbar">
+      
+      <span class="sep"></span>
+      <button id="whiteBtn" class="icon-btn" title="Lousa branca"><svg class="icon"><use href="#i-white"/></svg></button>
+      <button id="blackBtn" class="icon-btn" title="Lousa preta"><svg class="icon"><use href="#i-black"/></svg></button>
+      <button id="blackoutBtn" class="icon-btn" title="Tela preta"><svg class="icon"><use href="#i-blackout"/></svg></button>
+      <span class="sep"></span>
+      <button id="goalsBtn" class="icon-btn" title="Objetivos"><svg class="icon"><use href="#i-goals"/></svg></button>
+      <button id="resourcesBtn" class="icon-btn" title="Recursos"><svg class="icon"><use href="#i-resources"/></svg></button>
+      <button id="closeResourceBtn" class="icon-btn" title="Fechar recurso" hidden><svg class="icon"><use href="#i-close"/></svg></button>
+      
+      <button id="fullscreenBtn" class="icon-btn" title="Tela cheia"><svg class="icon"><use href="#i-full"/></svg></button>
+    </div>
+  </header>
+  <main class="workspace">
+    <section id="stage" class="stage">
+      <div id="board" class="board"><div class="empty"><div><b>✦</b><span>Escolha um recurso ou use a lousa.</span></div></div></div>
+      <div class="viewer"><iframe id="resourceFrame" sandbox="allow-scripts" referrerpolicy="no-referrer" hidden></iframe><img id="resourceImage" hidden alt=""></div>
+      <aside id="goalsDrawer" class="drawer right">
+        <button id="drawerTab" class="drawer-tab" title="Abrir ou fechar objetivos"><svg class="icon"><use href="#i-goals"/></svg></button>
+        <div class="drawer-head"><svg class="icon"><use href="#i-goals"/></svg>Objetivos da aula<span class="spacer"></span><button id="drawerSideBtn" class="mini-btn" title="Trocar lado"><svg class="icon"><use href="#i-side"/></svg></button><button id="drawerCloseBtn" class="mini-btn" title="Fechar"><svg class="icon"><use href="#i-close"/></svg></button></div>
+        <div id="goalsBody" class="goals-body"></div>
+      </aside>
+      <aside id="resourceShelf" class="shelf">
+        <button id="shelfHandle" class="shelf-handle"><svg class="icon"><use href="#i-resources"/></svg><span id="shelfLabel">Recursos da aula</span></button>
+        <div id="resourceList" class="resource-list"></div>
+      </aside>
+    </section>
+  </main>
+</div>
+<div id="blackout" class="blackout" hidden></div>
+<section id="errorState" class="error" hidden><div class="error-card"><h1>Modo Aula indisponível</h1><p>O manifesto sintético não foi carregado. Verifique os arquivos locais.</p></div></section>
+<script src="demo-manifest.js"></script>
+<script src="core/shell.js"></script>
+<script src="core/ink.js"></script>
+<script src="core/ink_bridge.js"></script>
+<script src="core/board.js"></script>
+<script src="core/time_widgets.js"></script>
+<script src="core/casca.js"></script>
+</body>
+</html>
