@@ -11,7 +11,10 @@ Este catálogo descreve componentes planejados, não instalações existentes. U
 | Slides | `templates/slides/` | Planejado | Condução e notas do professor separadas |
 | Modo Aula | `apps/classroom/` | Planejado | Lousa e recursos genéricos, sem acesso a dados privados |
 | Jogos e simuladores | `apps/games/` e `apps/simulators/` | Protótipo de volumetria em revisão | Experiências independentes e testadas |
-| Acervo de matemática | `materials/` | Planejado | Curadoria autoral por nível e tema |
+| Matemática HS | `subjects/hs-mathematics/` | Índice criado | Currículo, sequências e materiais autorais por nível |
+| Entrepreneurship | `subjects/entrepreneurship/` | Índice criado | Unidades, projetos, atividades e rubricas |
+| Olimpíadas | `subjects/olympiads/` | Índice criado | Trilhas por nível, famílias de problemas e simulados autorizados |
+| Acervo transversal | `materials/` | Planejado | Recursos comuns que não pertencem exclusivamente a uma frente |
 | API e persistência privadas | Camada separada | Planejado | Schema sintético, autorização, testes e plano de migração |
 
 ## Ordem inicial — Maple 2027

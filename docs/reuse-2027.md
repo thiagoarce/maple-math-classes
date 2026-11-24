@@ -2,6 +2,10 @@
 
 **Diretriz:** priorizar os melhores recursos existentes, preservando o que já funciona. Refatoração é exceção motivada por privacidade, portabilidade, correção ou integração; não é um objetivo em si. Não reproduzir conteúdo de produtos comerciais nem dados escolares privados.
 
+## Frentes de ensino
+
+A curadoria organiza recursos por Matemática HS, Entrepreneurship e Olimpíadas, com infraestrutura compartilhada. Ver [organização por disciplina](subject-organization.md). As turmas e níveis efetivamente atribuídos em 2027 ainda não estão definidos nesta documentação.
+
 ## Matriz de prioridades
 
 | Componente | Destino | Estratégia | Estado |
@@ -13,7 +17,7 @@
 | Motor de aula em etapas | apps/lessons | Reaproveitar separação entre dados de aula, renderização e validação; ajustar à aula presencial sem impor a sequência de um curso autônomo | A revisar |
 | Manipulativos | apps/simulators | Preservar gestos matemáticos, previsão, experimentação e transferência; primeiro exemplo independente de volumetria | Protótipo em revisão |
 | Treino de cálculo | apps/practice | Reaproveitar geradores e conferência; retirar vínculos com produtos e revisar direitos de conteúdo | A revisar |
-| Planejamento e percurso | materials, templates | Consolidar a prática docente existente | A revisar |
+| Planejamento e percurso | subjects, templates | Consolidar a prática docente existente | A revisar |
 | Habilidades e pré-requisitos | docs, materials | Usar o método de mapeamento, não impor um currículo comercial a uma escola | A revisar |
 | Diagnóstico, erros e feedback | API privada e materiais genéricos | Distinguir exposição, tentativa, resolução, transferência, retenção e autonomia; validar indicadores | A revisar |
 
