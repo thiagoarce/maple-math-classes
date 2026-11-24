@@ -66,3 +66,7 @@ Comandos: npm --prefix tools/rendering/math-runtime install --ignore-scripts; py
 ## Resultado verificado
 
 Run 45433181593 (28d5c3b) aprovado: 70 blobs originais, 1 página de handout (15 SVGs), 2 páginas de lista (60 SVGs, 12 itens presentes), sem erros de composição ou estouros detectados. Fontes fallback e inspeção humana dos rasters continuam pendentes.
+
+### Inspeção visual da primeira impressão
+
+Rasters do artefato 14940221135 (run 45433181593) inspecionados: três páginas legíveis, sem cortes aparentes. O handout curto tem bastante área livre no pé; a lista distribui espaço extra nas caixas externas e renumera itens de acordo com o empacotamento. São limitações editoriais da demonstração, não modelo de listão pedagógico pronto. A fixture tem 12 itens parametrizados do mesmo tipo, apenas para testar paginação. O gabarito de origem usa ITEM-NN, não o número impresso. O novo gate exporta `list-key-final.txt` com a correspondência da paginação efetiva e valida a bijeção; para uso real, gerar gabarito a partir da mesma renderização final, nunca assumir ordem original. A exportação ainda exige nova execução. Não publicar identificação técnica na folha de produção. Fontes originais, revisão de licenças, Safari e calibragem sem timbre continuam pendentes.

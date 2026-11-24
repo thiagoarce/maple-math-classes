@@ -28,6 +28,12 @@ def main():
             assert not errors and not foreign,(errors,foreign)
             if name=="list":
                 assert page.locator(".a4 .bex").count()==12
+                # The optimizer renumbers exercises; build a key for this exact print.
+                mapping=page.locator(".a4 .bex").evaluate_all("""els=>els.map(e=>({number:Number(e.querySelector('.tag').textContent.trim()),id:Number(e.dataset.exercise)}))""")
+                assert sorted(x["number"] for x in mapping)==list(range(1,13)),mapping
+                assert sorted(x["id"] for x in mapping)==list(range(1,13)),mapping
+                mapping.sort(key=lambda x:x["number"])
+                (OUT/"list-key-final.txt").write_text("\n".join(f'{x["number"]:02}: {(x["id"]+2)*(x["id"]+3)} (ITEM-{x["id"]:02})' for x in mapping)+"\n",encoding="utf-8")
             pdf=OUT/(name+".pdf")
             page.pdf(path=str(pdf),prefer_css_page_size=True,print_background=True)
             with fitz.open(pdf) as d:
