@@ -39,3 +39,5 @@ Homologação inicial: papel aprovado no run 45433181593; slides de condução r
 Painel docente: apps/planning/ — demonstração de três disciplinas, sem dados reais ou persistência. Veja docs/planning-panel.md. Homologação pendente.
 
 Contrato privado candidato em infra/private-data/; nenhum banco real, API ou migração de alunos. Veja docs/private-data-contract.md.
+
+Piloto de recuperação de produto matricial: subjects/hs-mathematics/units/hs-matrices/pilot/ — ficha, fixture, resolução manual e gerador de duas peças sintéticas; homologação de impressão pendente.

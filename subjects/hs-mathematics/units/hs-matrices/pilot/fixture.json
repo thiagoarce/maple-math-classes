@@ -1,0 +1,147 @@
+{
+  "schema_version": 1,
+  "synthetic": true,
+  "unit_id": "hs-matrices",
+  "subject_id": "hs-mathematics",
+  "purpose": "recovery",
+  "objective": "Distinguir o produto matricial da multiplicação elemento a elemento e justificar a compatibilidade das dimensões.",
+  "evidence": "Caso fictício: identifica as dimensões, mas multiplica posições correspondentes.",
+  "duration_minutes": 25,
+  "matrices": {
+    "A": [
+      [
+        1,
+        2,
+        0
+      ],
+      [
+        -1,
+        3,
+        2
+      ]
+    ],
+    "B": [
+      [
+        2,
+        1
+      ],
+      [
+        0,
+        4
+      ],
+      [
+        3,
+        -2
+      ]
+    ],
+    "C": [
+      [
+        1,
+        2
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "D": [
+      [
+        2,
+        0
+      ],
+      [
+        3,
+        1
+      ]
+    ],
+    "P": [
+      [
+        2,
+        3
+      ],
+      [
+        4,
+        1
+      ]
+    ],
+    "V": [
+      [
+        5
+      ],
+      [
+        2
+      ]
+    ],
+    "E": [
+      [
+        2,
+        -1,
+        3
+      ]
+    ],
+    "F": [
+      [
+        4
+      ],
+      [
+        2
+      ],
+      [
+        -1
+      ]
+    ]
+  },
+  "key": {
+    "AB": [
+      [
+        2,
+        9
+      ],
+      [
+        4,
+        7
+      ]
+    ],
+    "CD": [
+      [
+        8,
+        2
+      ],
+      [
+        3,
+        1
+      ]
+    ],
+    "elementwise_CD": [
+      [
+        2,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "PV": [
+      [
+        16
+      ],
+      [
+        22
+      ]
+    ],
+    "EF": [
+      [
+        3
+      ]
+    ],
+    "BA_shape": [
+      3,
+      3
+    ],
+    "AB_shape": [
+      2,
+      2
+    ]
+  }
+}

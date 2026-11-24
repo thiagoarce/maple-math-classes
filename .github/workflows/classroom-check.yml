@@ -25,6 +25,7 @@ jobs:
           node tests/test_curriculum_catalog.mjs
           node tests/test_planning.mjs
           python tests/test_private_data.py
+          python tests/test_individual_pilot_math.py
           npm --prefix infra/private-data install --ignore-scripts --no-audit --no-fund
           node infra/private-data/test-api.mjs
           node infra/private-data/test-api.mjs --d1
@@ -44,6 +45,7 @@ jobs:
           python tools/rendering/install_math_runtime.py
           python -m pip install pymupdf==1.26.5
           PYTHONPATH=. python tests/generate_materials_demo.py
+          PYTHONPATH=. python tests/generate_individual_pilot.py
           PYTHONPATH=. python tests/generate_slides_demo.py
       - name: Browser gate
         run: |
@@ -54,6 +56,7 @@ jobs:
           python tests/test_oficina_browser.py
           python tests/test_activities_browser.py
           python tests/test_materials_browser.py
+          python tests/test_individual_pilot_browser.py
           python tests/test_planning_browser.py
           python tests/test_slides_browser.py
       - name: Upload synthetic screenshots

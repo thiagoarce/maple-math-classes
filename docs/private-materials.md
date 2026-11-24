@@ -23,3 +23,7 @@ Foi inspecionado o contrato do conector Google Drive: get_file_metadata aceita I
 ## Teste
 
 Suite HTTP nos dois runtimes cobre escopo, finalidade, evidência inválida, origem, duplicação, contexto mínimo, revisão, cancelamento e matrícula desligada. Testes de navegador, verificação de ACL real, fluxo de documento, revisão independente e política de retenção ainda pendentes. Não enviar evidência real para CI. Um pedido não prova aprendizagem, entrega ou execução.
+
+## Piloto fictício de produto matricial
+
+Run 45465137735: 90 casos da API passaram nos dois runtimes. A ficha em subjects/hs-mathematics/units/hs-matrices/pilot/ descreve objetivo e evidência fictícios, seis problemas autorais e resolução manual. Gerador usa handout_lib, matriz(colchete) e macete_produto originais; folha do estudante (duas páginas propostas) e gabarito docente (uma página proposta), separados. Testes numéricos e de impressão Chromium/PyMuPDF adicionados; nova CI ainda pendente. O código é fixture fixa, não recebe dados reais; artefatos CI são públicos/sintéticos. Revisão cega, revisão visual, aprovação do professor e destino Drive autorizado ainda pendentes. Não vincula documento nem marca pedido concluído.
