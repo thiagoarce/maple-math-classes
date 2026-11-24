@@ -1,4 +1,5 @@
 """Synthetic end-to-end gate. Run against a local HTTP server only."""
+from pathlib import Path
 import os
 from playwright.sync_api import sync_playwright, expect
 
@@ -47,6 +48,9 @@ def main():
         expect(page.locator("#boardSaveStatus")).to_have_text("salvo")
         assert ink_count() == 1
         print("PASS: board ink, undo/redo, reload", flush=True)
+        artifacts = Path(os.environ.get("MAPLE_TEST_ARTIFACTS", "test-artifacts"))
+        artifacts.mkdir(parents=True, exist_ok=True)
+        page.screenshot(path=str(artifacts / "board.png"))
         page.locator(".ma-aula-botao").click()
         with page.expect_popup() as popup:
             page.locator(".ma-aula .item").filter(has_text="Projetar lousa").click()
@@ -69,7 +73,30 @@ def main():
         expect(proj.locator("#cover")).to_be_visible()
         page.keyboard.press("b")
         expect(proj.locator("#cover")).to_be_hidden()
+        proj.screenshot(path=str(artifacts / "projector.png"))
         proj.close()
+        page.keyboard.press("c")
+        calc = page.locator(".ma-calc-flutua")
+        expect(calc).to_be_visible()
+        for key in ["C", "2", "+", "3", "×", "4", "="]:
+            calc.locator('[data-tecla="'+key+'"]').click()
+        expect(calc.locator(".ma-calc-num")).to_have_text("14")
+        calc.locator('[data-acao="fechar"]').click()
+        expect(calc).to_be_hidden()
+        print("PASS: calculator UI precedence", flush=True)
+        page.locator('#boardTools button[title="Formas e linhas"]').click()
+        page.locator('.ma-shape-menu.open [data-shape="square"]').click()
+        stroke(page.locator(".ma-shape-layer.active"), 400, 300)
+        expect(page.locator("#boardSaveStatus")).to_have_text("salvo")
+        assert ink_count() == 2
+        page.locator('#boardTools [data-tool="pen"]').click()
+        page.locator('#boardTools button[title="Régua, esquadro e transferidor"]').click()
+        page.locator('.ma-instrument-menu.open [data-add="ruler"]').click()
+        expect(page.locator(".ma-ruler")).to_be_visible()
+        page.screenshot(path=str(artifacts / "geometry.png"))
+        page.locator(".ma-ruler .close").click()
+        expect(page.locator(".ma-ruler")).to_be_hidden()
+        print("PASS: shape and ruler UI", flush=True)
         page.goto(URL+"pdf.html")
         expect(page.locator("#loading")).to_be_hidden(timeout=30000)
         expect(page.locator("#pageLabel")).to_have_text("1 / 2")
@@ -83,8 +110,22 @@ def main():
         page.locator("#prevPage").click()
         expect(page.locator("#pageLabel")).to_have_text("1 / 2")
         expect(page.locator("#loading")).to_be_hidden()
-        page.locator("#undoBtn").click() if page.locator("#undoBtn").is_enabled() else None
-        print("PASS: PDF.js runtime, render, zoom, annotation and page switch", flush=True)
+        expect(page.locator("#saveStatus")).to_have_text("salvo neste computador")
+        def pdf_ink_counts():
+            return page.evaluate("""async () => {
+              const db=await new Promise((resolve,reject)=>{const q=indexedDB.open('maple-demo-classroom',1);q.onsuccess=()=>resolve(q.result);q.onerror=()=>reject(q.error)});
+              try {return await new Promise((resolve,reject)=>{const q=db.transaction('sessions','readonly').objectStore('sessions').get('folha|/apps/classroom/fixtures/volume-demo.pdf');q.onsuccess=()=>resolve([q.result?.pages['1']?.strokes.length || 0,q.result?.pages['2']?.strokes.length || 0]);q.onerror=()=>reject(q.error)})}
+              finally {db.close()}
+            }""")
+        assert pdf_ink_counts() == [1, 0]
+        page.reload()
+        expect(page.locator("#loading")).to_be_hidden(timeout=30000)
+        expect(page.locator("#pageLabel")).to_have_text("1 / 2")
+        expect(page.locator("#saveStatus")).to_have_text("salvo neste computador")
+        assert pdf_ink_counts() == [1, 0]
+        page.wait_for_function("""() => {const c=document.querySelector('#pdfInkCanvas');return c && c.getContext('2d').getImageData(0,0,c.width,c.height).data.some((v,i)=>i%4===3&&v>0)}""")
+        page.screenshot(path=str(artifacts / "pdf.png"))
+        print("PASS: PDF.js runtime, render, zoom, annotation, page isolation and reload", flush=True)
         assert not foreign, foreign
         assert not errors, errors
         browser.close()

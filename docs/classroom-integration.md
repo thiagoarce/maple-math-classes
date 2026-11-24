@@ -67,3 +67,7 @@ Aceite pendente: instalar o runtime, gerar fixture, executar o PDF e verificar p
 ## Homologação reproduzível
 
 O gate inclui `node tests/test_classroom_calculator.cjs`, `node tests/test_classroom_core.cjs` e `python tests/test_classroom_browser.py` com servidor HTTP local na raiz, fixture gerada e dependências instaladas. O teste de navegador usa Playwright/Chromium e só admite requisições locais. Executa escrita, undo/redo, persistência, segunda janela, blackout, troca de recurso, PDF e mudança de página. A CI proposta roda sem segredos, sem deploy, com token somente leitura. As dependências de homologação Playwright e ReportLab ainda não estão fixadas por lockfile. Não marcar como aprovado antes de um run bem-sucedido no SHA correspondente e verificação visual/toque. Corrigido o caminho de backup de fingerprint: aguardar a gravação antes de limpar a tinta. Falha na renderização inicial não é registrada como sucesso. As operações de histórico da lousa agora esperam estado inicializado.
+
+## Linha de base verificada
+
+O commit 430dfcf passou no Chromium e nos testes unitários em 24/11/2026. Evidência, limites e próximos critérios: [classroom-baseline.md](classroom-baseline.md). As declarações anteriores de ausência de teste refletem o estado histórico anterior a esse run. O gate ampliado deste incremento aguarda execução própria.

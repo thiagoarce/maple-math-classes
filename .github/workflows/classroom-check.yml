@@ -24,7 +24,7 @@ jobs:
       - name: Install local runtime
         run: |
           npm --prefix apps/classroom/pdf-runtime install --ignore-scripts --no-audit --no-fund
-          python -m pip install playwright reportlab
+          python -m pip install -r tests/requirements-classroom.txt
           python -m playwright install --with-deps chromium
           python apps/classroom/fixtures/generate_volume_demo.py
       - name: Browser gate
@@ -33,3 +33,11 @@ jobs:
           trap 'kill $! 2>/dev/null || true' EXIT
           for i in $(seq 1 20); do curl -fsS http://127.0.0.1:8000/apps/classroom/ >/dev/null && break; sleep 1; done
           python tests/test_classroom_browser.py
+      - name: Upload synthetic screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: classroom-synthetic-screenshots
+          path: test-artifacts/
+          if-no-files-found: ignore
+          retention-days: 7

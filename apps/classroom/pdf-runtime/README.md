@@ -2,3 +2,7 @@
 Não instalar o runtime original 3.11.174: afetado pela CVE-2024-4367 (https://github.com/mozilla/pdf.js/security/advisories/GHSA-wgrm-67xf-hhpq). Selecionada a versão estável 6.5.438 publicada em novembro de 2026; compatibilidade com o motor de anotação ainda não testada. A avaliação dinâmica é desabilitada na chamada getDocument.
 Instalar na raiz: npm --prefix apps/classroom/pdf-runtime install --ignore-scripts. Manter o pacote e a licença Apache-2.0 no ambiente local; não publicar node_modules. Gerar o PDF fictício: python -m pip install reportlab; python apps/classroom/fixtures/generate_volume_demo.py. Servir a raiz com python -m http.server 8000 --bind 127.0.0.1 e abrir http://localhost:8000/apps/classroom/pdf.html.
 Somente a fixture local fixa, sem upload, sem manifesto privado, sem rede externa, sem nuvem. Tinta por folha e página, fingerprint SHA-256 e backup JSON; zoom, navegação e tinta preservados do motor existente. O PDF abre em aba separada, não no iframe sandbox dos manipulativos. Não usar com documentos reais até homologação da nova API, revisão de licenças e dependências, e testes de segurança, persistência e troca de páginas. Não foi possível instalar a dependência nem executar PDF.js no ambiente atual.
+
+## Evidência de execução
+
+O runtime 6.5.438 foi instalado e executado com sucesso no Chromium no commit 430dfcf, conforme docs/classroom-baseline.md. A compatibilidade básica da fixture está comprovada; não generalizar para PDFs arbitrários. A persistência da tinta por página após reload é uma verificação adicional em andamento.
