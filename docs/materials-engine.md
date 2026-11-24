@@ -62,3 +62,7 @@ Neste incremento: comparação de código, inspeção estática, adaptações po
 Recuperados os módulos de composição e paginação de listas (perfil local sem CLI legado). Os dois paginadores agora aguardam MAMath e fontes, sem medir TeX cru após falha. Instalador local dos três pacotes npm 4.1.3 verifica os 70 blobs originais antes de montar a árvore e recolhe avisos de licença diretamente dos pacotes; runtime e fontes não são commitados. Licenças recolhidas ainda exigem revisão antes de redistribuir. A fixture autoral usa handout com duas construções e lista de 12 itens, gabarito separado e identidade sintética. A CI gera PDF A4 somente depois de prontidão matemática e paginação, confere tamanho, contagem, itens e erros, e guarda rasters. O teste usa fontes fallback, não prova fidelidade tipográfica nem Safari. Ainda não executado no novo commit. O gerador completo de listas e conversor topdf CLI ainda não homologados.
 
 Comandos: npm --prefix tools/rendering/math-runtime install --ignore-scripts; python tools/rendering/install_math_runtime.py; PYTHONPATH=. python tests/generate_materials_demo.py; iniciar servidor local na raiz e executar python tests/test_materials_browser.py com Playwright/Chromium e PyMuPDF instalados.
+
+## Resultado verificado
+
+Run 45433181593 (28d5c3b) aprovado: 70 blobs originais, 1 página de handout (15 SVGs), 2 páginas de lista (60 SVGs, 12 itens presentes), sem erros de composição ou estouros detectados. Fontes fallback e inspeção humana dos rasters continuam pendentes.

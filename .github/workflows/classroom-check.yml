@@ -38,6 +38,7 @@ jobs:
           python tools/rendering/install_math_runtime.py
           python -m pip install pymupdf==1.26.5
           PYTHONPATH=. python tests/generate_materials_demo.py
+          PYTHONPATH=. python tests/generate_slides_demo.py
       - name: Browser gate
         run: |
           python -m http.server 8000 --bind 127.0.0.1 > /tmp/maple-http.log 2>&1 &
@@ -47,6 +48,7 @@ jobs:
           python tests/test_oficina_browser.py
           python tests/test_activities_browser.py
           python tests/test_materials_browser.py
+          python tests/test_slides_browser.py
       - name: Upload synthetic screenshots
         if: always()
         uses: actions/upload-artifact@v4
