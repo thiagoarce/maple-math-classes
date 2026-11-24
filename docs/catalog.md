@@ -6,22 +6,36 @@ Este catálogo descreve componentes planejados, não instalações existentes. U
 |---|---|---|---|
 | Fundação documental | `docs/` | Em revisão | Políticas, arquitetura, metodologia e roadmap coerentes |
 | Figuras matemáticas | `tools/geometry/` | Planejado | Núcleo independente, exemplos e testes matemáticos |
-| Handouts | `templates/handouts/` e `tools/generators/` | Planejado | Exemplo autoral, impressão e validação |
-| Listas e paginação | `templates/worksheets/` e `tools/generators/` | Planejado | Gabaritos, progressão, impressão correta |
+| Handouts | `templates/handouts/` e `tools/generators/` | Núcleo copiado; runtime e validação pendentes | Exemplo autoral, impressão e validação |
+| Listas e paginação | `templates/worksheets/` e `tools/generators/` | Aquecimento, deduplicação e paginador de handouts em revisão | Gabaritos, progressão, impressão correta |
 | Slides | `templates/slides/` | Planejado | Condução e notas do professor separadas |
-| Modo Aula | `apps/classroom/` | Planejado | Lousa e recursos genéricos, sem acesso a dados privados |
-| Jogos e simuladores | `apps/games/` e `apps/simulators/` | Planejado | Experiências independentes e testadas |
-| Acervo de matemática | `materials/` | Planejado | Curadoria autoral por nível e tema |
+| Modo Aula | `apps/classroom/` | Demonstração com objetos, host PDF e espelho experimental; runtime e testes pendentes | Lousa e recursos genéricos, sem acesso a dados privados |
+| Jogos e simuladores | `apps/games/` e `apps/simulators/` | Protótipo de volumetria em revisão | Experiências independentes e testadas |
+| Matemática HS | `subjects/hs-mathematics/` | Índice criado | Currículo, sequências e materiais autorais por nível |
+| Entrepreneurship | `subjects/entrepreneurship/` | Índice criado | Unidades, projetos, atividades e rubricas |
+| Olimpíadas | `subjects/olympiads/` | Índice criado | Trilhas por nível, famílias de problemas e simulados autorizados |
+| Acervo transversal | `materials/` | Planejado | Recursos comuns que não pertencem exclusivamente a uma frente |
 | API e persistência privadas | Camada separada | Planejado | Schema sintético, autorização, testes e plano de migração |
 
-## Ordem inicial
+## Ordem inicial — Maple 2027
 
-1. Aprovar a fundação documental.
-2. Extrair um pequeno componente de figuras matemáticas e validar todo o processo de publicação.
-3. Ampliar a biblioteca de representações e construir o primeiro handout autoral de referência.
-4. Evoluir os geradores e validações por incrementos.
-5. Separar o Modo Aula de integrações administrativas; publicar uma versão genérica.
-6. Curar o acervo, jogos e simuladores.
-7. Desenvolver e validar a arquitetura de dados privada antes de qualquer transição real.
+A prioridade é reaproveitar e integrar ferramentas existentes, não reimplementá-las por padrão. Veja o [plano de curadoria](reuse-2027.md).
+
+1. Aprovar a fundação documental e inventariar componentes existentes.
+2. Preservar os motores maduros de materiais, tipografia matemática e figuras; avaliar o protótipo cartesiano em revisão antes de ampliar ou substituir APIs.
+3. Selecionar manipulativos e o motor de aula por etapas; validar exemplos independentes e adaptação à aula presencial.
+4. Integrar o Modo Aula com os recursos existentes, sem duplicar motores.
+5. Adaptar treino, diagnóstico e evidências de aprendizagem; curar o acervo escolar.
+6. Validar a arquitetura de dados privada antes de qualquer transição real.
 
 O trabalho técnico e a curadoria podem avançar separadamente, desde que respeitem os limites de publicação. Mudanças de prioridade devem atualizar este documento.
+
+A Oficina da Conta tem um primeiro host local anônimo em `apps/oficina/`, com geradores recuperados; homologação própria pendente.
+
+Motor de atividades por etapas: `apps/activities/`, reaproveitamento experimental sem dados reais; gate desktop/móvel pendente.
+
+Homologação inicial: papel aprovado no run 45433181593; slides de condução recuperados em tools/rendering/ e em teste. Veja docs/slides-engine.md.
+
+Painel docente: apps/planning/ — demonstração de três disciplinas, sem dados reais ou persistência. Veja docs/planning-panel.md. Homologação pendente.
+
+Contrato privado candidato em infra/private-data/; nenhum banco real, API ou migração de alunos. Veja docs/private-data-contract.md.

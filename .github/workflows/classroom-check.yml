@@ -1,0 +1,66 @@
+name: Homologação Modo Aula
+on:
+  pull_request:
+    branches: [docs/arquitetura-dados-privados, main]
+    paths: ['apps/classroom/**', 'apps/simulators/**', 'apps/oficina/**', 'apps/activities/**', 'apps/planning/**', 'infra/private-data/**', 'tools/rendering/**', 'subjects/**', 'tests/**', '.github/workflows/classroom-check.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  classroom:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Unit checks
+        run: |
+          node tests/test_classroom_calculator.cjs
+          node tests/test_classroom_core.cjs
+          node tests/test_oficina.mjs
+          node tests/test_curriculum_catalog.mjs
+          node tests/test_planning.mjs
+          python tests/test_private_data.py
+          npm --prefix infra/private-data install --ignore-scripts --no-audit --no-fund
+          node infra/private-data/test-api.mjs
+          node infra/private-data/test-api.mjs --d1
+          node tests/test_activities_validation.mjs
+          node apps/activities/conferir.mjs apps/activities/lessons/demo-proporcao.json
+          node apps/activities/build-demo.mjs --check
+          node apps/activities/revisao.mjs prova apps/activities/lessons/demo-proporcao.json
+      - name: Install local runtime
+        run: |
+          npm --prefix apps/classroom/pdf-runtime install --ignore-scripts --no-audit --no-fund
+          python -m pip install -r tests/requirements-classroom.txt
+          python -m playwright install --with-deps chromium
+          python apps/classroom/fixtures/generate_volume_demo.py
+      - name: Prepare materials specimens
+        run: |
+          npm --prefix tools/rendering/math-runtime install --ignore-scripts --no-audit --no-fund
+          python tools/rendering/install_math_runtime.py
+          python -m pip install pymupdf==1.26.5
+          PYTHONPATH=. python tests/generate_materials_demo.py
+          PYTHONPATH=. python tests/generate_slides_demo.py
+      - name: Browser gate
+        run: |
+          python -m http.server 8000 --bind 127.0.0.1 > /tmp/maple-http.log 2>&1 &
+          trap 'kill $! 2>/dev/null || true' EXIT
+          for i in $(seq 1 20); do curl -fsS http://127.0.0.1:8000/apps/classroom/ >/dev/null && break; sleep 1; done
+          python tests/test_classroom_browser.py
+          python tests/test_oficina_browser.py
+          python tests/test_activities_browser.py
+          python tests/test_materials_browser.py
+          python tests/test_planning_browser.py
+          python tests/test_slides_browser.py
+      - name: Upload synthetic screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: classroom-synthetic-screenshots
+          path: test-artifacts/
+          if-no-files-found: ignore
+          retention-days: 7

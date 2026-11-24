@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "subject": "entrepreneurship",
+  "status": "candidate-inventory",
+  "levels": [],
+  "units": [
+    {
+      "id": "ent-founder",
+      "title": "Empreendedorismo e oportunidades",
+      "topics": [
+        "Perfil empreendedor",
+        "Oportunidades"
+      ],
+      "historical_levels": [],
+      "status": "candidate",
+      "resources": []
+    },
+    {
+      "id": "ent-indigenous",
+      "title": "Empreendedorismo em contextos indígenas",
+      "topics": [
+        "Wabanaki e outros povos indígenas"
+      ],
+      "historical_levels": [],
+      "status": "candidate",
+      "resources": []
+    },
+    {
+      "id": "ent-start",
+      "title": "Criação de negócios",
+      "topics": [
+        "Problema",
+        "Cliente",
+        "Proposta de valor"
+      ],
+      "historical_levels": [],
+      "status": "candidate",
+      "resources": []
+    },
+    {
+      "id": "ent-innovation",
+      "title": "Inovação e invenção",
+      "topics": [
+        "Inovação",
+        "Invenção",
+        "Teste de hipóteses"
+      ],
+      "historical_levels": [],
+      "status": "candidate",
+      "resources": []
+    },
+    {
+      "id": "ent-decision",
+      "title": "Decisões de negócio",
+      "topics": [
+        "Alternativas",
+        "Melhoria de processos",
+        "Adaptabilidade"
+      ],
+      "historical_levels": [],
+      "status": "candidate",
+      "resources": []
+    },
+    {
+      "id": "ent-protection",
+      "title": "Proteção de negócios e consumidores",
+      "topics": [
+        "Propriedade intelectual",
+        "Ética",
+        "Proteção do consumidor"
+      ],
+      "historical_levels": [],
+      "status": "candidate",
+      "resources": []
+    },
+    {
+      "id": "ent-community",
+      "title": "Impactos de negócios na comunidade",
+      "topics": [
+        "Economia verde",
+        "Impacto comunitário"
+      ],
+      "historical_levels": [],
+      "status": "candidate",
+      "resources": []
+    },
+    {
+      "id": "ent-technology",
+      "title": "Tecnologia nos negócios",
+      "topics": [
+        "Tecnologia",
+        "Comércio eletrônico"
+      ],
+      "historical_levels": [],
+      "status": "candidate",
+      "resources": []
+    },
+    {
+      "id": "ent-model",
+      "title": "Modelos de negócio e carreira",
+      "topics": [
+        "Modelo de negócio",
+        "Business Model Canvas",
+        "Lean Canvas",
+        "Pitch"
+      ],
+      "historical_levels": [],
+      "status": "candidate",
+      "resources": []
+    }
+  ]
+}

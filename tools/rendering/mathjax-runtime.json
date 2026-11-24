@@ -1,0 +1,356 @@
+{
+  "version": "4.1.3",
+  "state": "required-not-installed",
+  "files": [
+    {
+      "path": "euler/svg.js",
+      "git_blob_sha": "1ef67b6a588dce1040d0d1955520898197d67bdc",
+      "bytes": 207702
+    },
+    {
+      "path": "euler/svg/dynamic/calligraphic.js",
+      "git_blob_sha": "eb1913b198638aec0a870bcd82367aa3a09ce2ae",
+      "bytes": 47513
+    },
+    {
+      "path": "euler/svg/dynamic/fraktur.js",
+      "git_blob_sha": "725106414818f740a3624d3bcb1406cb85a076b5",
+      "bytes": 83671
+    },
+    {
+      "path": "euler/svg/dynamic/greek.js",
+      "git_blob_sha": "03b871f0756768426d015ee03ac4dc37f2179e5c",
+      "bytes": 75519
+    },
+    {
+      "path": "fira/svg/dynamic/accents-other.js",
+      "git_blob_sha": "0422a137c3381456df00824cf3dd56378cc63b01",
+      "bytes": 38111
+    },
+    {
+      "path": "fira/svg/dynamic/accents.js",
+      "git_blob_sha": "ef0541636b24d7438cb44b8e97cd35190ee3e796",
+      "bytes": 12882
+    },
+    {
+      "path": "fira/svg/dynamic/arrows.js",
+      "git_blob_sha": "a339804d1a088334173076fe92500a18741cb10f",
+      "bytes": 18142
+    },
+    {
+      "path": "fira/svg/dynamic/calligraphic.js",
+      "git_blob_sha": "41594e28353707f0d51463b3ab76e00960e490df",
+      "bytes": 31514
+    },
+    {
+      "path": "fira/svg/dynamic/cyrillic.js",
+      "git_blob_sha": "9b4dffedf43ea751adddac393e103d835786acb4",
+      "bytes": 359983
+    },
+    {
+      "path": "fira/svg/dynamic/double-struck.js",
+      "git_blob_sha": "33368efec910fca6227306e57d4b2034b2859975",
+      "bytes": 13767
+    },
+    {
+      "path": "fira/svg/dynamic/fraktur.js",
+      "git_blob_sha": "fbc136bc77d32bbf652f28bd813d75ebebde4837",
+      "bytes": 29757
+    },
+    {
+      "path": "fira/svg/dynamic/greek.js",
+      "git_blob_sha": "a31252d128eb613a0cbb7b4f35ba62525238236d",
+      "bytes": 519117
+    },
+    {
+      "path": "fira/svg/dynamic/latin-b.js",
+      "git_blob_sha": "e400287ff2c4ce7e716e5943547344e554ed3c12",
+      "bytes": 169415
+    },
+    {
+      "path": "fira/svg/dynamic/latin-bi.js",
+      "git_blob_sha": "0f408096fe8a65fb324867a3926e9f6624625244",
+      "bytes": 166519
+    },
+    {
+      "path": "fira/svg/dynamic/latin-i.js",
+      "git_blob_sha": "669e5ccb53944fd8663a84b1f928e11622ec5cad",
+      "bytes": 165127
+    },
+    {
+      "path": "fira/svg/dynamic/latin-m.js",
+      "git_blob_sha": "8eaab48a5a006a13cc78fcf3869c5f8da249fdc5",
+      "bytes": 57396
+    },
+    {
+      "path": "fira/svg/dynamic/latin.js",
+      "git_blob_sha": "657f673de9a39fa7cdd633dac14957a4d80de2b4",
+      "bytes": 171209
+    },
+    {
+      "path": "fira/svg/dynamic/math-other.js",
+      "git_blob_sha": "2337f5ddf0baf8de7e68c1350769a82b993410e3",
+      "bytes": 14038
+    },
+    {
+      "path": "fira/svg/dynamic/monospace.js",
+      "git_blob_sha": "86d2a25f70967bd3696de0aa93947aa0a035f244",
+      "bytes": 37209
+    },
+    {
+      "path": "fira/svg/dynamic/phonetics.js",
+      "git_blob_sha": "f82c29a92927317b8c93741faa0af42aa8313ad4",
+      "bytes": 133959
+    },
+    {
+      "path": "fira/svg/dynamic/sans-serif.js",
+      "git_blob_sha": "0d31a66a6a89610c7e4ccc29f7b41a6f1912b12c",
+      "bytes": 45022
+    },
+    {
+      "path": "fira/svg/dynamic/script.js",
+      "git_blob_sha": "6c037742a04c5f10d72853719d72459b11777760",
+      "bytes": 28765
+    },
+    {
+      "path": "fira/svg/dynamic/shapes.js",
+      "git_blob_sha": "015f47aad6170090efdd29c0b290d9c05a76dfd9",
+      "bytes": 18235
+    },
+    {
+      "path": "fira/svg/dynamic/stretchy.js",
+      "git_blob_sha": "f16dd137a8f474e447a631343c5de85ab7b8796e",
+      "bytes": 13734
+    },
+    {
+      "path": "fira/svg/dynamic/symbols-other.js",
+      "git_blob_sha": "985e91beaa110f603f66f4a066a5ad8bfe8b973b",
+      "bytes": 114997
+    },
+    {
+      "path": "fira/svg/dynamic/symbols.js",
+      "git_blob_sha": "949290ffe3e4bc7124219ee703d4f3707359953a",
+      "bytes": 31150
+    },
+    {
+      "path": "fira/svg/dynamic/up-int.js",
+      "git_blob_sha": "5617c109da09be6f05774151ed6869e567db4ef0",
+      "bytes": 10531
+    },
+    {
+      "path": "fira/svg/dynamic/variants.js",
+      "git_blob_sha": "134c3f18f20cd6cedd5a2b662a1c7e2053cc6f09",
+      "bytes": 9804
+    },
+    {
+      "path": "fira/tex-mml-svg-mathjax-fira.js",
+      "git_blob_sha": "d97fb84bfb79076ca561f6a27000bedcf379756c",
+      "bytes": 1298319
+    },
+    {
+      "path": "tex-extensions/action.js",
+      "git_blob_sha": "02067215730159befa3e2034eb2ed633c9c2a1d0",
+      "bytes": 1843
+    },
+    {
+      "path": "tex-extensions/ams.js",
+      "git_blob_sha": "d95e03b40269c076483d13f3d1cb42b588dd4a98",
+      "bytes": 21194
+    },
+    {
+      "path": "tex-extensions/amscd.js",
+      "git_blob_sha": "5c6acad71d70957e39e2c1fb2343047788379025",
+      "bytes": 4310
+    },
+    {
+      "path": "tex-extensions/autoload.js",
+      "git_blob_sha": "caac3d2e095d1115e1486426fcd1f2fff4374625",
+      "bytes": 3331
+    },
+    {
+      "path": "tex-extensions/bbm.js",
+      "git_blob_sha": "9eb2ff64b6c71e6f2a703024eb0fc0ac88a8902f",
+      "bytes": 2143
+    },
+    {
+      "path": "tex-extensions/bboldx.js",
+      "git_blob_sha": "db907fe2c86bec23e8e492114fc67bc6657453ff",
+      "bytes": 7397
+    },
+    {
+      "path": "tex-extensions/bbox.js",
+      "git_blob_sha": "da7703e2bf2f5f722c5b901b37395fcfe6ea780e",
+      "bytes": 2323
+    },
+    {
+      "path": "tex-extensions/begingroup.js",
+      "git_blob_sha": "c5f9915c9d21a1ff8fd0e672d98a8d6d15272cfb",
+      "bytes": 4266
+    },
+    {
+      "path": "tex-extensions/boldsymbol.js",
+      "git_blob_sha": "ab3b4734669ac1620e7ff63be5c0d7b849b9d0b9",
+      "bytes": 2460
+    },
+    {
+      "path": "tex-extensions/braket.js",
+      "git_blob_sha": "25f507a8ae9758b9b5a03279cc02758f986b81b8",
+      "bytes": 4653
+    },
+    {
+      "path": "tex-extensions/bussproofs.js",
+      "git_blob_sha": "2dc0d09392c4b383731d11c52559b3642c7c41c7",
+      "bytes": 12204
+    },
+    {
+      "path": "tex-extensions/cancel.js",
+      "git_blob_sha": "1fcb20a565f08ea47e7a942bda2a2562a70bdfef",
+      "bytes": 2255
+    },
+    {
+      "path": "tex-extensions/cases.js",
+      "git_blob_sha": "cd89e35756b5b8bf0262c378816f4e43b30d9e73",
+      "bytes": 4277
+    },
+    {
+      "path": "tex-extensions/centernot.js",
+      "git_blob_sha": "817faf189ca1cf3825e679446e8b335c64797a8b",
+      "bytes": 2148
+    },
+    {
+      "path": "tex-extensions/color.js",
+      "git_blob_sha": "1cc33bc8c7d80937aa899837f3ef63da1217c7a6",
+      "bytes": 6818
+    },
+    {
+      "path": "tex-extensions/colortbl.js",
+      "git_blob_sha": "0b32b3ca10fb181cfc7eecbf4e5f6b2f11f8928b",
+      "bytes": 3185
+    },
+    {
+      "path": "tex-extensions/colorv2.js",
+      "git_blob_sha": "b4b8c9cdc3193e7495b67997ec2f2aa048425d9e",
+      "bytes": 1524
+    },
+    {
+      "path": "tex-extensions/configmacros.js",
+      "git_blob_sha": "77f19dd5ff4d6e00d4382c844976c56e513cbbeb",
+      "bytes": 2588
+    },
+    {
+      "path": "tex-extensions/dsfont.js",
+      "git_blob_sha": "d4626700451c4033ef87884cf92d40aeed0da341",
+      "bytes": 1898
+    },
+    {
+      "path": "tex-extensions/empheq.js",
+      "git_blob_sha": "ebb4ffc87bc725b2684d0d02b406eef66758bc00",
+      "bytes": 5946
+    },
+    {
+      "path": "tex-extensions/enclose.js",
+      "git_blob_sha": "508327da610107ccabf5d0a117360f08cf8f8dcf",
+      "bytes": 1731
+    },
+    {
+      "path": "tex-extensions/extpfeil.js",
+      "git_blob_sha": "d6782eb23ba92b9385bcfd1e7fffce42ff07479f",
+      "bytes": 2445
+    },
+    {
+      "path": "tex-extensions/fontsizev3.js",
+      "git_blob_sha": "e8ab0787f9e4342a4f2de5b099c87021ac10f9eb",
+      "bytes": 1637
+    },
+    {
+      "path": "tex-extensions/gensymb.js",
+      "git_blob_sha": "ce94759473847fa47f77bf3f1e10f688e5b1c384",
+      "bytes": 1588
+    },
+    {
+      "path": "tex-extensions/html.js",
+      "git_blob_sha": "47fedf08285e9ae4d6f9981b329e1181599fce94",
+      "bytes": 2813
+    },
+    {
+      "path": "tex-extensions/mathtools.js",
+      "git_blob_sha": "faf114095c32da14c1929151420870becfb7eb24",
+      "bytes": 22389
+    },
+    {
+      "path": "tex-extensions/mhchem.js",
+      "git_blob_sha": "46dac374dc19068b92ca55888d849170676c495b",
+      "bytes": 38920
+    },
+    {
+      "path": "tex-extensions/newcommand.js",
+      "git_blob_sha": "7a5621d57b5b8e96c70238e27c035a3777da6814",
+      "bytes": 8833
+    },
+    {
+      "path": "tex-extensions/noerrors.js",
+      "git_blob_sha": "90b7755c9796ccf4991d731a1086dbe9f2ca5c7a",
+      "bytes": 1243
+    },
+    {
+      "path": "tex-extensions/noundefined.js",
+      "git_blob_sha": "c714c90d846ee6f590c9fc95060ac31f694da30f",
+      "bytes": 1384
+    },
+    {
+      "path": "tex-extensions/physics.js",
+      "git_blob_sha": "cd2a80fb15a2f0e65f4e7f1957d80a0f77b2c8a0",
+      "bytes": 19564
+    },
+    {
+      "path": "tex-extensions/require.js",
+      "git_blob_sha": "d7c1e0fb9385fd29d1e01bf88a7285fd60872b7e",
+      "bytes": 4007
+    },
+    {
+      "path": "tex-extensions/setoptions.js",
+      "git_blob_sha": "2fa3d47636ca511d91a94a07146d2abfdd18adab",
+      "bytes": 3729
+    },
+    {
+      "path": "tex-extensions/tagformat.js",
+      "git_blob_sha": "f5617fc1f3b9f35643b4a9afe019efb0594ed4ba",
+      "bytes": 1975
+    },
+    {
+      "path": "tex-extensions/texhtml.js",
+      "git_blob_sha": "9b3bbe9d064604a35a6aa4841f6f5ccdc9faa160",
+      "bytes": 2504
+    },
+    {
+      "path": "tex-extensions/textcomp.js",
+      "git_blob_sha": "342847cca478f2276d48046e6024c5b4d03352ab",
+      "bytes": 5135
+    },
+    {
+      "path": "tex-extensions/textmacros.js",
+      "git_blob_sha": "faef7df63e1835d1ee8f1ad98f37cbbc7e57b537",
+      "bytes": 10279
+    },
+    {
+      "path": "tex-extensions/unicode.js",
+      "git_blob_sha": "8690a01531837146c9e0984f4ba130da82c901d1",
+      "bytes": 3586
+    },
+    {
+      "path": "tex-extensions/units.js",
+      "git_blob_sha": "ad0bae390b8cbd46c6fee191093915611226295f",
+      "bytes": 2118
+    },
+    {
+      "path": "tex-extensions/upgreek.js",
+      "git_blob_sha": "94b588f8ec1668cd7a104dae62c7e1578111a61c",
+      "bytes": 2157
+    },
+    {
+      "path": "tex-extensions/verb.js",
+      "git_blob_sha": "f29ca533809950123a6cbe2c7ab5113796a13bc9",
+      "bytes": 1779
+    }
+  ]
+}

@@ -1,0 +1,314 @@
+{
+  "schema_version": 1,
+  "subject": "hs-mathematics",
+  "status": "candidate-inventory",
+  "levels": [
+    "Y10",
+    "Y11",
+    "Y12"
+  ],
+  "units": [
+    {
+      "id": "hs-plane-geometry",
+      "title": "Geometria plana",
+      "topics": [
+        "Áreas",
+        "Semelhança",
+        "Polígonos",
+        "Circunferência"
+      ],
+      "historical_levels": [
+        "Y10"
+      ],
+      "status": "candidate",
+      "resources": []
+    },
+    {
+      "id": "hs-triangle-trig",
+      "title": "Trigonometria no triângulo",
+      "topics": [
+        "Razões trigonométricas",
+        "Ângulos notáveis",
+        "Triângulo retângulo"
+      ],
+      "historical_levels": [
+        "Y10"
+      ],
+      "status": "candidate",
+      "resources": []
+    },
+    {
+      "id": "hs-circle-trig",
+      "title": "Circunferência trigonométrica",
+      "topics": [
+        "Ciclo",
+        "Conversões",
+        "Simetrias",
+        "Redução ao primeiro quadrante"
+      ],
+      "historical_levels": [
+        "Y10"
+      ],
+      "status": "candidate",
+      "resources": []
+    },
+    {
+      "id": "hs-equations-inequalities",
+      "title": "Equações e inequações",
+      "topics": [
+        "Variável auxiliar",
+        "Primeiro e segundo graus",
+        "Produto e quociente",
+        "Módulo"
+      ],
+      "historical_levels": [
+        "Y10"
+      ],
+      "status": "candidate",
+      "resources": []
+    },
+    {
+      "id": "hs-exponential",
+      "title": "Funções exponenciais",
+      "topics": [
+        "Definição",
+        "Gráfico",
+        "Inequações"
+      ],
+      "historical_levels": [
+        "Y10"
+      ],
+      "status": "candidate",
+      "resources": []
+    },
+    {
+      "id": "hs-logarithms",
+      "title": "Logaritmos",
+      "topics": [
+        "Propriedades",
+        "Mudança de base",
+        "Funções e inequações"
+      ],
+      "historical_levels": [
+        "Y10"
+      ],
+      "status": "candidate",
+      "resources": []
+    },
+    {
+      "id": "hs-arithmetic-sequences",
+      "title": "Progressões aritméticas",
+      "topics": [
+        "Termo geral",
+        "Propriedades",
+        "Soma"
+      ],
+      "historical_levels": [
+        "Y10",
+        "Y12"
+      ],
+      "status": "candidate",
+      "resources": []
+    },
+    {
+      "id": "hs-geometric-sequences",
+      "title": "Progressões geométricas",
+      "topics": [
+        "Termo geral",
+        "Interpolação",
+        "Somas finita e infinita"
+      ],
+      "historical_levels": [
+        "Y10",
+        "Y12"
+      ],
+      "status": "candidate",
+      "resources": []
+    },
+    {
+      "id": "hs-analytic-lines",
+      "title": "Geometria analítica: pontos e retas",
+      "topics": [
+        "Distância",
+        "Ponto médio",
+        "Alinhamento",
+        "Equações de reta",
+        "Ângulos",
+        "Posições relativas"
+      ],
+      "historical_levels": [
+        "Y11",
+        "Y12"
+      ],
+      "status": "candidate",
+      "resources": []
+    },
+    {
+      "id": "hs-analytic-regions",
+      "title": "Geometria analítica: regiões e circunferências",
+      "topics": [
+        "Circunferência",
+        "Inequações no plano",
+        "Regiões e áreas"
+      ],
+      "historical_levels": [
+        "Y11",
+        "Y12"
+      ],
+      "status": "candidate",
+      "resources": []
+    },
+    {
+      "id": "hs-matrices",
+      "title": "Matrizes",
+      "topics": [
+        "Definição",
+        "Tipos",
+        "Igualdade",
+        "Operações",
+        "Produto",
+        "Inversa"
+      ],
+      "historical_levels": [
+        "Y11",
+        "Y12"
+      ],
+      "status": "candidate",
+      "resources": []
+    },
+    {
+      "id": "hs-determinants",
+      "title": "Determinantes",
+      "topics": [
+        "Ordens 2 e 3",
+        "Propriedades"
+      ],
+      "historical_levels": [
+        "Y11",
+        "Y12"
+      ],
+      "status": "candidate",
+      "resources": []
+    },
+    {
+      "id": "hs-linear-systems",
+      "title": "Sistemas lineares",
+      "topics": [
+        "Métodos de resolução",
+        "Escalonamento",
+        "Classificação",
+        "Cramer"
+      ],
+      "historical_levels": [
+        "Y11",
+        "Y12"
+      ],
+      "status": "candidate",
+      "resources": []
+    },
+    {
+      "id": "hs-polynomials",
+      "title": "Polinômios e equações polinomiais",
+      "topics": [
+        "Polinômios",
+        "Equações polinomiais"
+      ],
+      "historical_levels": [
+        "Y11"
+      ],
+      "status": "candidate",
+      "resources": []
+    },
+    {
+      "id": "hs-complex",
+      "title": "Números complexos",
+      "topics": [
+        "Forma algébrica",
+        "Forma trigonométrica"
+      ],
+      "historical_levels": [
+        "Y11"
+      ],
+      "status": "candidate",
+      "resources": []
+    },
+    {
+      "id": "hs-polyhedra",
+      "title": "Poliedros e volume",
+      "topics": [
+        "Prismas",
+        "Cavalieri",
+        "Cubos e paralelepípedos",
+        "Pirâmides",
+        "Troncos"
+      ],
+      "historical_levels": [
+        "Y11",
+        "Y12"
+      ],
+      "status": "candidate",
+      "resources": [
+        {
+          "path": "apps/simulators/volume/index.html",
+          "role": "demo",
+          "note": "Laboratório genérico; não constitui unidade completa."
+        }
+      ]
+    },
+    {
+      "id": "hs-round-solids",
+      "title": "Corpos redondos",
+      "topics": [
+        "Cilindros",
+        "Cones",
+        "Esferas",
+        "Sólidos de revolução",
+        "Tronco de cone"
+      ],
+      "historical_levels": [
+        "Y11",
+        "Y12"
+      ],
+      "status": "candidate",
+      "resources": []
+    },
+    {
+      "id": "hs-spatial-surfaces",
+      "title": "Superfícies e projeções",
+      "topics": [
+        "Superfícies espaciais",
+        "Projeções"
+      ],
+      "historical_levels": [
+        "Y11",
+        "Y12"
+      ],
+      "status": "candidate",
+      "resources": []
+    },
+    {
+      "id": "hs-binomial",
+      "title": "Binômio de Newton",
+      "topics": [
+        "Expansão binomial"
+      ],
+      "historical_levels": [
+        "Y12"
+      ],
+      "status": "candidate",
+      "resources": []
+    },
+    {
+      "id": "hs-probability",
+      "title": "Probabilidade",
+      "topics": [
+        "Problemas de probabilidade"
+      ],
+      "historical_levels": [
+        "Y12"
+      ],
+      "status": "candidate",
+      "resources": []
+    }
+  ]
+}

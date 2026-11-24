@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "resources": [
+    {
+      "id": "volume-lab",
+      "path": "apps/simulators/volume/index.html",
+      "kind": "simulator",
+      "subjects": [
+        "hs-mathematics",
+        "olympiads"
+      ],
+      "status": "prototype"
+    },
+    {
+      "id": "oficina",
+      "path": "apps/oficina/index.html",
+      "kind": "practice-engine",
+      "subjects": [
+        "hs-mathematics",
+        "entrepreneurship",
+        "olympiads"
+      ],
+      "status": "technical-demo"
+    },
+    {
+      "id": "staged-activities",
+      "path": "apps/activities/index.html",
+      "kind": "activity-engine",
+      "subjects": [
+        "hs-mathematics",
+        "entrepreneurship",
+        "olympiads"
+      ],
+      "status": "technical-demo"
+    },
+    {
+      "id": "classroom",
+      "path": "apps/classroom/index.html",
+      "kind": "classroom-engine",
+      "subjects": [
+        "hs-mathematics",
+        "entrepreneurship",
+        "olympiads"
+      ],
+      "status": "technical-demo"
+    },
+    {
+      "id": "paper-engine",
+      "path": "tools/rendering/handout_lib.py",
+      "kind": "rendering",
+      "subjects": [
+        "hs-mathematics",
+        "entrepreneurship",
+        "olympiads"
+      ],
+      "status": "technical-demo"
+    },
+    {
+      "id": "slide-engine",
+      "path": "tools/rendering/slides_y9_lib.py",
+      "kind": "rendering",
+      "subjects": [
+        "entrepreneurship",
+        "hs-mathematics",
+        "olympiads"
+      ],
+      "status": "pending-validation"
+    }
+  ]
+}

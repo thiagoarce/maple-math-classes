@@ -1,0 +1,19 @@
+# API privada — primeira fatia experimental
+
+Worker não publicado. GET /api/v1/offers/:id/lessons?from=YYYY-MM-DD&to=YYYY-MM-DD (intervalo máximo de 31 dias); PUT /api/v1/offers/:id/assessments/:id/results/:student (JSON score inteiro em centésimos, revision inteira). Apenas resultados existentes: docente com permissão teacher, matrícula ativa, avaliação aberta e revisão exata. Leitor viewer consulta aulas, não altera notas. Resposta 404 uniforme para resultado inexistente, não autorizado, fechado, fora da faixa ou desatualizado. A futura UI deve recarregar após rejeição; ainda não há endpoint de leitura de resultados. A auditoria registra ator, alvo, revisão e horário na mesma operação SQL, sem duplicar valores da nota. Não é histórico integral nem log forense imutável.
+
+Autenticação via jose 6.2.18, RS256, emissor/audiência configurados, expiração, subject e tipo app. JWKS confiável configurado no runtime, não derivado do token. Não há atualização automática de chaves; rotação e configuração reais são bloqueadores. Access deve proteger o host exato; workers.dev e previews desativados. PRIVATE_ORIGIN restringe host; mutações exigem Origin e cabeçalho personalizado; sem CORS, cache público ou logs de payload. Sem wrangler de produção nem binding real. Não servir pela aplicação pública.
+
+Teste: npm --prefix infra/private-data install --ignore-scripts --no-audit --no-fund; node infra/private-data/test-api.mjs. 26 casos HTTP planejados, com RSA efêmera, autenticação real de tokens sintéticos, adaptador SQLite e queries reais. Inclui assinatura incorreta, audiência/emissor, expiração, tipo/chave, ausência de autorização, escopo, origem, notas inválidas, versão concorrente e auditoria. Execução CI ainda pendente. Não é teste D1/Access real. Lockfile, D1 local, rotação de chaves, configuração e autorização institucional, revisão de segurança, retenção e controles de auditoria permanecem bloqueadores de deploy. Não mover registros reais.
+
+Referências: https://developers.cloudflare.com/cloudflare-one/access-controls/applications/http-apps/authorization-cookie/validating-json/ ; https://developers.cloudflare.com/d1/worker-api/prepared-statements/ ; https://www.npmjs.com/package/jose .
+
+## Runtime local e primeira interface
+
+Run 45449201676 (a4ebe55): 26 testes HTTP aprovados com SQLite. Acrescentada execução dos mesmos casos em Miniflare 4.20260730.0/workerd, bundle esbuild 0.25.12, D1 descartável sem persistência, sem credenciais cloud. Migrações aplicadas em statements completos (inclui trigger). Nova CI ainda pendente. Acrescentadas listagem de ofertas, avaliações e resultados com escopo, resultados somente teacher; ativos HTML/JS/CSS de /admin passam pela mesma autenticação e por verificação de vínculo. Interface usa texto DOM, sem storage, sem token em JS, sem CORS, confirma lançamento, usa revisão e recarrega após escrita. Falha bloqueia nova tentativa até recarregar. Não é painel operacional nem foi testada visualmente; não há deploy, Access real, lockfile, rotação ou política de retenção. O teste de assets é HTTP, não teste de interação de navegador. Referência: https://developers.cloudflare.com/d1/best-practices/local-development/.
+
+## Diário
+
+Veja [private-diary.md](private-diary.md). Run 45451588226: 31 casos SQLite e assets passaram; D1 falhou no primeiro update válido (404). Corrigida confirmação da alteração usando RETURNING; causa exata ainda não comprovada. Migração 0003 acrescenta auditoria de frequência e autor da evidência. Nova CI pendente.
+
+Run 45451973980: 49 casos em ambos os runtimes passaram. Diário ampliado conforme docs/private-diary.md; migração 0004 e novos testes ainda pendentes.

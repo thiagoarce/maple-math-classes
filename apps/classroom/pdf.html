@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow">
+  <title>PDF anotável — Modo Aula</title>
+  <style>
+    :root{--azul:#1e4999;--ink:#172033;--hair:#d8deea;--bg:#eef1f6;--ok:#237a42;--warn:#a75b00}
+    *{box-sizing:border-box}html,body{margin:0;height:100%;overflow:hidden;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}body{display:grid;grid-template-rows:auto 1fr}.defs{position:absolute;width:0;height:0;overflow:hidden}
+    .bar{z-index:20;display:flex;align-items:center;gap:9px;padding:7px 9px;background:#fff;border-bottom:1px solid var(--hair);box-shadow:0 2px 12px rgba(23,32,51,.08)}.headline{display:flex;align-items:center;gap:9px;min-width:250px;margin-right:auto}.title{min-width:0}.title strong{display:block;font-size:13px}.title small{display:block;color:#667085;font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:330px}.tools{display:flex;align-items:center;gap:5px;min-width:0;overflow-x:auto;scrollbar-width:none}.tools::-webkit-scrollbar{display:none}
+    button,.control{height:36px;border:1px solid var(--hair);border-radius:9px;background:#fff;color:var(--ink);font:600 12px/1 inherit;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;flex:0 0 auto}.icon-btn{width:36px;padding:0}.icon-btn.active,.icon-btn.primary{background:var(--azul);border-color:var(--azul);color:#fff}.icon-btn:disabled{opacity:.35}.icon{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.page{min-width:58px;padding:0 8px}.color-control{width:36px;padding:4px}.color-control input{appearance:none;-webkit-appearance:none;width:25px;height:25px;padding:0;border:0;border-radius:50%;background:transparent;overflow:hidden}.color-control input::-webkit-color-swatch-wrapper{padding:0}.color-control input::-webkit-color-swatch{border:0;border-radius:50%}.range-control{width:108px;padding:0 7px;gap:5px}.range-control input{width:70px;accent-color:var(--azul)}.toggle{position:relative;width:36px}.toggle input{position:absolute;opacity:0}.toggle:has(input:checked){background:var(--azul);border-color:var(--azul);color:#fff}.sep{width:1px;height:26px;background:var(--hair);flex:0 0 auto}
+    .status{height:30px;display:inline-flex;align-items:center;padding:0 8px;border-radius:8px;background:#eef4ff;color:var(--azul);font-size:10px;font-weight:750;white-space:nowrap}.status.dirty{background:#fff4e6;color:var(--warn)}.status.ok{background:#eaf7ef;color:var(--ok)}.status.error{background:#fff0f0;color:#a52727}
+    .workspace{position:relative;min-height:0;overflow:auto;padding:16px;display:flex;align-items:flex-start;justify-content:center}.sheet{position:relative;background:#fff;box-shadow:0 8px 30px rgba(23,32,51,.18);touch-action:none;user-select:none}#pdfCanvas{display:block}.ink{position:absolute;inset:0;z-index:2}.loading{position:absolute;inset:0;z-index:10;display:flex;align-items:center;justify-content:center;background:rgba(238,241,246,.92);font-weight:750;color:var(--azul)}.loading[hidden]{display:none}
+    body.embed .headline{display:none}body.embed .bar{padding:5px 7px}
+    /* Embutido, a barra fica mais fina: a folha é retrato e altura é o que falta.
+       Não vira trilho lateral — isso foi tentado em 13/08 e comia largura sem devolver
+       altura, porque a barra da casca continuava lá em cima de qualquer jeito. Quem
+       saiu da tela foi a barra da casca; esta aqui é a ferramenta de escrita, e
+       ferramenta de escrita fica em cima. */
+    body.embed .bar{padding:4px 7px;gap:6px}
+    body.embed button,body.embed .control{height:32px}
+    body.embed .icon-btn{width:32px}
+    body.embed .workspace{padding:10px}
+    .help{position:fixed;right:12px;bottom:12px;z-index:30;max-width:390px;background:#172033;color:#fff;padding:9px 11px;border-radius:10px;font-size:10px;line-height:1.4}.help button{float:right;width:24px;height:24px;color:#fff;border-color:#667085;background:transparent}.help[hidden]{display:none}
+    @media(max-width:1040px){.bar{display:grid;gap:5px}.headline{width:100%;margin:0}.tools{width:100%}}@media(max-width:600px){.workspace{padding:7px}.sep{display:none}.range-control{width:98px}.range-control input{width:61px}}
+  </style>
+</head>
+<body>
+<svg class="defs" aria-hidden="true">
+  <symbol id="i-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol><symbol id="i-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+  <symbol id="i-pen" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4Z"/></symbol>
+  <symbol id="i-highlighter" viewBox="0 0 24 24"><path d="m6 15 8-8 4 4-8 8H6z"/><path d="M4 21h12M14 7l2-2 4 4-2 2"/></symbol>
+  <symbol id="i-laser" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2" fill="currentColor"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/></symbol>
+  <symbol id="i-eraser" viewBox="0 0 24 24"><path d="m7 21-4-4L15 5a2.8 2.8 0 0 1 4 4L7 21Z"/><path d="m11 9 4 4"/><path d="M7 21h13"/></symbol>
+  <symbol id="i-stroke-eraser" viewBox="0 0 24 24"><path d="M4 17 15 6a3 3 0 0 1 4 4L9 20H4z"/><path d="M10 11l5 5M14 4h6M17 1v6"/></symbol>
+  <symbol id="i-pressure" viewBox="0 0 24 24"><path d="m14 4 6 6"/><path d="M13 5 4 14l-1 7 7-1 9-9"/><path d="M7 17c2-1 4-1 6 0"/></symbol><symbol id="i-width" viewBox="0 0 24 24"><path d="M4 7h16"/><path d="M4 12h16" stroke-width="3"/><path d="M4 18h16" stroke-width="5"/></symbol>
+  <symbol id="i-undo" viewBox="0 0 24 24"><path d="M9 7 4 12l5 5"/><path d="M20 17a8 8 0 0 0-12-6"/></symbol><symbol id="i-redo" viewBox="0 0 24 24"><path d="m15 7 5 5-5 5"/><path d="M4 17a8 8 0 0 1 12-6"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="m19 6-1 15H6L5 6"/><path d="M10 11v5M14 11v5"/></symbol><symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></symbol>
+  <symbol id="i-cloud-down" viewBox="0 0 24 24"><path d="M17.5 19H7a5 5 0 0 1-.9-9.9A7 7 0 0 1 19.4 12 3.5 3.5 0 0 1 17.5 19Z"/><path d="M12 11v7"/><path d="m9 15 3 3 3-3"/></symbol><symbol id="i-cloud-up" viewBox="0 0 24 24"><path d="M17.5 19H7a5 5 0 0 1-.9-9.9A7 7 0 0 1 19.4 12 3.5 3.5 0 0 1 17.5 19Z"/><path d="M12 18v-7"/><path d="m9 14 3-3 3 3"/></symbol>
+  <symbol id="i-full" viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/></symbol>
+</svg>
+<header class="bar">
+  <div class="headline"><div class="title"><strong>Modo Aula · PDF</strong><small id="lessonTitle">Carregando…</small></div><span id="saveStatus" class="status">carregando…</span></div>
+  <div class="tools" role="toolbar" aria-label="Ferramentas do PDF">
+    <button id="prevPage" class="icon-btn" title="Página anterior"><svg class="icon"><use href="#i-left"/></svg></button><span id="pageLabel" class="control page">1 / 1</span><button id="nextPage" class="icon-btn" title="Próxima página"><svg class="icon"><use href="#i-right"/></svg></button><span class="sep"></span>
+    <button id="penBtn" data-tool="pen" class="icon-btn active" title="Caneta (P)" aria-pressed="true"><svg class="icon"><use href="#i-pen"/></svg></button>
+    <button id="highlighterBtn" data-tool="highlighter" class="icon-btn" title="Marca-texto (H)" aria-pressed="false"><svg class="icon"><use href="#i-highlighter"/></svg></button>
+    <button id="laserBtn" data-tool="laser" class="icon-btn" title="Tinta laser (L)" aria-pressed="false"><svg class="icon"><use href="#i-laser"/></svg></button>
+    <button id="eraserBtn" data-tool="eraserPartial" class="icon-btn" title="Borracha parcial (E)" aria-pressed="false"><svg class="icon"><use href="#i-eraser"/></svg></button>
+    <button id="strokeEraserBtn" data-tool="eraserStroke" class="icon-btn" title="Apagar traço inteiro (Shift+E)" aria-pressed="false"><svg class="icon"><use href="#i-stroke-eraser"/></svg></button>
+    <label class="control color-control" title="Cor"><input id="color" type="color" value="#1e4999"></label><label class="control range-control" title="Espessura"><svg class="icon"><use href="#i-width"/></svg><input id="width" type="range" min="1" max="40" value="4"></label><label class="control toggle" title="Pressão"><input id="pressure" type="checkbox" checked><svg class="icon"><use href="#i-pressure"/></svg></label><span class="sep"></span>
+    <button id="undoBtn" class="icon-btn" title="Desfazer" disabled><svg class="icon"><use href="#i-undo"/></svg></button><button id="redoBtn" class="icon-btn" title="Refazer" disabled><svg class="icon"><use href="#i-redo"/></svg></button><button id="clearBtn" class="icon-btn" title="Limpar página"><svg class="icon"><use href="#i-trash"/></svg></button><span class="sep"></span>
+    <button id="exportBtn" class="icon-btn" title="Backup JSON"><svg class="icon"><use href="#i-download"/></svg></button><button id="fullscreenBtn" class="icon-btn" title="Tela cheia"><svg class="icon"><use href="#i-full"/></svg></button>
+  </div>
+</header>
+<main class="workspace" id="workspace"><div class="sheet" id="sheet"><canvas id="pdfCanvas"></canvas><div id="ink" class="ink"></div></div><div id="loading" class="loading">Abrindo o PDF…</div></main>
+<aside class="help" id="help"><button id="closeHelp" class="icon-btn">×</button>Caneta, marca-texto e borrachas são salvos automaticamente neste computador. O laser desaparece e nunca é salvo. Nenhum envio para a nuvem. Os botões da caneta valem quando segurados ANTES de encostar a ponta: o de baixo é laser, o de cima é borracha.</aside>
+<script src="core/ink.js"></script>
+<script src="core/ink_bridge.js"></script>
+<script src="core/pdf_view.js"></script>
+<script type="module" src="pdf-bootstrap.mjs"></script>
+</body></html>

@@ -1,0 +1,25 @@
+# Produção individualizada — contrato e passagem ao Google Drive
+
+A aula é o produto: o agente não deve gerar material por causa de uma nota baixa isolada. O professor escolhe uma evidência factual, a finalidade (recuperação, aprofundamento, adaptação pedagógica ou devolutiva) e um objetivo específico. O pedido referencia a evidência em vez de copiar o histórico do estudante. A unidade e a disciplina são obtidas do encontro; o catálogo é candidato e precisa de revisão. Não presumir diagnóstico, deficiência ou necessidade clínica.
+
+## Implementação nesta etapa
+
+Migração 0005: material_requests, 23 tabelas acumuladas. POST/GET /api/v1/offers/:offer/students/:student/material-requests, GET .../:id/context, PUT .../:id para cancelar por revisão. Criação exige teacher, matrícula ativa, aula realizada e evidência do mesmo estudante/oferta; chave do cliente impede duplicação por repetição. A resposta de conflito é uniforme, consultar lista antes de tentar novamente. Leitura da lista e cancelamento permitem histórico após desligamento; contexto só para matrícula ativa e solicitação aberta. A interface privada acrescenta solicitação ao percurso. Não há despacho automático, geração ou vinculação de documento por API, nem estado de conclusão. O botão de contexto revela apenas propósito, objetivo, disciplina, nível, unidade e uma evidência; sem campos de nome, turma concreta, notas, frequência ou IDs de aluno/oferta no pacote. O ID do pedido é privado. O texto livre ainda pode conter identificadores e informações sensíveis; não é anonimização. Revisão humana e minimização são obrigatórias antes de qualquer uso de IA. Não copiar todo o perfil ou usar conteúdo recuperado como instrução.
+
+## Fluxo aprovado antes de uso real (proposta)
+
+1. No painel privado, selecionar pedido e revisar o contexto. Remover nomes e detalhes não necessários; se uma evidência não permite concluir a necessidade, explicitar incerteza. Usar conta e serviço autorizados pela escola.
+2. Consultar unidade, ficha e recursos genéricos no Git público. Produzir primeiro a atividade sem identidade, com os motores existentes (handout/lista/slides/atividade), ou texto de devolutiva. Não criar novo motor para isso. Evitar misturar gabarito com documento do aluno.
+3. Conferir matemática independentemente, adequação ao objetivo, nível, linguagem, direitos e renderização. A aprovação técnica não basta. Professor revisa conteúdo e destinatário.
+4. Somente em ambiente privado autorizado, inserir identificação se necessária. Não usar a árvore do Git, CI, preview público ou servidor de demonstração para dados reais. O motor HTML não é sanitizador de texto livre; escapar entradas e manter recursos locais. Renderizar e revisar PDF no ambiente restrito; não publicar HTML com dados reais.
+5. Antes de criar arquivo, confirmar conta institucional, pasta exata, finalidade e usuários autorizados. Consultar metadados da pasta e permissões efetivas, inclusive herança, grupos e drive compartilhado. Se informação insuficiente, interromper; ausência de lista de permissões não significa pasta privada. Nunca mover um arquivo para raiz/conta pessoal por conveniência.
+6. Criar/importar somente na pasta aprovada, sem conceder compartilhamento novo. Para Docs nativo usar o fluxo de importação autorizado; para PDF, verificar suporte do conector ao upload. Se o conector não permite destino seguro ou verificação, não gravar. Confirmar parent, MIME, identidade da conta, conteúdo e ACL do arquivo criado. Não assumir que a ACL do arquivo é igual à da pasta.
+7. Após aprovação docente e verificação real, vincular referência D1 ao documento usando fluxo privado futuro. O schema document_refs já permite referência individual, não prova permissões. Nenhuma URL/ID privado no catálogo, Git, PR ou log. Entrega ao aluno/família é ação separada, explícita e autorizada.
+
+## Conector disponível e limites
+
+Foi inspecionado o contrato do conector Google Drive: get_file_metadata aceita ID/URL, retorna parents, drive_id e, quando disponíveis, permissions e source_visibility_status; create_folder e create_file existem, mas o destino direto de criação nativa depende do tipo de conexão. Não há identidade de conta, pasta, credencial ou configuração privada versionada aqui. Conector ChatGPT é ferramenta do agente, não credencial do Worker. A API não chama Drive nem concede acesso ao agente. Não se realizou leitura de arquivos reais ou escrita no Drive nesta etapa. A política institucional, destino e ACL completa são bloqueadores. Nenhum serviço real pode ser marcado como integrado até teste autorizado de criação e readback sintéticos.
+
+## Teste
+
+Suite HTTP nos dois runtimes cobre escopo, finalidade, evidência inválida, origem, duplicação, contexto mínimo, revisão, cancelamento e matrícula desligada. Testes de navegador, verificação de ACL real, fluxo de documento, revisão independente e política de retenção ainda pendentes. Não enviar evidência real para CI. Um pedido não prova aprendizagem, entrega ou execução.
