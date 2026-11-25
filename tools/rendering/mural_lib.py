@@ -330,7 +330,7 @@ table.lay td { vertical-align:middle; }
 """
 
 
-def _doc(paginas, pagesize, tema):
+def _doc(paginas, pagesize, tema, *, repertorio=False):
     cor, tinta, acento = CORES.get(tema, CORES["neutro"])
     css = (_fontes_css() + CSS.replace("@@PAGESIZE@@", pagesize)
            .replace("@@COR@@", cor).replace("@@TINTA@@", tinta)
@@ -342,6 +342,9 @@ def _doc(paginas, pagesize, tema):
            .replace("@@ACENTO@@", acento))
     if not os.path.isfile(os.path.join(FONT_DIR, "BigShoulders-Bold.ttf")):
         css += "\n.titulo{font-size:80pt;line-height:1.08}.a3.paisagem .titulo{font-size:72pt}.a4 .titulo{font-size:48pt}"
+    if repertorio:
+        from . import mural_visual
+        css += '\n' + mural_visual.css(tema)
     return ('<!DOCTYPE html>\n<html lang="pt-BR">\n<head>\n<meta charset="utf-8">\n'
             '<title>Mural</title>\n<style>' + css + '</style>\n</head>\n<body>\n'
             + "\n".join(paginas) + '\n</body>\n</html>')
@@ -775,8 +778,8 @@ def moldura_trabalho(meta, chamada="Feito por gente desta turma"):
 
 
 # ---------------------------------------------------------------------- build ----
-def build(paginas, out_dir, nome, tema="neutro", pagesize="A3"):
-    html = _doc(paginas, pagesize, tema)
+def build(paginas, out_dir, nome, tema="neutro", pagesize="A3", *, repertorio=False):
+    html = _doc(paginas, pagesize, tema, repertorio=repertorio)
     os.makedirs(out_dir, exist_ok=True)
     caminho = os.path.join(out_dir, nome + ".html")
     with open(caminho, "w", encoding="utf-8") as f:

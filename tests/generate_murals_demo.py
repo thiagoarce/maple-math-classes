@@ -29,4 +29,16 @@ def main():
     c.build(c.montar("Volume",body,700,830,tema="mat2",math_src="../../tools/rendering/ma_math.js"),str(OUT),"consultation",700,830)
     item=plan._unidade("demo-volume","Demo","Volume","2027-01-04","10/02/2027")
     (OUT/"print-plan.md").write_text(plan.markdown([item]),encoding="utf-8")
+    from tools.rendering import mural_visual as v
+    fig=(OUT/"slope-geo.svg").read_text(encoding="utf-8")
+    meta={"turma":"DEMO","unidade":"Geometria analítica","chapeu":"RELAÇÃO · INCLINAÇÃO","idioma":"pt"}
+    question="Qual é a razão entre a variação vertical e a horizontal?"
+    formula="m = 2 ÷ 4 = 1/2"
+    warning="A ordem dos pontos deve ser a mesma nos dois deslocamentos."
+    for rich in (False,True):
+        guide=v.chave(question) if rich else question
+        blocks=[("SÍNTESE",v.macete("Inclinação",formula) if rich else "Inclinação: "+formula),
+                ("CUIDADO",v.atencao(warning) if rich else warning)]
+        piece=m.anchor_chart(meta,"Inclinação",guide,blocks,fig=m.figura(fig,altura_mm=65,parede=False))
+        m.build([piece],str(OUT),"slope-hybrid" if rich else "slope-classic",tema="mat2",pagesize="A3",repertorio=rich)
 if __name__=="__main__":main()

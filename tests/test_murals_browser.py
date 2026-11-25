@@ -6,7 +6,7 @@ OUT=Path("test-artifacts/murals")
 def main():
     with sync_playwright() as p:
         browser=p.chromium.launch()
-        for name,expected in [("cavalieri","Cavalieri"),("objectives","Customers")]:
+        for name,expected in [("cavalieri","Cavalieri"),("objectives","Customers"),("slope-classic","Inclinação"),("slope-hybrid","Inclinação")]:
             ctx=browser.new_context(viewport={"width":1300,"height":1700})
             foreign,errors=[],[]
             def route(r):
@@ -29,6 +29,14 @@ def main():
             if name=="cavalieri":
                 assert page.locator(".figura svg").count()==1
                 assert page.locator(".juntos .escrever").count()==1
+            if name.startswith("slope-"):
+                assert page.locator(".figura svg").count()==1
+                assert "2 ÷ 4" in page.locator("body").inner_text()
+                assert page.locator(".mural-key").count()==(1 if name=="slope-hybrid" else 0)
+                if name=="slope-hybrid":
+                    assert page.locator(".mural-macete,.mural-attention").count()==2
+                    assert page.locator(".mural-key svg").count()==1
+                    assert page.locator(".mural-attention").evaluate("el=>getComputedStyle(el).backgroundColor")=="rgb(255, 225, 89)"
             path=OUT/(name+".pdf")
             page.pdf(path=str(path),prefer_css_page_size=True,print_background=True)
             with fitz.open(path) as d:

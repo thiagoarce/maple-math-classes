@@ -45,3 +45,5 @@ Piloto de recuperação de produto matricial: subjects/hs-mathematics/units/hs-m
 Murais e jogos: [inventário e primeiros núcleos recuperados](murals-and-games.md). Homologação de impressão e interfaces pendentes.
 
 Motor mural A3 recuperado em tools/rendering/mural_lib.py; espécimes Cavalieri e Customer discovery em gate de impressão pendente. Ver docs/murals-and-games.md.
+
+Repertório visual opt-in para murais: tools/rendering/mural_visual.py, mural_impulso.css e mural_assets; usa GEO já existente. Comparação sintética A3 pendente de CI e revisão estética.
