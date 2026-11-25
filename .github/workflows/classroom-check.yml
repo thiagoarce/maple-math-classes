@@ -26,6 +26,7 @@ jobs:
           node tests/test_planning.mjs
           node tests/test_launch_day.mjs
           PYTHONPATH=. python tests/test_mural_svg.py
+          PYTHONPATH=. python tests/test_mural_plan.py
           python tests/test_private_data.py
           python tests/test_individual_pilot_math.py
           npm --prefix infra/private-data install --ignore-scripts --no-audit --no-fund
@@ -61,6 +62,7 @@ jobs:
           python tests/test_materials_browser.py
           python tests/test_individual_pilot_browser.py
           python tests/test_murals_browser.py
+          python tests/test_large_murals_browser.py
           python tests/test_planning_browser.py
           python tests/test_slides_browser.py
       - name: Upload synthetic screenshots

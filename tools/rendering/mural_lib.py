@@ -105,7 +105,7 @@ body { font-family:'MuralSans',sans-serif; color:#1b1c1e; background:#6f7378; }
    que entraram figuras esse espaço passou a ter dono. Big Shoulders é condensada, então
    112pt continua sendo lido da porta — e os 20mm liberados foram para o diagrama, que é
    o que de fato precisa ser visto de longe. */
-.titulo { font-family:'MuralDisplay',sans-serif; font-size:112pt; line-height:.84;
+.titulo { font-family:'MuralDisplay',sans-serif; font-size:112pt; line-height:1.02;
   letter-spacing:-.2mm; text-transform:uppercase; }
 .a3.paisagem .titulo { font-size:104pt; }
 .a4 .titulo { font-size:60pt; }
@@ -340,6 +340,8 @@ def _doc(paginas, pagesize, tema):
            # muda de peça para peça. Constante que não varia é a mais fácil de duplicar.
            .replace("@@PAPEL@@", idt.NEUTROS["papel"])
            .replace("@@ACENTO@@", acento))
+    if not os.path.isfile(os.path.join(FONT_DIR, "BigShoulders-Bold.ttf")):
+        css += "\n.titulo{font-size:80pt;line-height:1.08}.a3.paisagem .titulo{font-size:72pt}.a4 .titulo{font-size:48pt}"
     return ('<!DOCTYPE html>\n<html lang="pt-BR">\n<head>\n<meta charset="utf-8">\n'
             '<title>Mural</title>\n<style>' + css + '</style>\n</head>\n<body>\n'
             + "\n".join(paginas) + '\n</body>\n</html>')
