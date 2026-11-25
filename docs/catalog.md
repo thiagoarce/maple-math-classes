@@ -46,4 +46,4 @@ Murais e jogos: [inventário e primeiros núcleos recuperados](murals-and-games.
 
 Motor mural A3 recuperado em tools/rendering/mural_lib.py; espécimes Cavalieri e Customer discovery em gate de impressão pendente. Ver docs/murals-and-games.md.
 
-Repertório visual opt-in para murais: tools/rendering/mural_visual.py, mural_impulso.css e mural_assets; usa GEO já existente. Comparação sintética A3 pendente de CI e revisão estética.
+Direção estética de murais: [Mapa de Cabeça e goldens](mural-visual-direction.md), não Andaime Aberto. Novo espécime GS-01 de inclinação em homologação.

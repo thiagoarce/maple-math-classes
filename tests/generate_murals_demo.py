@@ -29,16 +29,14 @@ def main():
     c.build(c.montar("Volume",body,700,830,tema="mat2",math_src="../../tools/rendering/ma_math.js"),str(OUT),"consultation",700,830)
     item=plan._unidade("demo-volume","Demo","Volume","2027-01-04","10/02/2027")
     (OUT/"print-plan.md").write_text(plan.markdown([item]),encoding="utf-8")
-    from tools.rendering import mural_visual as v
+    # New reference specimen: GS-01 grammar, not a reskin of the legacy A3 motor.
     fig=(OUT/"slope-geo.svg").read_text(encoding="utf-8")
-    meta={"turma":"DEMO","unidade":"Geometria analítica","chapeu":"RELAÇÃO · INCLINAÇÃO","idioma":"pt"}
-    question="Qual é a razão entre a variação vertical e a horizontal?"
-    formula="m = 2 ÷ 4 = 1/2"
-    warning="A ordem dos pontos deve ser a mesma nos dois deslocamentos."
-    for rich in (False,True):
-        guide=v.chave(question) if rich else question
-        blocks=[("SÍNTESE",v.macete("Inclinação",formula) if rich else "Inclinação: "+formula),
-                ("CUIDADO",v.atencao(warning) if rich else warning)]
-        piece=m.anchor_chart(meta,"Inclinação",guide,blocks,fig=m.figura(fig,altura_mm=65,parede=False))
-        m.build([piece],str(OUT),"slope-hybrid" if rich else "slope-classic",tema="mat2",pagesize="A3",repertorio=rich)
+    body=c.chapeu("MATEMÁTICA HS · GEOMETRIA ANALÍTICA",x=40,y=24,corpo=12,tema="mat2")
+    body+=c.chamada("INCLINAÇÃO",x=55,y=65,w=510,h=90,corpo=60)
+    body+=c.linha("VARIAÇÃO VERTICAL ÷ VARIAÇÃO HORIZONTAL",x=60,y=180,corpo=15)
+    body+=c.figura(fig,x=42,y=220,w=410,h=320)
+    body+=c.cartao("A RELAÇÃO",r"$m=\frac{\Delta y}{\Delta x}$",x=492,y=220,w=340,h=160,tema="mat2",corpo=38)
+    body+=c.mao("Neste exemplo: 2 ÷ 4 = 1/2",x=500,y=400,w=320,corpo=14,cor=c.AZUL)
+    body+=c.barra(r"$\Delta x\ne0$",["MESMA ORDEM DOS PONTOS","RETA VERTICAL: INCLINAÇÃO INDEFINIDA"],x=485,y=465,w=365,h=100,corpo=26,caps=11)
+    c.build(c.montar("Inclinação",body,891,630,tema="mat2",math_src="../../tools/rendering/ma_math.js"),str(OUT),"slope-gs01",891,630)
 if __name__=="__main__":main()
