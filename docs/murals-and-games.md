@@ -27,3 +27,7 @@ Run 45467703757: Launch Day, SVG e folha do aluno (3 páginas) aprovados nas eta
 ## Mural grande, consulta e plano
 
 Fontes: mural_grande.py b7bb30b, mural_consulta.py 4c1d2ea, mural_plano.py b2870b6. Recuperados os dois motores com imports relativos, caminho explícito local de ma_math, impressão bloqueada se medição falhar, e modo SEM_PDF para a CI. Mapa radial e composição de consulta em 700×830 mm, uma página inteira, sem recortar. Plano extrai a lógica histórica de validade, contagem de folhas distintas, cópias e indicação de impressão, recebe registro externo; nenhuma agenda ou turma real. Não reintroduz o portão de ocupação da parede removido em setembro. O run 45469182103 aprovou folha de aluno e gabarito, mas reprovou título A3; tamanho/entrelinha ajustados para fonte fallback ausente. Fontes originais não incluídas. Novos testes e revisão visual pendentes. Checadores legados da pilha ainda não portados; gates novos são específicos das amostras. Não publicar peças ou dados de turma reais.
+
+## Direção visual corrigida
+
+Ver [Mapa de Cabeça e goldens](mural-visual-direction.md). Andaime Aberto é legado para parede; golden GS-01 e mural_consulta são referência de produção nova. O experimento A3 híbrido foi abandonado. A geometria GEO já existente é reutilizada em novo espécime GS-01. A base homologada está na main; novos testes pendentes.
